@@ -181,8 +181,10 @@
 
       <module>bootstrap</module>
       <module>container</module>
+      <module>shrinkwrap</module>
 
       <module>fractions</module>
+
 
     </modules>
 </project>

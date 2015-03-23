@@ -35,6 +35,7 @@ public class Main {
 
     public static void main(String[] args) throws Throwable {
         System.setProperty("boot.module.loader", BootModuleLoader.class.getName());
+        System.setProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager");
 
         Module app = Module.getBootModuleLoader().loadModule(ModuleIdentifier.create("APP"));
         InputStream in = app.getClassLoader().getResourceAsStream("META-INF/MANIFEST.MF");

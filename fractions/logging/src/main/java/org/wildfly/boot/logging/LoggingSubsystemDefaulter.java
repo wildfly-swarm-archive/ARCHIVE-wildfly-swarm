@@ -11,6 +11,7 @@ public class LoggingSubsystemDefaulter extends AbstractSubsystemDefaulter<Loggin
 
     public LoggingSubsystemDefaulter() {
         super( LoggingSubsystem.class);
+        System.err.println( "LogManager class: " + java.util.logging.LogManager.getLogManager().getClass().getName() );
     }
 
     @Override

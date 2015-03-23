@@ -41,6 +41,9 @@
 
     <properties>
       <root-module>org.jboss.as.jaxrs</root-module>
+      <export-modules>
+        javax.ws.rs.api
+      </export-modules>
       <extra-modules>
         javax.json.api
         org.jboss.resteasy.resteasy-jackson2-provider

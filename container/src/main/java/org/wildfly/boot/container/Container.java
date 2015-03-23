@@ -49,6 +49,10 @@ public class Container {
     }
 
     public void start() throws Exception {
+        start( new DefaultDeployment() );
+    }
+
+    public void start(Deployment deployment) throws Exception {
         this.container = new SelfContainedContainer();
 
         applyDefaults();
@@ -69,7 +73,15 @@ public class Container {
 
         list.add(deploymentAdd);
 
+        /*
         this.container.start(list, Content.CONTENT);
+        */
+
+        for ( ModelNode each : list ) {
+            System.err.println( each );
+        }
+
+        this.container.start(list, deployment.getContent() );
     }
 
     private void applyDefaults() throws Exception {
@@ -90,10 +102,12 @@ public class Container {
         }
 
         for (Subsystem each : this.subsystems) {
+            System.err.println( "Not applying default: "+ each.getClass().getSimpleName());
             defaulters.remove(each.getClass());
         }
 
         for (SubsystemDefaulter each : defaulters.values()) {
+            System.err.println( "Applying default: "+ each.getClass().getSimpleName());
             this.subsystem(each.getDefaultSubsystem());
         }
     }
