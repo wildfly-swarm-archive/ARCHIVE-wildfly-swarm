@@ -775,7 +775,7 @@ final class ModuleXmlParser {
                 artifact = artifact.substring( 0, artifact.length() - 7 );
             }
 
-            String repoPath = "m2repo/" + parts[0].replaceAll("\\.", "/") + "/" + artifact;
+            String repoPath = "m2repo/" + parts[0].replaceAll("\\.", "/") + "/" + artifact + "/";
             Enumeration<JarEntry> entries = Util.rootJar().entries();
 
             if (version == null) {
@@ -783,7 +783,7 @@ final class ModuleXmlParser {
                     JarEntry entry = entries.nextElement();
                     String entryName = entry.getName();
                     if ( entryName.startsWith(repoPath) ) {
-                        int slashLoc = entryName.indexOf('/', repoPath.length());
+                        int slashLoc = entryName.indexOf('/', repoPath.length() - 1);
                         if (slashLoc > 0) {
                             int nextSlash = entryName.indexOf('/', slashLoc + 1);
                             if (nextSlash > 0) {
