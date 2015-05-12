@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -14,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -61,13 +63,22 @@ public class CreateMojo extends AbstractSwarmMojo {
 
     private static final String MAIN_SLOT = "main";
 
-    private static final Pattern MODULE_ARTIFACT_PATTERN = Pattern.compile(
+    private static final Pattern MODULE_ARTIFACT_EXPRESSION_PATTERN = Pattern.compile(
             // artifact tag
-            "(<artifact\\s+?name=\"\\$\\{)" +
+            "(<artifact\\s+?name=\")(?:\\$\\{)" +
                     // possible GAV
                     "+([A-Za-z0-9_\\-.]+:[A-Za-z0-9_\\-.]+)(?:(?::)([A-Za-z0-9_\\-.]+))?" +
                     // end tag
-                    "+(}\"/>)"
+                    "+(?:})(\"/>)"
+    );
+
+    private static final Pattern MODULE_ARTIFACT_GAV_PATTERN = Pattern.compile(
+            // artifact tag
+            "(<artifact\\s+?name=\")" +
+                    // possible GAV
+                    "+([A-Za-z0-9_\\-.]+:[A-Za-z0-9_\\-.]+:[A-Za-z0-9_\\-.]+)" +
+                    // end tag
+                    "+(\"/>)"
     );
 
     @Inject
@@ -105,6 +116,7 @@ public class CreateMojo extends AbstractSwarmMojo {
 
         addProjectArtifact();
         addProjectDependenciesToRepository();
+        createManifest();
         createJar();
     }
 
@@ -216,13 +228,9 @@ public class CreateMojo extends AbstractSwarmMojo {
     private void analyzeModuleXml(final Path path) throws IOException {
         final List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         for (String line : lines) {
-            int start = line.indexOf("${");
-            if (start >= 0) {
-                int end = line.indexOf("}");
-                if (end > 0) {
-                    String ga = line.substring(start + 2, end);
-                    this.gavs.add(new ArtifactSpec(ga));
-                }
+            final Matcher matcher = MODULE_ARTIFACT_GAV_PATTERN.matcher(line);
+            if (matcher.find()) {
+                this.gavs.add(new ArtifactSpec(matcher.group(2)));
             }
         }
     }
@@ -471,11 +479,9 @@ public class CreateMojo extends AbstractSwarmMojo {
         String name = artifact.getArtifactId() + "-" + artifact.getVersion() + "-swarm.jar";
 
         File file = new File(this.projectBuildDir, name);
-
-        Manifest manifest = createManifest();
         try (
                 FileOutputStream fileOut = new FileOutputStream(file);
-                JarOutputStream out = new JarOutputStream(fileOut, manifest)
+                JarOutputStream out = new JarOutputStream(fileOut)
         ) {
             writeToJar(out, this.dir);
         } catch (IOException e) {
@@ -513,7 +519,7 @@ public class CreateMojo extends AbstractSwarmMojo {
     }
 
 
-    private Manifest createManifest() throws MojoFailureException {
+    private void createManifest() throws MojoFailureException {
         Manifest manifest = new Manifest();
 
         Attributes attrs = manifest.getMainAttributes();
@@ -533,8 +539,17 @@ public class CreateMojo extends AbstractSwarmMojo {
             first = false;
         }
         attrs.putValue("Feature-Pack-Modules", modules.toString());
-
-        return manifest;
+        // Write the manifest to the dir
+        final Path manifestPath = dir.resolve("META-INF").resolve("MANIFEST.MF");
+        // Ensure the directories have been created
+        try {
+            Files.createDirectories(manifestPath.getParent());
+            try (final OutputStream out = Files.newOutputStream(manifestPath, StandardOpenOption.CREATE)) {
+                manifest.write(out);
+            }
+        } catch (IOException e) {
+            throw new MojoFailureException("Could not create manifest file: " + manifestPath.toString(), e);
+        }
     }
 
     private void copyFileFromZip(final ZipFile resource, final ZipEntry entry, final Path outFile) throws IOException {
@@ -546,7 +561,7 @@ public class CreateMojo extends AbstractSwarmMojo {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     // Attempt to find a version if required
-                    final Matcher matcher = MODULE_ARTIFACT_PATTERN.matcher(line);
+                    final Matcher matcher = MODULE_ARTIFACT_EXPRESSION_PATTERN.matcher(line);
                     while (matcher.find()) {
                         String version = matcher.group(3);
                         if (version == null) {
