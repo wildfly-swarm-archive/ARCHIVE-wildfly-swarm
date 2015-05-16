@@ -54,12 +54,16 @@ public class DatasourceDeployment implements Deployment {
 
             XmlWriter.Element security = datasource.element("security");
 
+            String username = this.ds.getUserName();
+            username = username == null ? "" : username;
             security.element("user-name")
-                    .content(this.ds.getUserName())
+                    .content(username)
                     .end();
 
+            String password = this.ds.getPassword();
+            password = password == null ? "" : password;
             security.element("password")
-                    .content(this.ds.getPassword())
+                    .content(password)
                     .end();
 
             security.end();
