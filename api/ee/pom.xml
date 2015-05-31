@@ -55,6 +55,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.jboss.spec.javax.enterprise.concurrent</groupId>
+            <artifactId>jboss-concurrency-api_1.0_spec</artifactId>
+        </dependency>
+        <dependency>
           <groupId>org.wildfly.swarm</groupId>
           <artifactId>wildfly-swarm-container</artifactId>
         </dependency>
