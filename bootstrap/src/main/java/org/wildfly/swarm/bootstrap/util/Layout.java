@@ -4,11 +4,14 @@ import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
 
+import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,8 +53,15 @@ public class Layout {
     public static Path getRoot() throws IOException {
         URL location = Layout.class.getProtectionDomain().getCodeSource().getLocation();
         if ( location.getProtocol().equals( "file" ) ) {
-            Path path = Paths.get(location.getPath());
-            return path;
+            try {
+                URI locationURI = location.toURI();
+                Path locationPath = Paths.get(locationURI);
+                File locationFile = locationPath.toFile();
+                String locationFilePathString = locationFile.getPath();
+                return Paths.get(locationFilePathString);
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         throw new IOException("Unable to determine root" );
