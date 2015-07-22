@@ -45,6 +45,7 @@
     <module>transactions</module>
     <module>undertow</module>
     <module>weld</module>
+    <module>webservices</module>
   </modules>
 
 </project>

@@ -45,6 +45,7 @@
     <module>security</module>
     <module>transactions</module>
     <module>undertow</module>
+    <module>webservices</module>
     <module>weld</module>
     <module>weld-jaxrs</module>
   </modules>
