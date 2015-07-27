@@ -1,0 +1,3 @@
+implementingClassName=org.wildfly.swarm.netflix.ribbon.keycloak.SecuredRibbonArchiveImpl
+extension=.war
+archiveFormat=ZIP

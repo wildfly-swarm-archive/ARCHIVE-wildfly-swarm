@@ -208,6 +208,11 @@
       </dependency>
       <dependency>
         <groupId>org.wildfly.swarm</groupId>
+        <artifactId>wildfly-swarm-runtime-keycloak</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
         <artifactId>wildfly-swarm-logging</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -266,13 +271,16 @@
         <artifactId>wildfly-swarm-weld-jaxrs</artifactId>
         <version>${project.version}</version>
       </dependency>
-
       <dependency>
         <groupId>org.wildfly.swarm</groupId>
         <artifactId>wildfly-swarm-netflix-ribbon</artifactId>
         <version>${project.version}</version>
       </dependency>
-
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>wildfly-swarm-netflix-ribbon-keycloak</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>com.netflix.ribbon</groupId>
         <artifactId>ribbon</artifactId>

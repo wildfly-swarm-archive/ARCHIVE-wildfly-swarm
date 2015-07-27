@@ -30,7 +30,7 @@ public class RibbonArchiveImpl extends AssignableBase<ArchiveBase<?>> implements
         as(JARArchive.class).addModule("io.reactivex.rxnetty");
         as(JARArchive.class).addModule("io.netty");
         as(JARArchive.class).addModule("org.picketbox");
-        as(JARArchive.class).add(new RibbonConfigAsset());
+        as(JARArchive.class).add(new RibbonConfigAsset() );
     }
 
     @Override

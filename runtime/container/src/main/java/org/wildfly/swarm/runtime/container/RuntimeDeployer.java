@@ -1,32 +1,24 @@
 package org.wildfly.swarm.runtime.container;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
 import org.jboss.as.controller.client.ModelControllerClient;
 import org.jboss.dmr.ModelNode;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ArchivePath;
-import org.jboss.shrinkwrap.api.Node;
 import org.jboss.shrinkwrap.impl.base.exporter.zip.ZipExporterImpl;
 import org.jboss.vfs.TempFileProvider;
 import org.jboss.vfs.VFS;
 import org.jboss.vfs.VirtualFile;
 import org.wildfly.swarm.container.Deployer;
 
-import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.ADD;
-import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.CONTENT;
-import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.ENABLED;
-import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.HASH;
-import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.OP;
-import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.OP_ADDR;
-import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.RUNTIME_NAME;
+import java.io.Closeable;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.*;
 
 /**
  * @author Bob McWhirter
@@ -37,16 +29,17 @@ public class RuntimeDeployer implements Deployer {
 
     private final SimpleContentProvider contentProvider;
 
-    private final ScheduledExecutorService executor;
+    //private final ScheduledExecutorService executor;
 
     private final TempFileProvider tempFileProvider;
     private final List<Closeable> mountPoints = new ArrayList<>();
 
-    public RuntimeDeployer(ModelControllerClient client, SimpleContentProvider contentProvider) throws IOException {
+    public RuntimeDeployer(ModelControllerClient client, SimpleContentProvider contentProvider, TempFileProvider tempFileProvider) throws IOException {
         this.client = client;
         this.contentProvider = contentProvider;
-        this.executor = Executors.newSingleThreadScheduledExecutor();
-        this.tempFileProvider = TempFileProvider.create("wildfly-swarm", this.executor);
+        this.tempFileProvider = tempFileProvider;
+        //this.executor = Executors.newSingleThreadScheduledExecutor();
+        //this.tempFileProvider = TempFileProvider.create("wildfly-swarm", this.executor);
     }
 
     @Override
@@ -68,6 +61,40 @@ public class RuntimeDeployer implements Deployer {
             this.mountPoints.add( closeable );
         }
 
+        List<VirtualFile> children = mountPoint.getChildrenRecursively();
+        for ( VirtualFile each : children ) {
+            //System.err.println( "-> " + each.getPhysicalFile() );
+            //each.delete();
+            File f = each.getPhysicalFile();
+            if ( f.getName().equals( "config.properties" ) ) {
+                System.err.println( f );
+                /*
+                WatchService watcher = f.toPath().getFileSystem().newWatchService();
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        while ( true ) {
+                            try {
+                                WatchKey k = watcher.take();
+                                List<WatchEvent<?>> events = k.pollEvents();
+                                for ( WatchEvent<?> each : events ) {
+                                    System.err.println( "saw: " + each );
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                };
+
+                t.start();
+                */
+            }
+        }
+
+
+
         byte[] hash = this.contentProvider.addContent(mountPoint);
 
         final ModelNode deploymentAdd = new ModelNode();
@@ -87,6 +114,7 @@ public class RuntimeDeployer implements Deployer {
     void stop() {
         for ( Closeable each : this.mountPoints ) {
             try {
+                System.err.println( "closing: " + each );
                 each.close();
             } catch (IOException e) {
             }

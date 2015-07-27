@@ -10,7 +10,9 @@ import org.jboss.dmr.ValueExpression;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
-import org.jboss.msc.service.ServiceContainer;
+import org.jboss.msc.service.*;
+import org.jboss.msc.value.ImmediateValue;
+import org.jboss.vfs.TempFileProvider;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.container.Deployer;
 import org.wildfly.swarm.container.Fraction;
@@ -21,10 +23,7 @@ import org.wildfly.swarm.container.SocketBinding;
 import org.wildfly.swarm.container.SocketBindingGroup;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.*;
 
@@ -59,13 +58,25 @@ public class RuntimeServer implements Server {
         list.sort( new ExtensionOpPriorityComparator() );
 
         Thread.currentThread().setContextClassLoader(RuntimeServer.class.getClassLoader());
-        this.serviceContainer = this.container.start(list, this.contentProvider);
+
+        ScheduledExecutorService tempFileExecutor = Executors.newSingleThreadScheduledExecutor();
+        TempFileProvider tempFileProvider = TempFileProvider.create("wildfly-swarm", tempFileExecutor);
+        List<ServiceActivator> activators = new ArrayList<>();
+        activators.add(new ServiceActivator() {
+            @Override
+            public void activate(ServiceActivatorContext context) throws ServiceRegistryException {
+                context.getServiceTarget().addService(ServiceName.of( "wildfly", "swarm", "temp-provider"), new ValueService<>(new ImmediateValue<Object>(tempFileProvider)))
+                        .install();
+            }
+        });
+
+        this.serviceContainer = this.container.start(list, this.contentProvider, activators );
         ModelController controller = (ModelController) this.serviceContainer.getService(Services.JBOSS_SERVER_CONTROLLER).getValue();
         Executor executor = Executors.newSingleThreadExecutor();
 
         this.client = controller.createClient(executor);
+        this.deployer = new RuntimeDeployer(this.client, this.contentProvider, tempFileProvider);
 
-        this.deployer = new RuntimeDeployer(this.client, this.contentProvider);
         return this.deployer;
     }
 

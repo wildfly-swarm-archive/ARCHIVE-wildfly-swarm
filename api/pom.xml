@@ -52,6 +52,7 @@
 
     <!-- extras -->
     <module>netflix-ribbon</module>
+    <module>netflix-ribbon-keycloak</module>
   </modules>
 
   <build>

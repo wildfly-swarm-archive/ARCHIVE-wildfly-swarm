@@ -15,10 +15,10 @@
   </parent>
 
   <groupId>org.wildfly.swarm</groupId>
-  <artifactId>wildfly-swarm-netflix-ribbon</artifactId>
+  <artifactId>wildfly-swarm-netflix-ribbon-keycloak</artifactId>
 
-  <name>WildFly Swarm: Netflix Ribbon API</name>
-  <description>WildFly Swarm: Netflix Ribbon API</description>
+  <name>WildFly Swarm: Netflix Ribbon + Keycloak API</name>
+  <description>WildFly Swarm: Netflix Ribbon + Keycloak API</description>
 
   <packaging>jar</packaging>
 
@@ -40,62 +40,16 @@
   <dependencies>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-msc</artifactId>
+      <artifactId>wildfly-swarm-netflix-ribbon</artifactId>
     </dependency>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-clustering</artifactId>
+      <artifactId>wildfly-swarm-keycloak</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jboss.shrinkwrap</groupId>
       <artifactId>shrinkwrap-api</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>com.netflix.hystrix</groupId>
-      <artifactId>hystrix-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.netflix.archaius</groupId>
-      <artifactId>archaius-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.netflix.ribbon</groupId>
-      <artifactId>ribbon</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.netflix.ribbon</groupId>
-      <artifactId>ribbon-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.netflix.ribbon</groupId>
-      <artifactId>ribbon-loadbalancer</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.netflix.ribbon</groupId>
-      <artifactId>ribbon-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.netflix.ribbon</groupId>
-      <artifactId>ribbon-transport</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.reactivex</groupId>
-      <artifactId>rxjava</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.reactivex</groupId>
-      <artifactId>rxnetty</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-buffer</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-transport</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>wildfly-swarm-container</artifactId>
