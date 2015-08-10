@@ -9,16 +9,16 @@
 
   <parent>
     <groupId>org.wildfly.swarm</groupId>
-    <artifactId>wildfly-swarm-clustering-parent</artifactId>
+    <artifactId>wildfly-swarm-logstash-parent</artifactId>
     <version>1.0.0.Alpha4-SNAPSHOT</version>
     <relativePath>../</relativePath>
   </parent>
 
   <groupId>org.wildfly.swarm</groupId>
-  <artifactId>wildfly-swarm-clustering</artifactId>
+  <artifactId>wildfly-swarm-logstash</artifactId>
 
-  <name>WildFly Swarm: Clustering API</name>
-  <description>WildFly Swarm: Clustering API</description>
+  <name>WildFly Swarm: Logstash API</name>
+  <description>WildFly Swarm: Logstash API</description>
 
   <packaging>jar</packaging>
 
@@ -48,12 +48,12 @@
     </dependency>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-jmx</artifactId>
+      <artifactId>wildfly-swarm-logging</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-clustering-modules</artifactId>
+      <artifactId>wildfly-swarm-logstash-modules</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
