@@ -9,13 +9,7 @@
     </system>
 
     <!-- For when bootstrapped through a fat-jar -->
-    <module name="org.wildfly.swarm.bootstrap" optional="true" export="true">
-      <exports>
-        <include path="org/wildfly/swarm/netflix/ribbon"/>
-      </exports>
-    </module>
-
-    <module name="org.wildfly.swarm.netflix.ribbon" slot="runtime"/>
+    <module name="org.wildfly.swarm.netflix.ribbon" slot="api" export="true"/>
 
   </dependencies>
 </module>
