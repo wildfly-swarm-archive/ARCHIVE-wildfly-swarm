@@ -20,12 +20,6 @@ public class ClusterManagerActivator implements ServiceActivator {
 
     @Override
     public void activate(ServiceActivatorContext context) throws ServiceRegistryException {
-        System.err.println( "cluster manager activator starting" );
-        System.err.println( "cluster manager activator starting" );
-        System.err.println( "cluster manager activator starting" );
-        System.err.println( "cluster manager activator starting" );
-        System.err.println( "cluster manager activator starting" );
-        System.err.println( "cluster manager activator starting" );
         ServiceTarget target = context.getServiceTarget();
 
         System.setProperty("ribbon.NIWSServerListClassName", "org.wildfly.swarm.netflix.ribbon.runtime.ClusterServerList");
