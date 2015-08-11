@@ -29,6 +29,6 @@ public class RibbonSecuredConfiguration extends AbstractServerConfiguration<Ribb
 
     @Override
     public void prepareArchive(Archive archive) {
-        archive.as(JARArchive.class).addModule("org.wildfly.swarm.netflix.ribbon.secured");
+        archive.as(JARArchive.class).addModule("org.wildfly.swarm.netflix.ribbon.secured", "client");
     }
 }

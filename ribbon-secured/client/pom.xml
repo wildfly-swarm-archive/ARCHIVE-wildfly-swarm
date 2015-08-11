@@ -15,10 +15,10 @@
   </parent>
 
   <groupId>org.wildfly.swarm</groupId>
-  <artifactId>wildfly-swarm-ribbon-secured</artifactId>
+  <artifactId>wildfly-swarm-ribbon-secured-client</artifactId>
 
-  <name>WildFly Swarm: Ribbon Secured API</name>
-  <description>WildFly Swarm: Ribbon Secured API</description>
+  <name>WildFly Swarm: Ribbon Secured Client</name>
+  <description>WildFly Swarm: Ribbon Secured Client</description>
 
   <packaging>jar</packaging>
 
@@ -73,10 +73,21 @@
       <artifactId>wildfly-swarm-ribbon</artifactId>
       <version>${project.version}</version>
     </dependency>
+
     <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-ribbon-secured-client</artifactId>
-      <version>${project.version}</version>
+      <groupId>com.netflix.ribbon</groupId>
+      <artifactId>ribbon-transport</artifactId>
+      <version>${version.com.netflix.ribbon}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.netflix.ribbon</groupId>
+      <artifactId>ribbon-core</artifactId>
+      <version>${version.com.netflix.ribbon}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.netflix.ribbon</groupId>
+      <artifactId>ribbon-loadbalancer</artifactId>
+      <version>${version.com.netflix.ribbon}</version>
     </dependency>
 
 

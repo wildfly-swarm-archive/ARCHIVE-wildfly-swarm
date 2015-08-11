@@ -24,6 +24,7 @@
 
   <modules>
     <module>api</module>
+    <module>client</module>
     <module>runtime</module>
     <module>modules</module>
   </modules>
