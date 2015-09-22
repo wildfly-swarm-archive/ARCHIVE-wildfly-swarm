@@ -37,4 +37,15 @@ public interface ServerConfiguration<T extends Fraction> {
         return false;
     }
 
+    /**
+     * Priority is useful when two ServerConfigurations handle the same
+     * Fraction type T. The ServerConfiguration with the highest priority
+     * will win and the others will not get used.
+     *
+     * @return 0, the default priority
+     */
+    default int priority() {
+        return 0;
+    }
+
 }

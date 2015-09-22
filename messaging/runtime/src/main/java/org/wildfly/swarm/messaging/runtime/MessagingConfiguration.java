@@ -23,7 +23,7 @@ import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.SUB
  */
 public class MessagingConfiguration extends AbstractServerConfiguration<MessagingFraction> {
 
-    private PathAddress address = PathAddress.pathAddress(PathElement.pathElement(SUBSYSTEM, "messaging-activemq"));
+    protected PathAddress address = PathAddress.pathAddress(PathElement.pathElement(SUBSYSTEM, "messaging-activemq"));
 
     public MessagingConfiguration() {
         super(MessagingFraction.class);
