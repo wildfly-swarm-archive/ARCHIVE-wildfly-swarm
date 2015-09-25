@@ -1,7 +1,5 @@
 package org.wildfly.swarm.hawkular;
 
-import static org.wildfly.swarm.hawkular.Avails.*;
-
 
 /**
  * @author Bob McWhirter
@@ -9,5 +7,8 @@ import static org.wildfly.swarm.hawkular.Avails.*;
 public class AvailSets {
 
     public static AvailSet SERVER_AVAILABILITY = new AvailSet("Server Availability")
-            .avail(APP_SERVER);
+            .avail(Avails.APP_SERVER);
+
+    public static AvailSet DEPLOYMENT_STATUS = new AvailSet("Deployment Status" )
+            .avail(Avails.DEPLOYMENT_STATUS);
 }

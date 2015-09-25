@@ -13,4 +13,10 @@ public class Avails {
             .path("/")
             .attribtue("server-state")
             .upRegex("run.*");
+
+    public static Avail DEPLOYMENT_STATUS = new Avail( "Deployment Status" )
+            .every(1, MINUTES)
+            .path("/")
+            .attribtue("status")
+            .upRegex("OK");
 }

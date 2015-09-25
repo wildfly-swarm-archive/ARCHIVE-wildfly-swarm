@@ -10,6 +10,8 @@ import org.wildfly.swarm.container.Fraction;
  */
 public class HawkularFraction implements Fraction {
 
+    private String name = "wildfly-swarm";
+
     private String username;
     private String password;
     private String host = "localhost";
@@ -19,6 +21,15 @@ public class HawkularFraction implements Fraction {
 
     public HawkularFraction() {
 
+    }
+
+    public HawkularFraction name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String name() {
+        return this.name;
     }
 
     public HawkularFraction username(String username) {
@@ -68,7 +79,8 @@ public class HawkularFraction implements Fraction {
 
     public static HawkularFraction createDefaultHawkularFraction() {
         return new HawkularFraction()
-                .resourceTypeSet( ResourceTypeSets.MAIN );
+                .resourceTypeSet( ResourceTypeSets.MAIN )
+                .resourceTypeSet( ResourceTypeSets.DEPLOYMENT );
     }
 
     public static HawkularFraction createDefaultHawkularFraction(String host, int port, String username, String password) {

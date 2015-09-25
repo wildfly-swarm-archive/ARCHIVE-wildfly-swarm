@@ -14,10 +14,21 @@ public class ResourceType {
 
     private final List<AvailSet> availSets = new ArrayList<>();
     private final List<MetricSet> metricSets = new ArrayList<>();
+    private final List<Config> configs = new ArrayList<>();
 
+    private final List<ResourceType> parents = new ArrayList<>();
 
     public ResourceType(String name) {
         this.name = name;
+    }
+
+    public ResourceType parent(ResourceType parent) {
+        this.parents.add( parent );
+        return this;
+    }
+
+    public List<ResourceType> parents() {
+        return this.parents;
     }
 
     public String name() {
@@ -58,5 +69,14 @@ public class ResourceType {
 
     public List<MetricSet> metricSets() {
         return this.metricSets;
+    }
+
+    public ResourceType config(Config config) {
+        this.configs.add( config );
+        return this;
+    }
+
+    public List<Config> configs() {
+        return this.configs;
     }
 }

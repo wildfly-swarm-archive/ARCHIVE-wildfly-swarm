@@ -1,14 +1,25 @@
 package org.wildfly.swarm.hawkular.runtime;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.jboss.as.controller.PathAddress;
 import org.jboss.as.controller.PathElement;
 import org.jboss.dmr.ModelNode;
 import org.jboss.dmr.ValueExpression;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
+import org.wildfly.swarm.hawkular.Avail;
+import org.wildfly.swarm.hawkular.AvailSet;
+import org.wildfly.swarm.hawkular.Config;
 import org.wildfly.swarm.hawkular.HawkularFraction;
+import org.wildfly.swarm.hawkular.Metric;
+import org.wildfly.swarm.hawkular.MetricSet;
+import org.wildfly.swarm.hawkular.ResourceType;
+import org.wildfly.swarm.hawkular.ResourceTypeSet;
 
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.ADD;
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.EXTENSION;
@@ -21,6 +32,12 @@ import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.SUB
  * @author Lance Ball
  */
 public class HawkularConfiguration extends AbstractServerConfiguration<HawkularFraction> {
+
+    PathAddress address = PathAddress.pathAddress(PathElement.pathElement(SUBSYSTEM, "hawkular-monitor"));
+
+    private Set<MetricSet> seenMetricSets = new HashSet<>();
+
+    private Set<AvailSet> seenAvailSets = new HashSet<>();
 
     public HawkularConfiguration() {
         super(HawkularFraction.class);
@@ -46,16 +63,13 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
 
         List<ModelNode> list = new ArrayList<>();
 
-
         ModelNode node = new ModelNode();
         node.get(OP_ADDR).set(EXTENSION, "org.hawkular.agent.monitor");
         node.get(OP).set(ADD);
         list.add(node);
 
-        PathAddress address = PathAddress.pathAddress(PathElement.pathElement(SUBSYSTEM, "hawkular-monitor"));
-
         node = new ModelNode();
-        node.get(OP_ADDR).set(address.toModelNode());
+        node.get(OP_ADDR).set(this.address.toModelNode());
         node.get(OP).set(ADD);
         node.get("apiJndiName").set("java:global/hawkular/agent/monitor/api");
         node.get("numMetricSchedulerThreads").set(3);
@@ -64,7 +78,7 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
         list.add(node);
 
         node = new ModelNode();
-        node.get(OP_ADDR).set(address.append("storage-adapter", "default").toModelNode());
+        node.get(OP_ADDR).set(this.address.append("storage-adapter", "default").toModelNode());
         node.get(OP).set(ADD);
         node.get("type").set("HAWKULAR");
         node.get("username").set(fraction.username());
@@ -73,7 +87,7 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
         list.add(node);
 
         node = new ModelNode();
-        node.get(OP_ADDR).set(address.append("diagnostics", "default").toModelNode());
+        node.get(OP_ADDR).set(this.address.append("diagnostics", "default").toModelNode());
         node.get(OP).set(ADD);
         node.get("enabled").set(true);
         node.get("reportTo").set("LOG");
@@ -81,48 +95,19 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
         node.get("timeUnits").set("minutes");
         list.add(node);
 
+        addResourceTypeSets(fraction, list);
+
         node = new ModelNode();
-        node.get(OP_ADDR).set(address.append("managed-servers", "default").toModelNode());
+        node.get(OP_ADDR).set(this.address.append("managed-servers", "default").toModelNode());
         node.get(OP).set(ADD);
         list.add(node);
 
         node = new ModelNode();
-        node.get(OP_ADDR).set(address.append("resource-type-set-dmr", "Main").toModelNode());
+        node.get(OP_ADDR).set(this.address.append("managed-servers", "default").append("local-dmr", fraction.name()).toModelNode());
         node.get(OP).set(ADD);
         node.get("enabled").set(true);
-        list.add(node);
-
-        // avail
-        node = new ModelNode();
-        node.get(OP_ADDR).set(address.append("avail-set-dmr", "Server Availability").toModelNode());
-        node.get(OP).set(ADD);
-        node.get("enabled").set(true);
-        list.add(node);
-
-        node = new ModelNode();
-        node.get(OP_ADDR).set(address.append("avail-set-dmr", "Server Availability").append("avail-dmr", "App Server").toModelNode());
-        node.get(OP).set(ADD);
-        node.get("interval").set(30);
-        node.get("timeUnits").set("seconds");
-        node.get("path").set("/");
-        node.get("attribute").set("server-state");
-        node.get("upRegex").set("run.*");
-        list.add(node);
-
-        // resource-type
-        node = new ModelNode();
-        node.get(OP_ADDR).set(address.append("resource-type-set-dmr", "Main").append("resource-type-dmr", "WildFly Server").toModelNode());
-        node.get(OP).set(ADD);
-        node.get("resourceNameTemplate").set(new ValueExpression("WildFly Server [%ManagedServerName] [${jboss.node.name:localhost}]"));
-        node.get("path").set("/");
-        node.get("availSets").set("Server Availability");
-        list.add(node);
-
-        node = new ModelNode();
-        node.get(OP_ADDR).set(address.append("managed-servers", "default").append("local-dmr", "thisthing").toModelNode());
-        node.get(OP).set(ADD);
-        node.get("enabled").set(true);
-        node.get("resourceTypeSets").set("Main");
+        List<String> setNames = fraction.resourceTypeSets().stream().map(e -> e.name()).collect(Collectors.toList());
+        node.get("resourceTypeSets").set(String.join(",", setNames));
         list.add(node);
 
         node = new ModelNode();
@@ -136,4 +121,160 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
 
         return list;
     }
+
+
+    private void addMetricSets(ResourceTypeSet resourceTypeSet, List<ModelNode> list) {
+        for (ResourceType resourceType : resourceTypeSet.resourceTypes()) {
+            for (MetricSet metricSet : resourceType.metricSets()) {
+                addMetricSet(metricSet, list);
+            }
+        }
+    }
+
+    private void addMetricSet(MetricSet metricSet, List<ModelNode> list) {
+        if (this.seenMetricSets.contains(metricSet)) {
+            return;
+        }
+        this.seenMetricSets.add(metricSet);
+
+        ModelNode node = new ModelNode();
+        PathAddress setAddr = this.address.append("metric-set-dmr", metricSet.name());
+        node.get(OP_ADDR).set(setAddr.toModelNode());
+        node.get(OP).set(ADD);
+        node.get("enabled").set(true);
+        list.add(node);
+
+        for (Metric metric : metricSet.metrics()) {
+            addMetric(setAddr, metric, list);
+        }
+    }
+
+    private void addMetric(PathAddress setAddr, Metric metric, List<ModelNode> list) {
+        ModelNode node = new ModelNode();
+        node.get(OP_ADDR).set(setAddr.append("metric-dmr", metric.name()).toModelNode());
+        node.get(OP).set(ADD);
+        node.get("interval").set(metric.interval());
+        node.get("timeUnits").set(toString(metric.timeUnit()));
+        node.get("path").set(metric.path());
+        node.get("attribute").set(metric.attribute());
+        if (metric.units() != null) {
+            node.get("metricUnits").set(metric.units());
+        }
+        if (metric.type() != null) {
+            node.get("metricType").set(metric.type());
+        }
+        list.add(node);
+    }
+
+    private void addAvailSets(ResourceTypeSet resourceTypeSet, List<ModelNode> list) {
+        for (ResourceType resourceType : resourceTypeSet.resourceTypes()) {
+            for (AvailSet availSet : resourceType.availSets()) {
+                addAvailSet(availSet, list);
+            }
+        }
+    }
+
+    private void addAvailSet(AvailSet availSet, List<ModelNode> list) {
+        if (this.seenAvailSets.contains(availSet)) {
+            return;
+        }
+        this.seenAvailSets.add(availSet);
+
+        ModelNode node = new ModelNode();
+        PathAddress setAddr = this.address.append("avail-set-dmr", availSet.name());
+        node.get(OP_ADDR).set(setAddr.toModelNode());
+        node.get(OP).set(ADD);
+        node.get("enabled").set(true);
+        list.add(node);
+
+        for (Avail avail : availSet.avails()) {
+            addAvail(setAddr, avail, list);
+        }
+    }
+
+    private void addAvail(PathAddress setAddr, Avail avail, List<ModelNode> list) {
+        ModelNode node = new ModelNode();
+        node.get(OP_ADDR).set(setAddr.append("avail-dmr", avail.name()).toModelNode());
+        node.get(OP).set(ADD);
+        node.get("interval").set(avail.interval());
+        node.get("timeUnits").set(toString(avail.timeUnit()));
+        node.get("path").set(avail.path());
+        node.get("attribute").set(avail.attribute());
+        node.get("upRegex").set(avail.upRegex());
+        list.add(node);
+    }
+
+    private static String toString(TimeUnit unit) {
+        switch (unit) {
+            case NANOSECONDS:
+                return "nanoseconds";
+            case MICROSECONDS:
+                return "microseconds";
+            case MILLISECONDS:
+                return "milliseconds";
+            case SECONDS:
+                return "seconds";
+            case MINUTES:
+                return "minutes";
+            case HOURS:
+                return "hours";
+            case DAYS:
+                return "days";
+        }
+        return null;
+    }
+
+    protected void addResourceTypeSets(HawkularFraction fraction, List<ModelNode> list) {
+        for (ResourceTypeSet resourceTypeSet : fraction.resourceTypeSets()) {
+            addMetricSets(resourceTypeSet, list);
+            addAvailSets(resourceTypeSet, list);
+            addResourceTypeSet(resourceTypeSet, list);
+        }
+    }
+
+    private void addResourceTypeSet(ResourceTypeSet resourceTypeSet, List<ModelNode> list) {
+        ModelNode node = new ModelNode();
+        PathAddress setAddr = this.address.append("resource-type-set-dmr", resourceTypeSet.name());
+        node.get(OP_ADDR).set(setAddr.toModelNode());
+        node.get(OP).set(ADD);
+        node.get("enabled").set(true);
+        list.add(node);
+
+        for (ResourceType resourceType : resourceTypeSet.resourceTypes()) {
+            addResourceType(setAddr, resourceType, list);
+        }
+    }
+
+    private void addResourceType(PathAddress setAddr, ResourceType resourceType, List<ModelNode> list) {
+
+        ModelNode node = new ModelNode();
+        node.get(OP_ADDR).set(setAddr.append("resource-type-dmr", resourceType.name()).toModelNode());
+        node.get(OP).set(ADD);
+        node.get("resourceNameTemplate").set(new ValueExpression(resourceType.resourceNameTemplate()));
+        node.get("path").set(resourceType.path());
+        List<String> availSetNames = resourceType.availSets().stream().map(e -> e.name()).collect(Collectors.toList());
+        node.get("availSets").set(String.join(",", availSetNames));
+        List<String> metricSetNames = resourceType.metricSets().stream().map(e -> e.name()).collect(Collectors.toList());
+        node.get("metricSets").set(String.join(",", metricSetNames));
+        list.add(node);
+        List<String> parentNames = resourceType.parents().stream().map(e -> e.name()).collect(Collectors.toList());
+        if ( ! parentNames.isEmpty() ) {
+            node.get("parents").set(String.join(",", parentNames));
+        }
+
+        for (Config config : resourceType.configs()) {
+            node = new ModelNode();
+            node.get(OP_ADDR).set(setAddr.append("resource-type-dmr", resourceType.name()).append("resource-config-dmr", config.name()).toModelNode());
+            node.get(OP).set(ADD);
+            if ( config.path() != null ) {
+                node.get( "path" ).set( config.path() );
+            }
+            if ( config.attribute() != null ) {
+                node.get( "attribute" ).set( config.attribute() );
+            }
+            list.add( node );
+        }
+
+    }
+
 }

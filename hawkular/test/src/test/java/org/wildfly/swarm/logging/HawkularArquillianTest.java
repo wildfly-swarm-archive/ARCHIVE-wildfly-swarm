@@ -1,7 +1,5 @@
 package org.wildfly.swarm.logging;
 
-import java.util.concurrent.TimeUnit;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -11,7 +9,6 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.swarm.ContainerFactory;
-import org.wildfly.swarm.config.logging.Logging;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.container.JARArchive;
 import org.wildfly.swarm.hawkular.HawkularFraction;
@@ -31,8 +28,7 @@ public class HawkularArquillianTest implements ContainerFactory {
 
     @Override
     public Container newContainer(String... args) throws Exception {
-        return new Container().fraction(
-                HawkularFraction.createDefaultHawkularFraction());
+        return new Container().fraction(HawkularFraction.createDefaultHawkularFraction());
     }
 
     @Test

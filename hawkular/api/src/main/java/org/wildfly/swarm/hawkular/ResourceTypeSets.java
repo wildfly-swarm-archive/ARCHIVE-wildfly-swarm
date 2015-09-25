@@ -1,6 +1,5 @@
 package org.wildfly.swarm.hawkular;
 
-import static org.wildfly.swarm.hawkular.ResourceTypes.*;
 
 /**
  * @author Bob McWhirter
@@ -8,5 +7,8 @@ import static org.wildfly.swarm.hawkular.ResourceTypes.*;
 public class ResourceTypeSets {
 
     public static ResourceTypeSet MAIN = new ResourceTypeSet("Main")
-            .resourceType( WILDFLY_SERVER );
+            .resourceType(ResourceTypes.WILDFLY_SERVER);
+
+    public static ResourceTypeSet DEPLOYMENT = new ResourceTypeSet("Deployment")
+            .resourceType(ResourceTypes.DEPLOYMENT);
 }
