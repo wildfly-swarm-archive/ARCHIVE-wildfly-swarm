@@ -23,7 +23,7 @@
     <artifact name="org.hawkular.bus:hawkular-bus-rest-client:${version.hawkular.bus}"/>
     <artifact name="org.hawkular.agent:hawkular-dmr-client:${version.hawkular}"/>
     <artifact name="org.hawkular.agent:hawkular-monitor:${version.hawkular}"/>
-    <artifact name="org.hawkular.bus:hawkular-feed-comm-api:${version.hawkular.bus}"/>
+    <artifact name="org.hawkular.cmdgw:hawkular-command-gateway-api:${version.hawkular.cmdgw}"/>
     <artifact name="org.hawkular.inventory:hawkular-inventory-json-helper:${version.hawkular.inventory}"/>
     <artifact name="org.hawkular.inventory:hawkular-inventory-api:${version.hawkular.inventory}"/>
     <artifact name="org.jgrapht:jgrapht-core:${version.jgrapht}"/>

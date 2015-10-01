@@ -28,7 +28,10 @@ public class HawkularArquillianTest implements ContainerFactory {
 
     @Override
     public Container newContainer(String... args) throws Exception {
-        return new Container().fraction(HawkularFraction.createDefaultHawkularFraction());
+        return new Container().fraction(HawkularFraction.createDefaultHawkularFraction()
+                .port(9090)
+                .username("hawkular")
+                .password("Hawkular1!"));
     }
 
     @Test
