@@ -1,4 +1,4 @@
-package org.wildfly.swarm.logging;
+package org.wildfly.swarm.hawkular;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;

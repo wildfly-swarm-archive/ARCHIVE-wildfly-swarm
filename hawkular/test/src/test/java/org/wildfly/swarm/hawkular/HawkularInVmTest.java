@@ -1,4 +1,4 @@
-package org.wildfly.swarm.logging;
+package org.wildfly.swarm.hawkular;
 
 import org.junit.Test;
 import org.wildfly.swarm.container.Container;
