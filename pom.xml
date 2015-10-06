@@ -63,6 +63,7 @@
     <version.keycloak>1.5.0.Final</version.keycloak>
     <version.h2>1.4.187</version.h2>
 
+    <version.hawkular-monitor>0.10.1.Final-SNAPSHOT</version.hawkular-monitor>
     <version.hawkular>0.9.0.Final</version.hawkular>
     <version.hawkular.cmdgw>0.8.0.Final</version.hawkular.cmdgw>
     <version.hawkular.metrics>0.5.0.Final</version.hawkular.metrics>
@@ -270,6 +271,12 @@
         <artifactId>keycloak-server-feature-pack</artifactId>
         <type>zip</type>
         <version>${version.keycloak}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hawkular.agent</groupId>
+        <artifactId>hawkular-monitor-feature-pack</artifactId>
+        <type>zip</type>
+        <version>${version.hawkular-monitor}</version>
       </dependency>
 
       <dependency>
