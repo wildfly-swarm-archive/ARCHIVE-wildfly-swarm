@@ -47,8 +47,8 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
     public HawkularFraction defaultFraction() {
         String host = System.getProperty("swarm.hawkular.host", "localhost");
         String portStr = System.getProperty("swarm.hawkular.port", "8080");
-        String username = System.getProperty("swarm.harkular.username");
-        String password = System.getProperty("swarm.harkular.password");
+        String username = System.getProperty("swarm.hawkular.username");
+        String password = System.getProperty("swarm.hawkular.password");
 
         int port = Integer.parseInt(portStr);
 
@@ -60,6 +60,7 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
         if (fraction == null) {
             fraction = defaultFraction();
         }
+
 
         List<ModelNode> list = new ArrayList<>();
 
@@ -116,8 +117,6 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
         node.get("host").set(fraction.host());
         node.get("port").set(fraction.port());
         list.add(node);
-
-        System.err.println(list);
 
         return list;
     }
