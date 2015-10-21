@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wildfly.swarm.cli;
+
+package org.wildfly.swarm.swarmtool;
 
 import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
@@ -78,7 +79,8 @@ public class Build {
 
     private Map<String, Set<String>> fractionPackages() throws IOException {
         final Properties fractionPackages = new Properties();
-        try (InputStream in = Build.class.getResourceAsStream("/org/wildfly/swarm/cli/fraction-packages.properties")) {
+        try (InputStream in =
+                     Build.class.getResourceAsStream("/org/wildfly/swarm/swarmtool/fraction-packages.properties")) {
             if (in == null) {
                 throw new RuntimeException("Failed to load fraction-packages.properties");
             }

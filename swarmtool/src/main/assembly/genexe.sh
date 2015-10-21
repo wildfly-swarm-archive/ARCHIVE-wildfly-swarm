@@ -15,6 +15,6 @@ echo "Creating swarmtool executable"
 ARGS='"$@"'
 (echo '#!/bin/sh
 exec java -jar "$0" "$@"
-'; cat target/wildfly-swarm-cli-standalone.jar) > $exe && chmod +x $exe
+'; cat target/wildfly-swarm-swarmtool-standalone.jar) > $exe && chmod +x $exe
 
 

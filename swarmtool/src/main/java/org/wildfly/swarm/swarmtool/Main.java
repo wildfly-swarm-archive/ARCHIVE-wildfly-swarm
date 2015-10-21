@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wildfly.swarm.cli;
+
+package org.wildfly.swarm.swarmtool;
 
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
@@ -121,7 +122,8 @@ public class Main {
 
     static {
         Properties props = new Properties();
-        try (InputStream propStream = Main.class.getClassLoader().getResourceAsStream("META-INF/maven/org.wildfly.swarm/wildfly-swarm-cli/pom.properties")) {
+        try (InputStream propStream = Main.class.getClassLoader()
+                .getResourceAsStream("META-INF/maven/org.wildfly.swarm/wildfly-swarm-swarmtool/pom.properties")) {
             props.load(propStream);
         } catch (IOException e) {
             e.printStackTrace();
