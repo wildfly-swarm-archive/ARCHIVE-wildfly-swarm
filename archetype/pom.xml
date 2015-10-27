@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.wildfly.swarm</groupId>
+    <artifactId>wildfly-swarm-parent</artifactId>
+    <version>1.0.0.Alpha6-SNAPSHOT</version>
+    <relativePath>../</relativePath>
+  </parent>
+
+  <groupId>org.wildfly.swarm</groupId>
+  <artifactId>wildfly-swarm-archetype</artifactId>
+
+  <name>WildFly Swarm: Maven Archetype</name>
+
+  <properties>
+    <jruby.file>src/main/ruby/generate.rb</jruby.file>
+    <jruby.args>${project.version}</jruby.args>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <goals>
+          <goal>properties</goal>
+        </goals>
+      </plugin>
+      <plugin>
+        <groupId>de.saumya.mojo</groupId>
+        <artifactId>jruby-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>jruby</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.wildfly.swarm</groupId>
+      <artifactId>wildfly-swarm-fraction-list</artifactId>
+      <version>${project.version}</version>
+      <type>txt</type>
+    </dependency>
+  </dependencies>
+</project>
