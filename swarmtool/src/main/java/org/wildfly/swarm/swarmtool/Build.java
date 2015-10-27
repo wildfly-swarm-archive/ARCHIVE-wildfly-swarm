@@ -77,19 +77,19 @@ public class Build {
         return this;
     }
 
-    private Map<String, Set<String>> fractionPackages() throws IOException {
-        final Properties fractionPackages = new Properties();
+    private Map<String, Set<String>> loadProperties(final String name) throws IOException {
+        final Properties properties = new Properties();
         try (InputStream in =
-                     Build.class.getResourceAsStream("/org/wildfly/swarm/swarmtool/fraction-packages.properties")) {
+                     Build.class.getResourceAsStream("/org/wildfly/swarm/swarmtool/" + name)) {
             if (in == null) {
-                throw new RuntimeException("Failed to load fraction-packages.properties");
+                throw new RuntimeException("Failed to load " + name);
             }
-            fractionPackages.load(in);
+            properties.load(in);
         }
 
         final Map<String, Set<String>> fractionMap = new HashMap<>();
 
-        for (Map.Entry prop : fractionPackages.entrySet()) {
+        for (Map.Entry prop : properties.entrySet()) {
             Set<String> packages = new HashSet<>();
             packages.addAll(Arrays.asList(((String) prop.getValue()).split(",")));
             fractionMap.put((String)prop.getKey(), packages);
@@ -98,25 +98,33 @@ public class Build {
         return fractionMap;
     }
 
+    private Map<String, Set<String>> fractionPackages() throws IOException {
+        return loadProperties("fraction-packages.properties");
+    }
+
+    private Map<String, Set<String>> ignoredPackageSources() throws IOException {
+        return loadProperties("ignored-sources.properties");
+    }
+
     private Set<String> detectNeededFractions() throws IOException {
         final Map<String, Set<String>> fractionPackages = fractionPackages();
+        final Map<String, Set<String>> ignoredSources = ignoredPackageSources();
+        final Map<String, Set<String>> detectedPackages = PackageDetector.detectPackages(new ZipFile(this.source));
+        final Set<String> neededFractions = new HashSet<>();
 
-        return PackageDetector
-                .detectPackages(new ZipFile(this.source))
-                .stream()
-                // there's probably a better way to do this
-                .map(pkg -> {
-                    for (Map.Entry<String, Set<String>> entry : fractionPackages.entrySet()) {
-                        if (entry.getValue().contains(pkg)) {
+        for (Map.Entry<String, Set<String>> fraction : fractionPackages.entrySet()) {
+            for (String pkg : fraction.getValue()) {
+                Set<String> pkgSources = detectedPackages.get(pkg);
+                Set<String> ignored = ignoredSources.get(pkg);
+                if (pkgSources != null &&
+                        (ignored == null ||
+                                !ignored.containsAll(pkgSources))) {
+                    neededFractions.add(fraction.getKey());
+                }
+            }
+        }
 
-                            return entry.getKey();
-                        }
-                    }
-
-                    return null;
-                })
-                .filter(v -> v != null)
-                .collect(Collectors.toSet());
+        return neededFractions;
     }
 
     public void run() throws Exception {
