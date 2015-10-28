@@ -77,6 +77,12 @@ public class Build {
         return this;
     }
 
+    public Build autoDetectFractions(boolean v) {
+        this.autoDetectFractions = v;
+
+        return this;
+    }
+
     private Map<String, Set<String>> loadProperties(final String name) throws IOException {
         final Properties properties = new Properties();
         try (InputStream in =
@@ -147,7 +153,11 @@ public class Build {
                 .projectArtifact("", baseName, "", type, this.source)
                 .resolveTransitiveDependencies(true);
 
-        this.swarmDependencies.addAll(detectNeededFractions());
+        if (this.autoDetectFractions) {
+            this.swarmDependencies.addAll(detectNeededFractions());
+        } else {
+            System.err.println("Skipping fraction auto-detection");
+        }
        
         for (String dep : this.swarmDependencies) {
             tool.dependency("compile", "org.wildfly.swarm", "wildfly-swarm-" + dep, this.version, "jar", null, null);
@@ -168,5 +178,6 @@ public class Build {
     private File outputDir;
     private String name;
     private String version;
+    private boolean autoDetectFractions = true;
 
 }

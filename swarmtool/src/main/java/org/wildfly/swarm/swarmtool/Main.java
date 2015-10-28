@@ -71,6 +71,7 @@ public class Main {
                 .addSwarmDependencies(foundOptions.valuesOf(FRACTIONS_OPT))
                 .outputDir(new File(foundOptions.valueOf(OUTPUT_DIR_OPT)))
                 .name(foundOptions.valueOf(NAME_OPT))
+                .autoDetectFractions(!foundOptions.has(DISABLE_AUTO_DETECT))
                 .run();
     }
 
@@ -93,6 +94,9 @@ public class Main {
     private static final OptionSpec<Void> VERSION_OPT =
             OPT_PARSER.acceptsAll(asList("v", "version"), "print version and exit")
                     .forHelp();
+
+    private static final OptionSpec<Void> DISABLE_AUTO_DETECT =
+            OPT_PARSER.accepts("no-fraction-detect", "disable auto fraction detection");
 
     private static final OptionSpec<String> FRACTIONS_OPT =
             OPT_PARSER.acceptsAll(asList("f", "fractions"), "swarm fractions to include")
