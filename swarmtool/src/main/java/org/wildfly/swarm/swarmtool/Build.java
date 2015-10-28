@@ -83,12 +83,12 @@ public class Build {
         return this;
     }
 
-    private Map<String, Set<String>> loadProperties(final String name) throws IOException {
+    private Map<String, Set<String>> fractionPackages() throws IOException {
         final Properties properties = new Properties();
         try (InputStream in =
-                     Build.class.getResourceAsStream("/org/wildfly/swarm/swarmtool/" + name)) {
+                     Build.class.getResourceAsStream("/org/wildfly/swarm/swarmtool/fraction-packages.properties")) {
             if (in == null) {
-                throw new RuntimeException("Failed to load " + name);
+                throw new RuntimeException("Failed to load fraction-packages.properties");
             }
             properties.load(in);
         }
@@ -104,30 +104,19 @@ public class Build {
         return fractionMap;
     }
 
-    private Map<String, Set<String>> fractionPackages() throws IOException {
-        return loadProperties("fraction-packages.properties");
-    }
-
-    private Map<String, Set<String>> ignoredPackageSources() throws IOException {
-        return loadProperties("ignored-sources.properties");
-    }
-
     private Set<String> detectNeededFractions() throws IOException {
         final Map<String, Set<String>> fractionPackages = fractionPackages();
-        final Map<String, Set<String>> ignoredSources = ignoredPackageSources();
-        final Map<String, Set<String>> detectedPackages = PackageDetector.detectPackages(new ZipFile(this.source));
+        final Set<String> detectedPackages = PackageDetector
+                .detectPackages(new ZipFile(this.source))
+                .keySet();
         final Set<String> neededFractions = new HashSet<>();
 
         for (Map.Entry<String, Set<String>> fraction : fractionPackages.entrySet()) {
-            for (String pkg : fraction.getValue()) {
-                Set<String> pkgSources = detectedPackages.get(pkg);
-                Set<String> ignored = ignoredSources.get(pkg);
-                if (pkgSources != null &&
-                        (ignored == null ||
-                                !ignored.containsAll(pkgSources))) {
-                    neededFractions.add(fraction.getKey());
-                }
-            }
+            neededFractions.addAll(fraction.getValue()
+                                           .stream()
+                                           .filter(detectedPackages::contains)
+                                           .map(pkg -> fraction.getKey())
+                                           .collect(Collectors.toList()));
         }
 
         return neededFractions;
