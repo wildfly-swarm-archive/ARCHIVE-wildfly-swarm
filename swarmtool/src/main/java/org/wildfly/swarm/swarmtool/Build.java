@@ -41,10 +41,13 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipFile;
 
 public class Build {
+    final static Set<String> REQUIRED_FRACTIONS = new HashSet<String>() {{
+        add("bootstrap");
+        add("container");
+    }};
 
     public Build() {
-        swarmDependencies.add("bootstrap");
-        swarmDependencies.add("container");
+        swarmDependencies.addAll(REQUIRED_FRACTIONS);
     }
 
     public Build source(final File source) {
@@ -157,7 +160,12 @@ public class Build {
         System.err.println(String.format("Building %s/%s-swarm.jar with fractions: %s",
                                          outDir,
                                          jarName,
-                                         String.join(", ", this.swarmDependencies)));
+                                         String.join(", ",
+                                                     this.swarmDependencies
+                                                             .stream()
+                                                             .filter(d -> !REQUIRED_FRACTIONS.contains(d))
+                                                             .sorted()
+                                                             .collect(Collectors.toList()))));
 
         tool.build(jarName, Paths.get(outDir));
     }
