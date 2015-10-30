@@ -13,6 +13,8 @@
   <groupId>org.wildfly.swarm</groupId>
   <artifactId>wildfly-swarm-archetype</artifactId>
 
+  <packaging>maven-archetype</packaging>
+
   <name>WildFly Swarm: Maven Archetype</name>
 
   <properties>
@@ -22,12 +24,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <goals>
-          <goal>properties</goal>
-        </goals>
-      </plugin>
       <plugin>
         <groupId>de.saumya.mojo</groupId>
         <artifactId>jruby-maven-plugin</artifactId>
@@ -42,6 +38,20 @@
         </executions>
       </plugin>
     </plugins>
+      <extensions>
+        <extension>
+          <groupId>org.apache.maven.archetype</groupId>
+          <artifactId>archetype-packaging</artifactId>
+        </extension>
+      </extensions>
+      <pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-archetype-plugin</artifactId>
+          </plugin>
+        </plugins>
+    </pluginManagement>
   </build>
 
   <dependencies>

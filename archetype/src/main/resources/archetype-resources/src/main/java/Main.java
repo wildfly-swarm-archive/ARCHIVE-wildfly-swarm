@@ -1,4 +1,4 @@
-package ${package}
+package ${package};
 
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.wildfly.swarm.container.Container;
@@ -7,7 +7,7 @@ import org.wildfly.swarm.container.Container;
  */
 public class Main
 {
-    public static void main( String[] args )
+    public static void main(String...args) throws Exception
     {
         Container container = new Container();
         container.start();
