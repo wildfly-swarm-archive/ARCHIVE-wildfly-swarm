@@ -37,7 +37,7 @@ public class RibbonArchiveImpl extends AssignableBase<ArchiveBase<?>> implements
         super(archive);
         //as(ServiceActivatorArchive.class).addServiceActivator("org.wildfly.swarm.runtime.netflix.ribbon.ClusterManagerActivator");
         /*
-        as(JARArchive.class).addModule("org.wildfly.clustering.api");
+        as(JARArchive.class).addModule("org.wildfly.jgroups.api");
         as(JARArchive.class).addModule("com.netflix.ribbon");
         as(JARArchive.class).addModule("com.netflix.archaius");
         as(JARArchive.class).addModule("com.netflix.hystrix");

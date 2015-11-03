@@ -9,16 +9,16 @@
 
   <parent>
     <groupId>org.wildfly.swarm</groupId>
-    <artifactId>wildfly-swarm-ribbon-parent</artifactId>
+    <artifactId>wildfly-swarm-jgroups-parent</artifactId>
     <version>1.0.0.Alpha6-SNAPSHOT</version>
     <relativePath>../</relativePath>
   </parent>
 
   <groupId>org.wildfly.swarm</groupId>
-  <artifactId>wildfly-swarm-ribbon-modules</artifactId>
+  <artifactId>wildfly-swarm-jgroups-modules</artifactId>
 
-  <name>WildFly Swarm: Ribbon Modules</name>
-  <description>WildFly Swarm: Ribbon Modules</description>
+  <name>WildFly Swarm: JGroups Modules</name>
+  <description>WildFly Swarm: JGroups Modules</description>
 
   <packaging>jar</packaging>
 
@@ -47,37 +47,6 @@
       <artifactId>wildfly-swarm-container-modules</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-jgroups-modules</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-msc-modules</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-rxjava</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-rxnetty</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-archaius</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-hystrix</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
     <dependency>
       <groupId>org.wildfly.core</groupId>
       <artifactId>wildfly-core-feature-pack</artifactId>
