@@ -15,6 +15,7 @@
  */
 package org.wildfly.swarm.ribbon;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.netflix.ribbon.RibbonFraction;
@@ -29,5 +30,17 @@ public class RibbonInVmTest {
         Container container = new Container();
         container.fraction( new RibbonFraction() );
         container.start().stop();
+    }
+
+    @Test
+    @Ignore
+    public void testCanFindKubePing() throws Exception {
+        // TODO: We can't easily test KubePing without a server to hit
+        System.setProperty("wildfly.swarm.environment", "openshift");
+        Container container = new Container();
+        container.start();
+        // TODO: something useful here to verify we're actually using KubePing
+        container.stop();
+        System.setProperty("wildfly.swarm.environment", "");
     }
 }
