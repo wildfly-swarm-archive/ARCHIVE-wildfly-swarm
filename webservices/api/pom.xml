@@ -32,12 +32,6 @@
       <artifactId>wildfly-swarm-webservices-modules</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-    <!-- Provided APIs -->
-    <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
-    </dependency>
   </dependencies>
 
 </project>
