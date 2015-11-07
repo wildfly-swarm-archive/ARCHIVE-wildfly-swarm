@@ -36,7 +36,7 @@ public class WebServicesConfiguration extends AbstractServerConfiguration<WebSer
 
     @Override
     public WebServicesFraction defaultFraction() {
-        return new WebServicesFraction();
+        return WebServicesFraction.createDefaultFraction();
     }
 
     @Override
