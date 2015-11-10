@@ -14,11 +14,11 @@ def generate()
     roots << root
   end
 
-  targetDir = File.join( '.', 'target' );
+  outputDir = File.join( '.', 'target', 'classes' );
 
-  FileUtils.mkdir_p( targetDir )
+  FileUtils.mkdir_p( outputDir )
   
-  File.open( File.join( targetDir, 'fraction-list.txt' ), 'w' ) do |f|
+  File.open( File.join( outputDir, 'fraction-list.txt' ), 'w' ) do |f|
     for root in roots do 
       name = root['name']
       deps = root['deps']

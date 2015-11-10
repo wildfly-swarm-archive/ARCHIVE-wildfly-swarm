@@ -4,7 +4,7 @@ require('fileutils')
 puts "Generating pom.xml list at #{Dir.pwd} for #{ARGV[0]}"
 
 version = ARGV[0];
-fractionList = File.open( File.join( '..', 'fraction-list', 'target', 'fraction-list.txt' ) ).read;
+fractionList = File.open( File.join( '..', 'fraction-list', 'target', 'classes', 'fraction-list.txt' ) ).read;
 
 outputDir = File.join( '.', 'target', 'classes', 'archetype-resources' );
 FileUtils.mkdir_p( outputDir )
