@@ -53,7 +53,8 @@ File.open( File.join( outputDir, 'pom.xml' ), 'w' ) do |f|
   f.puts ''
 
   fractionList.each_line do |l|
-    parts = l.split(':')
+    left = l.split('=')[0].strip
+    parts = left.split(':')
     f.puts( '    <!--' )
     f.puts( '    <dependency>')
     f.puts( "      <groupId>#{parts[0].strip}</groupId>")
