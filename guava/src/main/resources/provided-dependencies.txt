@@ -1,1 +1,1 @@
-com.netflix.hystrix:hystrix-core
+com.google.guava:guava
