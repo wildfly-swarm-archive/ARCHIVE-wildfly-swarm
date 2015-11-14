@@ -1,6 +1,8 @@
 package org.wildfly.swarm.plugin.maven;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -55,10 +57,25 @@ public class RunMojo extends AbstractMojo {
     @Parameter(alias = "properties")
     private Properties properties;
 
+    @Parameter(alias = "environmentFile")
+    private File environmentFile;
+
+    private String[] environment;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (this.properties == null) {
             this.properties = new Properties();
+        }
+        if(environmentFile != null) {
+            try(BufferedReader reader = new BufferedReader(new FileReader(environmentFile))) {
+                List<String> envs = new ArrayList<>();
+                String l = null;
+                while((l = reader.readLine()) != null) {
+                    envs.add(l);
+                }
+                environment = envs.toArray(new String[0]);
+            }
         }
         if (this.project.getPackaging().equals("war")) {
             executeWar();
@@ -93,7 +110,7 @@ public class RunMojo extends AbstractMojo {
             cli.add("-Dwildfly.swarm.context.path=" + this.contextPath);
             cli.add("org.wildfly.swarm.Swarm");
 
-            Process process = Runtime.getRuntime().exec(cli.toArray(new String[cli.size()]));
+            Process process = Runtime.getRuntime().exec(cli.toArray(new String[0]), environment);
 
             new Thread(new IOBridge(process.getInputStream(), System.out)).start();
             new Thread(new IOBridge(process.getErrorStream(), System.err)).start();
@@ -132,7 +149,7 @@ public class RunMojo extends AbstractMojo {
                 cli.add("org.wildfly.swarm.Swarm");
             }
 
-            Process process = Runtime.getRuntime().exec(cli.toArray(new String[cli.size()]));
+            Process process = Runtime.getRuntime().exec(cli.toArray(new String[0]), environment);
 
             new Thread(new IOBridge(process.getInputStream(), System.out)).start();
             new Thread(new IOBridge(process.getErrorStream(), System.err)).start();
