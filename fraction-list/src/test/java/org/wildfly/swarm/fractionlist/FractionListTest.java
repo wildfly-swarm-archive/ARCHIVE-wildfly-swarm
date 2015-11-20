@@ -21,6 +21,8 @@ public class FractionListTest {
 
         FractionDescriptor logstash = descriptors.stream().filter(e -> e.getArtifactId().equals("wildfly-swarm-logstash")).findFirst().get();
 
+        assertThat(list.getFractionDescriptor("org.wildfly.swarm", "wildfly-swarm-logstash")).isEqualTo(logstash);
+
         assertThat( logstash.getGroupId() ).isEqualTo("org.wildfly.swarm" );
         assertThat( logstash.getArtifactId() ).isEqualTo("wildfly-swarm-logstash" );
         assertThat( logstash.getDependencies() ).hasSize(2);
@@ -28,4 +30,5 @@ public class FractionListTest {
         assertThat( logstash.getDependencies().stream().filter( e->e.getArtifactId().equals ("wildfly-swarm-container" ) ).collect(Collectors.toList())).isNotEmpty();
         assertThat( logstash.getDependencies().stream().filter( e->e.getArtifactId().equals ("wildfly-swarm-logging" ) ).collect(Collectors.toList())).isNotEmpty();
     }
+
 }

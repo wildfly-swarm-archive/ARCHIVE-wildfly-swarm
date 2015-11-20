@@ -2,7 +2,6 @@ package org.wildfly.swarm.fractionlist;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,7 +15,7 @@ public class FractionList {
 
     private Map<String,FractionDescriptor> descriptors = new HashMap<>();
 
-    public FractionList() throws IOException {
+    public FractionList() {
         try (BufferedReader reader = new BufferedReader( new InputStreamReader(getClass().getClassLoader().getResourceAsStream("fraction-list.txt") ))) {
 
             String line = null;
@@ -57,10 +56,16 @@ public class FractionList {
                     }
                 }
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public Collection<FractionDescriptor> getFractionDescriptors() {
         return Collections.unmodifiableCollection(this.descriptors.values());
+    }
+
+    public FractionDescriptor getFractionDescriptor(final String groupId, final String artifactId) {
+        return this.descriptors.get(groupId + ":" + artifactId);
     }
 }
