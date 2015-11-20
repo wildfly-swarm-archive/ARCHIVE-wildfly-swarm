@@ -23,6 +23,8 @@ import org.jboss.shrinkwrap.resolver.api.maven.repository.MavenRemoteRepositorie
 import org.jboss.shrinkwrap.resolver.api.maven.repository.MavenRemoteRepository;
 import org.jboss.shrinkwrap.resolver.api.maven.repository.MavenUpdatePolicy;
 import org.wildfly.swarm.arquillian.adapter.ShrinkwrapArtifactResolvingHelper;
+import org.wildfly.swarm.fractionlist.FractionDescriptor;
+import org.wildfly.swarm.fractionlist.FractionList;
 import org.wildfly.swarm.tools.BuildTool;
 import org.wildfly.swarm.tools.PackageDetector;
 
@@ -125,6 +127,32 @@ public class Build {
         return neededFractions;
     }
 
+    private Set<String> allRequiredFractions() {
+        final FractionList fractionList = new FractionList();
+        final Set<String> fractions = new HashSet<>();
+
+        for (String fractionName : this.swarmDependencies) {
+            fractions.add(fractionName);
+            FractionDescriptor desc = fractionList.getFractionDescriptor("org.wildfly.swarm", "wildfly-swarm-" + fractionName);
+            if (desc != null) {
+                fractions.addAll(desc.getDependencies()
+                                         .stream()
+                                         .map( d -> {
+                                             String artifactId = d.getArtifactId();
+                                             if (artifactId.startsWith("wildfly-swarm-")) {
+
+                                                 return artifactId.substring(14);
+                                             }
+
+                                             return artifactId;
+                                         })
+                                         .collect(Collectors.toSet()));
+            }
+        }
+
+        return fractions;
+    }
+
     public void run() throws Exception {
         final String[] parts = this.source.getName().split("\\.(?=[^\\.]+$)");
         final String baseName = parts[0];
@@ -161,9 +189,8 @@ public class Build {
                                          outDir,
                                          jarName,
                                          String.join(", ",
-                                                     this.swarmDependencies
+                                                     allRequiredFractions()
                                                              .stream()
-                                                             .filter(d -> !REQUIRED_FRACTIONS.contains(d))
                                                              .sorted()
                                                              .collect(Collectors.toList()))));
 
