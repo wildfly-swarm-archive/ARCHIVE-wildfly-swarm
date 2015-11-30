@@ -1,0 +1,18 @@
+<module xmlns="urn:jboss:module:1.3" name="org.wildfly.swarm.messaging.clustered" slot="runtime">
+  <resources>
+    <artifact name="org.wildfly.swarm:wildfly-swarm-messaging-clustered-runtime:${project.version}"/>
+  </resources>
+
+  <dependencies>
+    <module name="org.wildfly.swarm.messaging.clustered"/>
+    <module name="org.wildfly.swarm.messaging" slot="runtime"/>
+    <module name="org.wildfly.swarm.container"/>
+    <module name="org.wildfly.swarm.container" slot="runtime"/>
+    <module name="org.jboss.shrinkwrap"/>
+    
+    <!-- only required if http-acceptor is used -->
+    <module name="io.undertow.core"/>
+    <module name="org.jboss.xnio"/>
+    <module name="org.jboss.xnio.netty.netty-xnio-transport"/>
+  </dependencies>
+</module>

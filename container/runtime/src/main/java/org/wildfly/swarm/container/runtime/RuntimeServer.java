@@ -306,8 +306,14 @@ public class RuntimeServer implements Server {
             ServiceLoader<ServerConfiguration> configLoaders = module.loadService(ServerConfiguration.class);
 
             for (ServerConfiguration serverConfig : configLoaders) {
-                this.configByFractionType.put(serverConfig.getType(), serverConfig);
-                this.configList.add(serverConfig);
+                ServerConfiguration oldConfig = this.configByFractionType.get(serverConfig.getType());
+                if (oldConfig == null || serverConfig.priority() > oldConfig.priority()) {
+                    this.configByFractionType.put(serverConfig.getType(), serverConfig);
+                    this.configList.add(serverConfig);
+                    if (oldConfig != null) {
+                        this.configList.remove(oldConfig);
+                    }
+                }
             }
         }
     }
