@@ -9,16 +9,16 @@
 
   <parent>
     <groupId>org.wildfly.swarm</groupId>
-    <artifactId>wildfly-swarm-management-parent</artifactId>
+    <artifactId>wildfly-swarm-keycloak-server-parent</artifactId>
     <version>1.0.0.Alpha6-SNAPSHOT</version>
     <relativePath>../</relativePath>
   </parent>
 
   <groupId>org.wildfly.swarm</groupId>
-  <artifactId>wildfly-swarm-management-test</artifactId>
+  <artifactId>wildfly-swarm-keycloak-server-test</artifactId>
 
-  <name>WildFly Swarm: Management Test</name>
-  <description>WildFly Swarm: Management Test</description>
+  <name>WildFly Swarm: Keycloak Server Test</name>
+  <description>WildFly Swarm: Keycloak Server Test</description>
 
   <packaging>jar</packaging>
 
@@ -41,17 +41,12 @@
   <dependencies>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-management</artifactId>
+      <artifactId>wildfly-swarm-keycloak-server</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-management-modules</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-msc-runtime</artifactId>
+      <artifactId>wildfly-swarm-keycloak-server-modules</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -63,16 +58,6 @@
     <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
       <artifactId>arquillian-junit-container</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.core</groupId>
-      <artifactId>wildfly-controller</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.core</groupId>
-      <artifactId>wildfly-controller-client</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
