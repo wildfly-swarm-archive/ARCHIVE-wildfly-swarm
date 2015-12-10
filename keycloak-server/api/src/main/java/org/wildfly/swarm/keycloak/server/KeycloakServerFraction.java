@@ -18,6 +18,7 @@ package org.wildfly.swarm.keycloak.server;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
@@ -75,10 +76,11 @@ public class KeycloakServerFraction implements Fraction {
                     driver.xaDatasourceClass("org.h2.jdbcx.JdbcDataSource");
                 });
             }
+
             datasources.dataSource("KeycloakDS", (ds) -> {
                 ds.jndiName("java:jboss/datasources/KeycloakDS");
                 ds.useJavaContext(true);
-                ds.connectionUrl("jdbc:h2:${jboss.server.data.dir}/keycloak;AUTO_SERVER=TRUE");
+                ds.connectionUrl("jdbc:h2:${wildfly.swarm.keycloak.server.db:./keycloak};AUTO_SERVER=TRUE");
                 ds.driverName("h2");
                 ds.userName("sa");
                 ds.password("sa");
