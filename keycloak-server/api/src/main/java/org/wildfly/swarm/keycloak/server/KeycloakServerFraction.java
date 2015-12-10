@@ -58,13 +58,11 @@ public class KeycloakServerFraction implements Fraction {
 
         CacheContainer cache = infinispan.subresources().cacheContainer("keycloak");
         if (cache == null) {
-            infinispan.cacheContainer("keycloak", (c) -> {
-                c.jndiName("infinispan/Keycloak");
-                c.localCache("realms", KeycloakServerFraction::configureCache);
-                c.localCache("users", KeycloakServerFraction::configureCache);
-                c.localCache("sessions", KeycloakServerFraction::configureCache);
-                c.localCache("loginFailures", KeycloakServerFraction::configureCache);
-            });
+            infinispan.cacheContainer("keycloak", (c) -> c.jndiName("infinispan/Keycloak")
+                    .localCache("realms")
+                    .localCache("users")
+                    .localCache("sessions")
+                    .localCache("loginFailures"));
         }
 
         DatasourcesFraction datasources = (DatasourcesFraction) initContext.fraction("datasources");
@@ -88,11 +86,4 @@ public class KeycloakServerFraction implements Fraction {
         }
     }
 
-    private static void configureCache(LocalCache c) {
-        c.transactionComponent();
-        c.evictionComponent();
-        c.lockingComponent();
-        c.expirationComponent();
-        c.noneStore();
-    }
 }
