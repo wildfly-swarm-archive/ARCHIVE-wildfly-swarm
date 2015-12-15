@@ -26,7 +26,6 @@
     <module>api</module>
     <module>runtime</module>
     <module>modules</module>
-    <module>service</module>
     <module>test</module>
   </modules>
 
