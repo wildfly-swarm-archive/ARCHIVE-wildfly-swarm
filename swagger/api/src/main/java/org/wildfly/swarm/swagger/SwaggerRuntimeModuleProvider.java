@@ -8,7 +8,7 @@ import org.wildfly.swarm.container.RuntimeModuleProvider;
 public class SwaggerRuntimeModuleProvider implements RuntimeModuleProvider {
     @Override
     public String getModuleName() {
-        return "org.wildfly.swarm.logstash";
+        return "org.wildfly.swarm.swagger";
     }
 
     @Override
