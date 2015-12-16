@@ -16,6 +16,13 @@
 
 package org.wildfly.swarm.swarmtool;
 
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.repository.MavenChecksumPolicy;
@@ -26,21 +33,6 @@ import org.wildfly.swarm.arquillian.adapter.ShrinkwrapArtifactResolvingHelper;
 import org.wildfly.swarm.fractionlist.FractionDescriptor;
 import org.wildfly.swarm.fractionlist.FractionList;
 import org.wildfly.swarm.tools.BuildTool;
-import org.wildfly.swarm.tools.PackageDetector;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.zip.ZipFile;
 
 public class Build {
     final static Set<String> REQUIRED_FRACTIONS = new HashSet<String>() {{
@@ -86,45 +78,6 @@ public class Build {
         this.autoDetectFractions = v;
 
         return this;
-    }
-
-    private Map<String, Set<String>> fractionPackages() throws IOException {
-        final Properties properties = new Properties();
-        try (InputStream in =
-                     Build.class.getResourceAsStream("/org/wildfly/swarm/swarmtool/fraction-packages.properties")) {
-            if (in == null) {
-                throw new RuntimeException("Failed to load fraction-packages.properties");
-            }
-            properties.load(in);
-        }
-
-        final Map<String, Set<String>> fractionMap = new HashMap<>();
-
-        for (Map.Entry prop : properties.entrySet()) {
-            Set<String> packages = new HashSet<>();
-            packages.addAll(Arrays.asList(((String) prop.getValue()).split(",")));
-            fractionMap.put((String)prop.getKey(), packages);
-        }
-
-        return fractionMap;
-    }
-
-    private Set<String> detectNeededFractions() throws IOException {
-        final Map<String, Set<String>> fractionPackages = fractionPackages();
-        final Set<String> detectedPackages = PackageDetector
-                .detectPackages(new ZipFile(this.source))
-                .keySet();
-        final Set<String> neededFractions = new HashSet<>();
-
-        for (Map.Entry<String, Set<String>> fraction : fractionPackages.entrySet()) {
-            neededFractions.addAll(fraction.getValue()
-                                           .stream()
-                                           .filter(detectedPackages::contains)
-                                           .map(pkg -> fraction.getKey())
-                                           .collect(Collectors.toList()));
-        }
-
-        return neededFractions;
     }
 
     private Set<String> allRequiredFractions() {
@@ -174,11 +127,11 @@ public class Build {
                 .resolveTransitiveDependencies(true);
 
         if (this.autoDetectFractions) {
-            this.swarmDependencies.addAll(detectNeededFractions());
+            this.swarmDependencies.addAll( new Analyzer( this.source ).detectNeededFractions());
         } else {
             System.err.println("Skipping fraction auto-detection");
         }
-       
+
         for (String dep : this.swarmDependencies) {
             tool.dependency("compile", "org.wildfly.swarm", "wildfly-swarm-" + dep, this.version, "jar", null, null);
         }
