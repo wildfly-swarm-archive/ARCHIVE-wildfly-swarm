@@ -1,4 +1,4 @@
-package org.wildfly.swarm.swarmtool;
+package org.wildfly.swarm.tools;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,18 +16,18 @@ import org.wildfly.swarm.tools.PackageDetector;
 /**
  * @author Bob McWhirter
  */
-public class Analyzer {
+public class PackageAnalyzer {
 
     private final File source;
 
-    public Analyzer(File source) {
+    public PackageAnalyzer(File source) {
         this.source = source;
     }
 
     private Map<String, Set<String>> fractionPackages() throws IOException {
         final Properties properties = new Properties();
         try (InputStream in =
-                     Build.class.getResourceAsStream("/org/wildfly/swarm/swarmtool/fraction-packages.properties")) {
+                     PackageAnalyzer.class.getResourceAsStream("/org/wildfly/swarm/tools/fraction-packages.properties")) {
             if (in == null) {
                 throw new RuntimeException("Failed to load fraction-packages.properties");
             }

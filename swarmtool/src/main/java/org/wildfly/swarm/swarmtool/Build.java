@@ -32,6 +32,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.repository.MavenUpdatePolicy;
 import org.wildfly.swarm.arquillian.adapter.ShrinkwrapArtifactResolvingHelper;
 import org.wildfly.swarm.fractionlist.FractionDescriptor;
 import org.wildfly.swarm.fractionlist.FractionList;
+import org.wildfly.swarm.tools.PackageAnalyzer;
 import org.wildfly.swarm.tools.BuildTool;
 
 public class Build {
@@ -127,7 +128,7 @@ public class Build {
                 .resolveTransitiveDependencies(true);
 
         if (this.autoDetectFractions) {
-            this.swarmDependencies.addAll( new Analyzer( this.source ).detectNeededFractions());
+            this.swarmDependencies.addAll( new PackageAnalyzer(this.source ).detectNeededFractions());
         } else {
             System.err.println("Skipping fraction auto-detection");
         }
