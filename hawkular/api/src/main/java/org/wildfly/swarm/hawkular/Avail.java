@@ -23,7 +23,7 @@ public class Avail extends Sampler<Avail> {
     private String upRegex;
 
     public Avail(String name) {
-        super( name );
+        super( Avail.class, name );
     }
 
     public Avail upRegex(String upRegex) {

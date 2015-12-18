@@ -56,7 +56,7 @@ public class ClusterManager implements Service<ClusterManager>, Group.Listener {
         return this.commandDispatcherFactoryInjector;
     }
 
-    public Injector getSocketBindingInjector() {
+    public Injector<SocketBinding> getSocketBindingInjector() {
         return this.socketBindingInjector;
     }
 

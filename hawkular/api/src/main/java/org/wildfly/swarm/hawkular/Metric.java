@@ -24,7 +24,7 @@ public class Metric extends Sampler<Metric>{
     private String type;
 
     public Metric(String name) {
-        super( name );
+        super( Metric.class, name );
     }
 
     public Metric units(String units) {

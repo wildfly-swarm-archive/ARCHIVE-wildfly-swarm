@@ -22,15 +22,20 @@ import java.util.concurrent.TimeUnit;
  */
 public class Sampler<T extends Sampler> {
 
+    private final Class<T> cls;
+
     private String name;
 
     private String path;
+
     private String attribute;
 
     private long interval;
+
     private TimeUnit timeUnit;
 
-    protected Sampler(String name) {
+    protected Sampler(Class<T> cls, String name) {
+        this.cls = cls;
         this.name = name;
     }
 
@@ -41,7 +46,7 @@ public class Sampler<T extends Sampler> {
     public T every(long interval, TimeUnit timeUnit) {
         this.interval = interval;
         this.timeUnit = timeUnit;
-        return (T) this;
+        return cls.cast(this);
     }
 
     public long interval() {
@@ -54,7 +59,7 @@ public class Sampler<T extends Sampler> {
 
     public T path(String path) {
         this.path = path;
-        return (T) this;
+        return this.cls.cast(this);
     }
 
     public String path() {
@@ -63,7 +68,7 @@ public class Sampler<T extends Sampler> {
 
     public T attribtue(String attribute) {
         this.attribute = attribute;
-        return (T) this;
+        return this.cls.cast(this);
     }
 
     public String attribute() {

@@ -37,21 +37,20 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-archetype-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
     </plugins>
-      <extensions>
-        <extension>
-          <groupId>org.apache.maven.archetype</groupId>
-          <artifactId>archetype-packaging</artifactId>
-        </extension>
-      </extensions>
-      <pluginManagement>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-archetype-plugin</artifactId>
-          </plugin>
-        </plugins>
-    </pluginManagement>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.archetype</groupId>
+        <artifactId>archetype-packaging</artifactId>
+      </extension>
+    </extensions>
   </build>
 
   <dependencies>
