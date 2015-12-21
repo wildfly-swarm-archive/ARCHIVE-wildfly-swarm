@@ -33,7 +33,19 @@ public class Main {
 
 
     public static void main(final String [] args) throws Exception {
+        try {
+            innerMain(args);
+        } catch (ExitException e) {
+            final String msg = e.getMessage();
+            if (msg != null) {
+                System.err.println(msg);
+            }
 
+            System.exit(e.status);
+        }
+    }
+
+    protected static void innerMain(final String [] args) throws Exception {
         OptionSet foundOptions = null;
 
         try {
@@ -44,29 +56,25 @@ public class Main {
 
         if (foundOptions == null ||
                 foundOptions.has(HELP_OPT)) {
-            try {
-                OPT_PARSER.printHelpOn(System.err);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            OPT_PARSER.printHelpOn(System.err);
 
-            System.exit(0);
+            exit(null);
         }
 
         if (foundOptions.has(VERSION_OPT)) {
-            printAndExit("swarmtool v" + VERSION, 0);
+            exit("swarmtool v" + VERSION, 0);
         }
 
         final List<File> nonOptArgs = foundOptions.valuesOf(SOURCE_OPT);
         if (nonOptArgs.isEmpty()) {
-            printAndExit("No source artifact specified.");
+            exit("No source artifact specified.");
         } if (nonOptArgs.size() > 1) {
-            printAndExit("Too many source artifacts provided (" + nonOptArgs + ")");
+            exit("Too many source artifacts provided (" + nonOptArgs + ")");
         }
-        File source = nonOptArgs.get(0);
 
+        final File source = nonOptArgs.get(0);
         if (!source.exists()) {
-            printAndExit("File " + source.getAbsolutePath() + " does not exist.");
+            exit("File " + source.getAbsolutePath() + " does not exist.");
         }
 
         new Build()
@@ -79,14 +87,14 @@ public class Main {
                 .run();
     }
 
-    private static void printAndExit(String message) {
-        printAndExit(message, 1);
+    private static void exit(String message) {
+        exit(message, 1);
     }
 
-    private static void printAndExit(String message, int code) {
+    private static void exit(String message, int code) {
         System.err.println(message);
 
-        System.exit(code);
+        throw new ExitException(code, message);
     }
 
     private static final OptionParser OPT_PARSER = new OptionParser();
@@ -138,5 +146,14 @@ public class Main {
         }
 
         VERSION = props.getProperty("version");
+    }
+
+    static class ExitException extends RuntimeException {
+        ExitException(final int status, final String message) {
+            super(message);
+            this.status = status;
+        }
+
+        public int status;
     }
 }

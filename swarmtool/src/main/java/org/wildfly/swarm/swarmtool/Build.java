@@ -128,7 +128,7 @@ public class Build {
                 .resolveTransitiveDependencies(true);
 
         if (this.autoDetectFractions) {
-            this.swarmDependencies.addAll( new PackageAnalyzer(this.source ).detectNeededFractions());
+            this.swarmDependencies.addAll(new PackageAnalyzer(this.source).detectNeededFractions());
         } else {
             System.err.println("Skipping fraction auto-detection");
         }
