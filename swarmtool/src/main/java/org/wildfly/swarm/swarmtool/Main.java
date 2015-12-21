@@ -65,6 +65,10 @@ public class Main {
         }
         File source = nonOptArgs.get(0);
 
+        if (!source.exists()) {
+            printAndExit("File " + source.getAbsolutePath() + " does not exist.");
+        }
+
         new Build()
                 .source(source)
                 .swarmVersion(VERSION)
