@@ -107,7 +107,7 @@ public class Build {
         return fractions;
     }
 
-    public void run() throws Exception {
+    public File run() throws Exception {
         final String[] parts = this.source.getName().split("\\.(?=[^\\.]+$)");
         final String baseName = parts[0];
         final String type = parts[1] == null ? "jar" : parts[1];
@@ -148,7 +148,7 @@ public class Build {
                                                              .sorted()
                                                              .collect(Collectors.toList()))));
 
-        tool.build(jarName, Paths.get(outDir));
+        return tool.build(jarName, Paths.get(outDir));
     }
 
     private final Set<String> swarmDependencies = new HashSet<>();

@@ -34,7 +34,7 @@ public class Main {
 
     public static void main(final String [] args) throws Exception {
         try {
-            innerMain(args);
+            generateSwarmJar(args);
         } catch (ExitException e) {
             final String msg = e.getMessage();
             if (msg != null) {
@@ -45,7 +45,7 @@ public class Main {
         }
     }
 
-    protected static void innerMain(final String [] args) throws Exception {
+    protected static File generateSwarmJar(final String [] args) throws Exception {
         OptionSet foundOptions = null;
 
         try {
@@ -77,7 +77,7 @@ public class Main {
             exit("File " + source.getAbsolutePath() + " does not exist.");
         }
 
-        new Build()
+        return new Build()
                 .source(source)
                 .swarmVersion(VERSION)
                 .addSwarmDependencies(foundOptions.valuesOf(FRACTIONS_OPT))
@@ -139,7 +139,7 @@ public class Main {
     static {
         Properties props = new Properties();
         try (InputStream propStream = Main.class.getClassLoader()
-                .getResourceAsStream("META-INF/maven/org.wildfly.swarm/wildfly-swarm-swarmtool/pom.properties")) {
+                .getResourceAsStream("org/wildfly/swarm/swarmtool/version.properties")) {
             props.load(propStream);
         } catch (IOException e) {
             e.printStackTrace();
