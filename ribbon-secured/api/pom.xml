@@ -30,31 +30,26 @@
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>wildfly-swarm-ribbon-secured-modules</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <!-- Dependent APIs -->
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>wildfly-swarm-ribbon</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>wildfly-swarm-keycloak</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>wildfly-swarm-ribbon-secured-client</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <!-- Provided APIs -->
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>wildfly-swarm-keycloak-runtime</artifactId>
-      <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
