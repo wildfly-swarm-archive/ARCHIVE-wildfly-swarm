@@ -5,11 +5,11 @@ puts "Generating fraction list at #{Dir.pwd} "
 def generate()
   roots = []
 
-  deps = collect_first_order_dependencies( File.open( "#{Dir.pwd}/target/dependencies.info" ) )
+  deps = collect_first_order_dependencies( File.open( "#{Dir.pwd}/target/dependencies.info" ), 'provided' )
 
   for each in deps do
     root = {}
-    root['name'] = each
+    root['name'] = simplify(each)
     root['deps'] = collect_first_order_dependencies( load_dependencies(each) )
     roots << root
   end
@@ -22,7 +22,7 @@ def generate()
     for root in roots do 
       name = root['name']
       deps = root['deps']
-      f.puts "#{simplify(name)} = #{filter(roots,deps).collect{|e|simplify(e)}.join(', ')}"
+      f.puts "#{name} = #{filter(roots,deps).join(', ')}"
     end
   end
 end
@@ -36,7 +36,7 @@ def simplify(gav)
   return "#{parts[0]}:#{parts[1]}"
 end
 
-def collect_first_order_dependencies(input) 
+def collect_first_order_dependencies(input, scope = 'compile' ) 
   deps = []
   input.each_line do |line|
     if ( line[/\A */].size == 3 )
@@ -44,10 +44,10 @@ def collect_first_order_dependencies(input)
       if ( parts[0] != 'org.wildfly.swarm' )
         next
       end
-      if ( parts[4] != 'compile' )
+      if ( parts[4] != scope )
         next
       end
-      deps << line.strip
+      deps << "#{parts[0]}:#{parts[1]}" 
     end
   end
   return deps
