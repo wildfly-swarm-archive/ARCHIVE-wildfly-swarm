@@ -57,6 +57,12 @@ public class Build {
         return this;
     }
 
+    public Build contextPath(final String path) {
+        this.contextPath = path;
+
+        return this;
+    }
+
     public Build addSwarmDependencies(final List<String> deps) {
         this.swarmDependencies.addAll(deps);
 
@@ -125,7 +131,8 @@ public class Build {
         final BuildTool tool = new BuildTool()
                 .artifactResolvingHelper(new ShrinkwrapArtifactResolvingHelper(resolver))
                 .projectArtifact("", baseName, "", type, this.source)
-                .resolveTransitiveDependencies(true);
+                .resolveTransitiveDependencies(true)
+                .contextPath(this.contextPath);
 
         if (this.autoDetectFractions) {
             this.swarmDependencies.addAll(new PackageAnalyzer(this.source).detectNeededFractions());
@@ -154,6 +161,7 @@ public class Build {
     private final Set<String> swarmDependencies = new HashSet<>();
     private File source;
     private File outputDir;
+    private String contextPath;
     private String name;
     private String version;
     private boolean autoDetectFractions = true;
