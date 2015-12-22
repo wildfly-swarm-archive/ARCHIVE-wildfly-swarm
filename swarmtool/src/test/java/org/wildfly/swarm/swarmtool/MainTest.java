@@ -16,17 +16,17 @@
 package org.wildfly.swarm.swarmtool;
 
 
-import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.nio.file.Path;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Properties;
@@ -48,7 +48,8 @@ public class MainTest {
             final String[] fullArgs = Arrays.copyOf(args, args.length + 1);
             fullArgs[fullArgs.length - 1] =  "--output-dir=target/test-output";
             
-            result.jarFile = Main.generateSwarmJar(fullArgs);
+            result.jarFile(Main.generateSwarmJar(fullArgs));
+
         } catch (Main.ExitException e) {
             result.exitStatus = e.status;
             result.exitMessage = e.getMessage();
@@ -62,25 +63,60 @@ public class MainTest {
         return result;
     }
 
+    String getResourcePath(String name) throws URISyntaxException {
+        return Paths.get(getClass().getClassLoader()
+                                     .getResource(name)
+                                     .toURI())
+                    .toString();
+    }
 
-    @Test
-    public void setContextPath() throws Exception {
-        final Path war = Paths.get(getClass().getClassLoader().getResource("simple-servlet.war").toURI());
-        final Result result = runTool(war.toAbsolutePath().toString(), "--context-path=/path");
-        assertThat(result.exitStatus).isEqualTo(0);
-
-        final WebArchive archive = ShrinkWrap.createFromZipFile(WebArchive.class, result.jarFile);
+    Properties swarmProperties(Result result) throws IOException {
         final Properties props = new Properties();
-        try (InputStream in = archive.get("META-INF/wildfly-swarm.properties").getAsset().openStream()) {
+        try (InputStream in = result.archive
+                .get("META-INF/wildfly-swarm.properties")
+                .getAsset()
+                .openStream()) {
             props.load(in);
         }
 
-        assertThat(props.get("wildfly.swarm.context.path")).isEqualTo("/path");
+        return props;
+    }
+
+    @Test
+    public void setContextPath() throws Exception {
+        final Result result = runTool(getResourcePath("simple-servlet.war"),
+                                      "--context-path=/path");
+
+        assertThat(result.exitStatus).isEqualTo(0);
+        assertThat(swarmProperties(result)
+                           .get("wildfly.swarm.context.path"))
+                .isEqualTo("/path");
+    }
+
+    @Test
+    public void setProperties() throws Exception {
+        final Result result = runTool(getResourcePath("simple-servlet.war"),
+                                      "-Dfoo=bar", "-Dham=biscuit",
+                                      "--property-file=" + getResourcePath("test.properties"));
+
+        assertThat(result.exitStatus).isEqualTo(0);
+
+        final Properties props = swarmProperties(result);
+        assertThat(props.get("cheese")).isEqualTo("biscuit");
+        assertThat(props.get("foo")).isEqualTo("bar");
+        // -D overrides properties file
+        assertThat(props.get("ham")).isEqualTo("biscuit");
     }
 
     class Result {
         public int exitStatus = 0;
         public String exitMessage = null;
         public File jarFile = null;
+        public WebArchive archive = null;
+
+        public void jarFile(File f) {
+            this.jarFile = f;
+            this.archive = ShrinkWrap.createFromZipFile(WebArchive.class, f);
+        }
     }
 }

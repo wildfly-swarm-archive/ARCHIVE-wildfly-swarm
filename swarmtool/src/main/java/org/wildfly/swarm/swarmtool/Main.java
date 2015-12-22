@@ -22,6 +22,7 @@ import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -77,6 +78,19 @@ public class Main {
             exit("File " + source.getAbsolutePath() + " does not exist.");
         }
 
+        final Properties properties = new Properties();
+        if (foundOptions.has(SYSPROPS_FILE_OPT)) {
+            try (InputStream in = new FileInputStream(foundOptions.valueOf(SYSPROPS_FILE_OPT))) {
+                properties.load(in);
+            }
+        }
+
+        foundOptions.valuesOf(SYSPROPS_OPT)
+                .forEach(prop -> {
+                    final String[] parts = prop.split("=");
+                    properties.put(parts[0], parts[1]);
+                });
+
         return new Build()
                 .source(source)
                 .swarmVersion(VERSION)
@@ -85,6 +99,7 @@ public class Main {
                 .name(foundOptions.valueOf(NAME_OPT))
                 .autoDetectFractions(!foundOptions.has(DISABLE_AUTO_DETECT))
                 .contextPath(foundOptions.valueOf(CONTEXT_PATH_OPT))
+                .properties(properties)
                 .run();
     }
 
@@ -93,8 +108,6 @@ public class Main {
     }
 
     private static void exit(String message, int code) {
-        System.err.println(message);
-
         throw new ExitException(code, message);
     }
 
@@ -141,6 +154,18 @@ public class Main {
                     .ofType(String.class)
                     .defaultsTo("/")
                     .describedAs("context");
+
+    private static final OptionSpec<String> SYSPROPS_OPT =
+            OPT_PARSER.accepts("D", "system property (overrides entry in --property-file)")
+                    .withRequiredArg()
+                    .ofType(String.class)
+                    .describedAs("key=value");
+
+    private static final OptionSpec<File> SYSPROPS_FILE_OPT =
+            OPT_PARSER.accepts("property-file", "system properties")
+                    .withRequiredArg()
+                    .ofType(File.class)
+                    .describedAs("system properties file");
 
     private static final String VERSION;
 

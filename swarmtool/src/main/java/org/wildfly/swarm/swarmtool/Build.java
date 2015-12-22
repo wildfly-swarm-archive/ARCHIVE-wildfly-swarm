@@ -16,13 +16,6 @@
 
 package org.wildfly.swarm.swarmtool;
 
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.repository.MavenChecksumPolicy;
@@ -32,8 +25,16 @@ import org.jboss.shrinkwrap.resolver.api.maven.repository.MavenUpdatePolicy;
 import org.wildfly.swarm.arquillian.adapter.ShrinkwrapArtifactResolvingHelper;
 import org.wildfly.swarm.fractionlist.FractionDescriptor;
 import org.wildfly.swarm.fractionlist.FractionList;
-import org.wildfly.swarm.tools.PackageAnalyzer;
 import org.wildfly.swarm.tools.BuildTool;
+import org.wildfly.swarm.tools.PackageAnalyzer;
+
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Build {
     final static Set<String> REQUIRED_FRACTIONS = new HashSet<String>() {{
@@ -59,6 +60,12 @@ public class Build {
 
     public Build contextPath(final String path) {
         this.contextPath = path;
+
+        return this;
+    }
+
+    public Build properties(final Properties props) {
+        this.properties = props;
 
         return this;
     }
@@ -132,7 +139,8 @@ public class Build {
                 .artifactResolvingHelper(new ShrinkwrapArtifactResolvingHelper(resolver))
                 .projectArtifact("", baseName, "", type, this.source)
                 .resolveTransitiveDependencies(true)
-                .contextPath(this.contextPath);
+                .contextPath(this.contextPath)
+                .properties(this.properties);
 
         if (this.autoDetectFractions) {
             this.swarmDependencies.addAll(new PackageAnalyzer(this.source).detectNeededFractions());
@@ -164,6 +172,7 @@ public class Build {
     private String contextPath;
     private String name;
     private String version;
+    private Properties properties;
     private boolean autoDetectFractions = true;
 
 }
