@@ -212,12 +212,6 @@
       <artifactId>wildfly-swarm-weld</artifactId>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.easytesting</groupId>
-      <artifactId>fest-assert</artifactId>
-      <version>1.4</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -238,7 +232,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.9.1</version>
         <executions>
           <execution>
             <id>attach-artifacts</id>

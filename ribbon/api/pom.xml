@@ -46,28 +46,23 @@
     <dependency>
       <groupId>com.netflix.ribbon</groupId>
       <artifactId>ribbon</artifactId>
-      <version>${version.com.netflix.ribbon}</version>
     </dependency>
     <dependency>
       <groupId>com.netflix.hystrix</groupId>
       <artifactId>hystrix-core</artifactId>
-      <version>${version.com.netflix.hystrix}</version>
     </dependency>
 
     <dependency>
       <groupId>io.reactivex</groupId>
       <artifactId>rxjava</artifactId>
-      <version>${version.rxjava}</version>
     </dependency>
     <dependency>
       <groupId>io.reactivex</groupId>
       <artifactId>rxnetty</artifactId>
-      <version>${version.rxnetty}</version>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-buffer</artifactId>
-      <version>${version.netty}</version>
     </dependency>
   </dependencies>
 

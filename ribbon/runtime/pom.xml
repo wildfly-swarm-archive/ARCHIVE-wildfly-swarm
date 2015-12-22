@@ -50,13 +50,11 @@
     <dependency>
       <groupId>com.netflix.ribbon</groupId>
       <artifactId>ribbon-core</artifactId>
-      <version>${version.com.netflix.ribbon}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.netflix.ribbon</groupId>
       <artifactId>ribbon-loadbalancer</artifactId>
-      <version>${version.com.netflix.ribbon}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

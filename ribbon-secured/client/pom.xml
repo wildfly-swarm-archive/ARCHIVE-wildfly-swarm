@@ -67,17 +67,14 @@
     <dependency>
       <groupId>com.netflix.ribbon</groupId>
       <artifactId>ribbon-transport</artifactId>
-      <version>${version.com.netflix.ribbon}</version>
     </dependency>
     <dependency>
       <groupId>com.netflix.ribbon</groupId>
       <artifactId>ribbon-core</artifactId>
-      <version>${version.com.netflix.ribbon}</version>
     </dependency>
     <dependency>
       <groupId>com.netflix.ribbon</groupId>
       <artifactId>ribbon-loadbalancer</artifactId>
-      <version>${version.com.netflix.ribbon}</version>
     </dependency>
   </dependencies>
 
