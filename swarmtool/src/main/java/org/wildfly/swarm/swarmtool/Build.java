@@ -58,12 +58,6 @@ public class Build {
         return this;
     }
 
-    public Build contextPath(final String path) {
-        this.contextPath = path;
-
-        return this;
-    }
-
     public Build properties(final Properties props) {
         this.properties = props;
 
@@ -139,7 +133,6 @@ public class Build {
                 .artifactResolvingHelper(new ShrinkwrapArtifactResolvingHelper(resolver))
                 .projectArtifact("", baseName, "", type, this.source)
                 .resolveTransitiveDependencies(true)
-                .contextPath(this.contextPath)
                 .properties(this.properties);
 
         if (this.autoDetectFractions) {
@@ -169,7 +162,6 @@ public class Build {
     private final Set<String> swarmDependencies = new HashSet<>();
     private File source;
     private File outputDir;
-    private String contextPath;
     private String name;
     private String version;
     private Properties properties;

@@ -83,17 +83,6 @@ public class MainTest {
     }
 
     @Test
-    public void setContextPath() throws Exception {
-        final Result result = runTool(getResourcePath("simple-servlet.war"),
-                                      "--context-path=/path");
-
-        assertThat(result.exitStatus).isEqualTo(0);
-        assertThat(swarmProperties(result)
-                           .get("wildfly.swarm.context.path"))
-                .isEqualTo("/path");
-    }
-
-    @Test
     public void setProperties() throws Exception {
         final Result result = runTool(getResourcePath("simple-servlet.war"),
                                       "-Dfoo=bar", "-Dham=biscuit",

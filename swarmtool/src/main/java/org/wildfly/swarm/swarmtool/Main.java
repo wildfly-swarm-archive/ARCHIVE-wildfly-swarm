@@ -98,7 +98,6 @@ public class Main {
                 .outputDir(new File(foundOptions.valueOf(OUTPUT_DIR_OPT)))
                 .name(foundOptions.valueOf(NAME_OPT))
                 .autoDetectFractions(!foundOptions.has(DISABLE_AUTO_DETECT))
-                .contextPath(foundOptions.valueOf(CONTEXT_PATH_OPT))
                 .properties(properties)
                 .run();
     }
@@ -147,13 +146,6 @@ public class Main {
     private static final OptionSpec<File> SOURCE_OPT =
             OPT_PARSER.nonOptions("The source artifact")
                     .ofType(File.class);
-
-    private static final OptionSpec<String> CONTEXT_PATH_OPT =
-            OPT_PARSER.acceptsAll(asList("p", "context-path"), "context path")
-                    .withRequiredArg()
-                    .ofType(String.class)
-                    .defaultsTo("/")
-                    .describedAs("context");
 
     private static final OptionSpec<String> SYSPROPS_OPT =
             OPT_PARSER.accepts("D", "system property (overrides entry in --property-file)")
