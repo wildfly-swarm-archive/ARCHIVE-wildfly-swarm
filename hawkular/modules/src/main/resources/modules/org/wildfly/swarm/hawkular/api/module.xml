@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module xmlns="urn:jboss:module:1.3" name="org.wildfly.swarm.hawkular" slot="api">
   <resources>
-    <artifact name="org.wildfly.swarm:wildfly-swarm-hawkular:${project.version}"/>
+    <artifact name="org.wildfly.swarm:hawkular:${project.version}"/>
   </resources>
   <dependencies>
     <module name="org.wildfly.swarm.container"/>

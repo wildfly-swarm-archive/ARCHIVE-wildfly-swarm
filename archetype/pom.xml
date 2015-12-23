@@ -5,13 +5,13 @@
 
   <parent>
     <groupId>org.wildfly.swarm</groupId>
-    <artifactId>wildfly-swarm-parent</artifactId>
+    <artifactId>parent</artifactId>
     <version>1.0.0.Alpha6-SNAPSHOT</version>
     <relativePath>../</relativePath>
   </parent>
 
   <groupId>org.wildfly.swarm</groupId>
-  <artifactId>wildfly-swarm-archetype</artifactId>
+  <artifactId>archetype</artifactId>
 
   <packaging>maven-archetype</packaging>
 
@@ -56,7 +56,7 @@
   <dependencies>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-fraction-list</artifactId>
+      <artifactId>fraction-list</artifactId>
       <type>txt</type>
     </dependency>
   </dependencies>

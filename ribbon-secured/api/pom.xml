@@ -9,13 +9,13 @@
 
   <parent>
     <groupId>org.wildfly.swarm</groupId>
-    <artifactId>wildfly-swarm-ribbon-secured-parent</artifactId>
+    <artifactId>ribbon-secured-parent</artifactId>
     <version>1.0.0.Alpha6-SNAPSHOT</version>
     <relativePath>../</relativePath>
   </parent>
 
   <groupId>org.wildfly.swarm</groupId>
-  <artifactId>wildfly-swarm-ribbon-secured</artifactId>
+  <artifactId>ribbon-secured</artifactId>
 
   <name>WildFly Swarm: Ribbon Secured API</name>
   <description>WildFly Swarm: Ribbon Secured API</description>
@@ -25,31 +25,31 @@
   <dependencies>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-container</artifactId>
+      <artifactId>container</artifactId>
     </dependency>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-ribbon-secured-modules</artifactId>
+      <artifactId>ribbon-secured-modules</artifactId>
     </dependency>
 
     <!-- Dependent APIs -->
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-ribbon</artifactId>
+      <artifactId>ribbon</artifactId>
     </dependency>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-keycloak</artifactId>
+      <artifactId>keycloak</artifactId>
     </dependency>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-ribbon-secured-client</artifactId>
+      <artifactId>ribbon-secured-client</artifactId>
     </dependency>
 
     <!-- Provided APIs -->
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>wildfly-swarm-keycloak-runtime</artifactId>
+      <artifactId>keycloak-runtime</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>

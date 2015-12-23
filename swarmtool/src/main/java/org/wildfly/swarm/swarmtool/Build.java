@@ -94,19 +94,11 @@ public class Build {
 
         for (String fractionName : this.swarmDependencies) {
             fractions.add(fractionName);
-            FractionDescriptor desc = fractionList.getFractionDescriptor("org.wildfly.swarm", "wildfly-swarm-" + fractionName);
+            FractionDescriptor desc = fractionList.getFractionDescriptor("org.wildfly.swarm", fractionName);
             if (desc != null) {
                 fractions.addAll(desc.getDependencies()
                                          .stream()
-                                         .map( d -> {
-                                             String artifactId = d.getArtifactId();
-                                             if (artifactId.startsWith("wildfly-swarm-")) {
-
-                                                 return artifactId.substring(14);
-                                             }
-
-                                             return artifactId;
-                                         })
+                                         .map( d -> d.getArtifactId())
                                          .collect(Collectors.toSet()));
             }
         }
@@ -142,7 +134,7 @@ public class Build {
         }
 
         for (String dep : this.swarmDependencies) {
-            tool.dependency("compile", "org.wildfly.swarm", "wildfly-swarm-" + dep, this.version, "jar", null, null);
+            tool.dependency("compile", "org.wildfly.swarm", dep, this.version, "jar", null, null);
         }
 
         final String jarName = this.name != null ? this.name : baseName;

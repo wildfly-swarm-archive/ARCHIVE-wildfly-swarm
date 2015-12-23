@@ -55,7 +55,7 @@ end
 
 def load_dependencies(gav)
   parts = gav.strip.split(':')
-  core = parts[1].gsub(/wildfly-swarm-/, '')
+  core = parts[1]
 
   path = File.join( Dir.pwd, '..', core, 'api', 'target', 'dependencies.info' )
   if ( File.exists?( path ) ) 

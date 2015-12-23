@@ -27,7 +27,7 @@ File.open( File.join( outputDir, 'pom.xml' ), 'w' ) do |f|
   f.puts '    <plugins>'
   f.puts '      <plugin>'
   f.puts '        <groupId>org.wildfly.swarm</groupId>'
-  f.puts '        <artifactId>wildfly-swarm-plugin</artifactId>'
+  f.puts '        <artifactId>plugin</artifactId>'
   f.puts '        <version>${version.wildfly-swarm}</version>'
   f.puts '        <configuration>'
   f.puts '          <mainClass>${package}.Main</mainClass>'
@@ -47,7 +47,7 @@ File.open( File.join( outputDir, 'pom.xml' ), 'w' ) do |f|
 
   f.puts '    <dependency>'
   f.puts '      <groupId>org.wildfly.swarm</groupId>'
-  f.puts '      <artifactId>wildfly-swarm-container</artifactId>'
+  f.puts '      <artifactId>container</artifactId>'
   f.puts '      <version>${version.wildfly-swarm}</version>'
   f.puts '    </dependency>'
   f.puts ''
