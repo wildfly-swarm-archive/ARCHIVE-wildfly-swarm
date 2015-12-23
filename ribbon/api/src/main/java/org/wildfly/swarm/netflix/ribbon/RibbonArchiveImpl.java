@@ -15,18 +15,24 @@
  */
 package org.wildfly.swarm.netflix.ribbon;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.impl.base.ArchiveBase;
 import org.jboss.shrinkwrap.impl.base.AssignableBase;
 import org.wildfly.swarm.container.JARArchive;
 import org.wildfly.swarm.msc.ServiceActivatorArchive;
 
-import javax.xml.bind.util.JAXBSource;
-
 /**
  * @author Bob McWhirter
  */
 public class RibbonArchiveImpl extends AssignableBase<ArchiveBase<?>> implements RibbonArchive {
+
+    public static final String SERVICE_ACTIVATOR_CLASS_NAME = "org.wildfly.swarm.netflix.ribbon.runtime.ApplicationAdvertiserActivator";
+
+    private List<String> serviceNames = new ArrayList<>();
 
     /**
      * Constructs a new instance using the underlying specified archive, which is required
@@ -35,25 +41,56 @@ public class RibbonArchiveImpl extends AssignableBase<ArchiveBase<?>> implements
      */
     public RibbonArchiveImpl(ArchiveBase<?> archive) {
         super(archive);
-        //as(ServiceActivatorArchive.class).addServiceActivator("org.wildfly.swarm.runtime.netflix.ribbon.ClusterManagerActivator");
-        /*
-        as(JARArchive.class).addModule("org.wildfly.jgroups.api");
-        as(JARArchive.class).addModule("com.netflix.ribbon");
-        as(JARArchive.class).addModule("com.netflix.archaius");
-        as(JARArchive.class).addModule("com.netflix.hystrix");
-        as(JARArchive.class).addModule("io.reactivex.rxjava");
-        as(JARArchive.class).addModule("io.reactivex.rxnetty");
-        as(JARArchive.class).addModule("io.netty");
-        as(JARArchive.class).addModule("org.picketbox");
-        as(JARArchive.class).add(new RibbonConfigAsset() );
-        */
+    }
+
+    protected List<String> getServiceNames() {
+        if (!this.serviceNames.isEmpty()) {
+            return this.serviceNames;
+        }
+        String archiveName = this.getArchive().getName();
+        int lastDotLoc = archiveName.lastIndexOf('.');
+        if (lastDotLoc > 0) {
+            return Collections.singletonList(archiveName.substring(0, lastDotLoc));
+        }
+        return Collections.singletonList(archiveName);
     }
 
     @Override
-    public void setApplicationName(String name) {
-        as(ServiceActivatorArchive.class).addServiceActivator("org.wildfly.swarm.netflix.ribbon.runtime.ApplicationAdvertiserActivator");
-        as(JARArchive.class).addModule("org.wildfly.swarm.netflix.ribbon", "runtime");
-        as(JARArchive.class).add(new StringAsset(name), "META-INF/netflix-ribbon-application.conf");
+    public RibbonArchive setApplicationName(String serviceName) {
+        return advertise(serviceName);
+    }
+
+    @Override
+    public RibbonArchive advertise() {
+        doAdvertise();
+        return this;
+    }
+
+    @Override
+    public RibbonArchive advertise(String... serviceNames) {
+        for (String serviceName : serviceNames) {
+            this.serviceNames.add(serviceName);
+        }
+
+        return advertise();
+    }
+
+    protected RibbonArchive doAdvertise() {
+        if (!as(ServiceActivatorArchive.class).containsServiceActivator(SERVICE_ACTIVATOR_CLASS_NAME )) {
+            as(ServiceActivatorArchive.class).addServiceActivator(SERVICE_ACTIVATOR_CLASS_NAME);
+            as(JARArchive.class).addModule("org.wildfly.swarm.netflix.ribbon", "runtime");
+        }
+
+        StringBuffer buf = new StringBuffer();
+
+        List<String> names = getServiceNames();
+        for (String name : names) {
+            buf.append(name).append("\n");
+        }
+
+
+        as(JARArchive.class).add(new StringAsset(buf.toString()), RIBBON_APP_CONF_PATH);
+        return this;
     }
 
 

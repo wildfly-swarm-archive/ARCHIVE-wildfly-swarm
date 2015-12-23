@@ -16,6 +16,7 @@
 package org.wildfly.swarm.netflix.ribbon.runtime;
 
 import org.jboss.msc.service.*;
+import org.wildfly.swarm.netflix.ribbon.RibbonArchive;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class ApplicationAdvertiserActivator implements ServiceActivator {
 
         ServiceTarget target = context.getServiceTarget();
 
-        InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/netflix-ribbon-application.conf");
+        InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(RibbonArchive.RIBBON_APP_CONF_PATH );
 
         if (in == null) {
             return;

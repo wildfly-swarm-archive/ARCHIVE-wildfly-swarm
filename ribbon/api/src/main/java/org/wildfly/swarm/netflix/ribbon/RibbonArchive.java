@@ -21,5 +21,12 @@ import org.jboss.shrinkwrap.api.Assignable;
  * @author Bob McWhirter
  */
 public interface RibbonArchive extends Assignable {
-    void setApplicationName(String name);
+
+    String RIBBON_APP_CONF_PATH = "META-INF/netflix-ribbon-application.conf";
+
+    RibbonArchive advertise();
+    RibbonArchive advertise(String...serviceNames);
+
+    @Deprecated
+    RibbonArchive setApplicationName(String serviceName);
 }
