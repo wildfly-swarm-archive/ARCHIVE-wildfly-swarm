@@ -1,0 +1,71 @@
+{
+    "providers": [
+        "classpath:${jboss.server.config.dir}/providers/*",
+        "module:org.hawkular.keycloak.events.rest",
+        "module:org.hawkular.keycloak.events.jms"
+    ],
+
+    "eventsListener": {
+        "hawkular-rest": {
+            "excludes": [ "REFRESH_TOKEN", "CODE_TO_TOKEN", "LOGIN" ]
+        },
+        "hawkular-jms": {
+            "excludes": [ "REFRESH_TOKEN", "CODE_TO_TOKEN", "LOGIN" ]
+        }
+    },
+
+    "admin": {
+        "realm": "master"
+    },
+    "eventsStore": {
+        "provider": "jpa",
+        "jpa": {
+            "exclude-events": [
+                "REFRESH_TOKEN"
+            ]
+        }
+    },
+    "realm": {
+        "provider": "jpa"
+    },
+    "user": {
+        "provider": "jpa"
+    },
+    "timer": {
+        "provider": "basic"
+    },
+    "theme": {
+        "default": "keycloak",
+        "staticMaxAge": 2592000,
+        "cacheTemplates": true,
+        "cacheThemes": true,
+        "folder": {
+            "dir": "${jboss.server.config.dir}/themes"
+        },
+        "module": {
+            "modules": [ "org.hawkular.keycloak.theme" ]
+        }
+    },
+    "scheduled": {
+        "interval": 900
+    },
+    "connectionsHttpClient": {
+        "default": {
+            "disable-trust-manager": true
+        }
+    },
+    "connectionsJpa": {
+        "default": {
+            "dataSource": "java:jboss/datasources/KeycloakDS",
+            "databaseSchema": "update"
+        }
+    },
+    "connectionsInfinispan": {
+        "default": {
+            "cacheContainer": "java:jboss/infinispan/Keycloak"
+        }
+    },
+    "userSessionPersister": {
+        "provider": "jpa"
+    }
+}

@@ -11,7 +11,7 @@
 
     <module name="org.wildfly.swarm.hawkular"/>
 
-    <module name="org.hawkular.agent.monitor"/>
+    <module name="org.hawkular.agent"/>
   </dependencies>
 
 </module>

@@ -1,0 +1,16 @@
+<module xmlns="urn:jboss:module:1.3" name="org.wildfly.swarm.hawkular.server" slot="runtime">
+  <resources>
+    <artifact name="org.wildfly.swarm:hawkular-server-runtime:${project.version}"/>
+  </resources>
+
+  <dependencies>
+    <module name="org.wildfly.swarm.hawkular.server"/>
+    <module name="org.wildfly.swarm.container"/>
+    <module name="org.wildfly.swarm.container" slot="runtime"/>
+    <module name="org.wildfly.swarm.configuration"/>
+
+    <module name="org.hawkular.nest"/>
+    <module name="org.hawkular.commons.cassandra-driver"/>
+    <module name="javax.json.api"/>
+  </dependencies>
+</module>

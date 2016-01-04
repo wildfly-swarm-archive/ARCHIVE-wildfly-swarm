@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+
+<feature-pack xmlns="urn:wildfly:feature-pack:1.1">
+    <dependencies>
+        <artifact name="org.hawkular.commons:hawkular-nest-feature-pack"/>
+        <artifact name="org.keycloak:keycloak-server-feature-pack"/>
+        <artifact name="org.keycloak:keycloak-adapter-feature-pack"/>
+    </dependencies>
+    <artifact-versions>
+        <artifact groupId="com.codahale.metrics" artifactId="metrics-core" version="3.0.2"/>
+        <artifact groupId="com.datastax.cassandra" artifactId="cassandra-driver-core" version="2.2.0-rc3"/>
+        <artifact groupId="org.hawkular.accounts" artifactId="hawkular-accounts" version="2.0.9.Final" extension="war"/>
+        <artifact groupId="org.hawkular.accounts" artifactId="hawkular-accounts-events-backend" version="2.0.9.Final" extension="war"/>
+        <artifact groupId="org.hawkular.accounts" artifactId="hawkular-accounts-feature-pack-resources" version="2.0.9.Final"/>
+        <artifact groupId="org.hawkular.accounts" artifactId="hawkular-accounts-keycloak-event-listener-jms" version="2.0.9.Final"/>
+        <artifact groupId="org.hawkular.accounts" artifactId="hawkular-accounts-keycloak-event-listener-rest" version="2.0.9.Final"/>
+        <artifact groupId="org.hawkular.accounts" artifactId="hawkular-accounts-keycloak-theme" version="2.0.9.Final"/>
+        <artifact groupId="org.hawkular.commons" artifactId="hawkular-nest-feature-pack" version="0.3.1.Final" extension="zip"/>
+        <artifact groupId="org.keycloak" artifactId="keycloak-adapter-feature-pack" version="1.8.0.Alpha1" extension="zip"/>
+        <artifact groupId="org.keycloak" artifactId="keycloak-server-feature-pack" version="1.8.0.Alpha1" extension="zip"/>
+        <artifact groupId="org.keycloak.secretstore" artifactId="secret-store" version="1.0.4.Final" extension="war"/>
+    </artifact-versions>
+    <config>
+        <standalone template="configuration/standalone/template.xml" subsystems="configuration/standalone/subsystems.xml" output-file="standalone/configuration/standalone.xml"/>
+    </config>
+    <copy-artifacts>
+        <copy-artifact artifact="org.hawkular.accounts:hawkular-accounts" to-location="modules/org/hawkular/nest/main/deployments/hawkular-accounts.war"/>
+        <copy-artifact artifact="org.hawkular.accounts:hawkular-accounts-events-backend" to-location="modules/org/hawkular/nest/main/deployments/hawkular-accounts-events-backend.war"/>
+        <copy-artifact artifact="org.keycloak.secretstore:secret-store" to-location="modules/org/hawkular/nest/main/deployments/secret-store.war"/>
+    </copy-artifacts>
+</feature-pack>

@@ -46,10 +46,12 @@
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>container-modules</artifactId>
     </dependency>
+<!--
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>rxjava</artifactId>
     </dependency>
+-->
     <dependency>
       <groupId>org.wildfly.core</groupId>
       <artifactId>wildfly-core-feature-pack</artifactId>
@@ -86,6 +88,19 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>org.hawkular.agent</groupId>
+      <artifactId>hawkular-wildfly-agent-feature-pack</artifactId>
+      <type>zip</type>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
+
 
 </project>
