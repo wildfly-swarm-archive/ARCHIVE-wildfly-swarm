@@ -68,6 +68,11 @@
 
 
     <dependency>
+      <groupId>org.hawkular</groupId>
+      <artifactId>hawkular-console</artifactId>
+      <type>war</type>
+    </dependency>
+    <dependency>
       <groupId>org.hawkular.accounts</groupId>
       <artifactId>hawkular-accounts</artifactId>
       <type>war</type>

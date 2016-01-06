@@ -52,9 +52,10 @@ public class HawkularServerConfiguration extends AbstractServerConfiguration<Haw
     public List<Archive> getImplicitDeployments(HawkularServerFraction fraction) throws Exception {
         List<Archive> list = new ArrayList<>();
         list.add(Swarm.artifact("org.hawkular.commons:hawkular-commons-embedded-cassandra-ear:ear:*", "hawkular-commons-embedded-cassandra-ear.ear"));
-        list.add(Swarm.artifact("org.keycloak.secretstore:secret-store:war:*", "secret-store.war"));
+        list.add(Swarm.artifact("org.keycloak.secretstore:secret-store:war:*", "hawkular-accounts-secret-store.war"));
         list.add(Swarm.artifact("org.hawkular.accounts:hawkular-accounts-events-backend:war:*", "hawkular-accounts-events-backend.war"));
         list.add(Swarm.artifact("org.hawkular.accounts:hawkular-accounts:war:*", "hawkular-accounts.war"));
+        list.add(Swarm.artifact("org.hawkular:hawkular-console:war:*", "hawkular-console.war"));
         return list;
     }
 
@@ -62,7 +63,12 @@ public class HawkularServerConfiguration extends AbstractServerConfiguration<Haw
     public List<ModelNode> getList(HawkularServerFraction fraction) {
         List<ModelNode> list = new ArrayList<>();
 
+        getNestList(fraction, list);
 
+        return list;
+    }
+
+    protected void getNestList(HawkularServerFraction fraction, List<ModelNode> list) {
         ModelNode node = new ModelNode();
         node.get(OP_ADDR).set(EXTENSION, "org.hawkular.nest");
         node.get(OP).set(ADD);
@@ -77,20 +83,41 @@ public class HawkularServerConfiguration extends AbstractServerConfiguration<Haw
         node.get("enabled").set(true);
         list.add(node);
 
-        node = new ModelNode();
-        node.get(OP_ADDR).set("system-property", "hawkular.backend");
-        node.get(OP).set(ADD);
-        //node.get(VALUE).set(new ValueExpression("${hawkular.backend:embedded_cassandra}"));
-        node.get(VALUE).set("embedded_cassandra");
-        list.add(node);
+        list.add(property("hawkular.metrics.waitForService",
+                "${hawkular.metrics.waitForService:True}"));
 
-        node = new ModelNode();
-        node.get(OP_ADDR).set("system-property", "hawkular.metrics.waitForService");
-        node.get(OP).set(ADD);
-        node.get(VALUE).set(new ValueExpression("${hawkular.metrics.waitForService:True}"));
-        list.add(node);
+        list.add(property("hawkular.backend",
+                "${hawkular.backend:embedded_cassandra}"));
 
-
-        return list;
+        list.add(property("keycloak.server.url",
+                "${keycloak.server.url:http://localhost:8080/auth}"));
     }
+
+    protected ModelNode property(String name, String value) {
+        ModelNode node = new ModelNode();
+
+        node.get(OP_ADDR).set("system-property", name);
+        node.get(OP).set(ADD);
+        node.get(VALUE).set(new ValueExpression(value));
+
+        return node;
+    }
+
+
+    /*
+    protected void getBusList(HawkularServerFraction fraction, List<ModelNode> list) {
+        ModelNode node = new ModelNode();
+        //node.get(OP_ADDR).set(EXTENSION, "org.hawkular.bus.broker");
+        //node.get(OP).set(ADD);
+        //list.add(node);
+
+        PathAddress address = PathAddress.pathAddress(PathElement.pathElement(SUBSYSTEM, "hawkular-bus-broker"));
+
+        node = new ModelNode();
+        node.get(OP_ADDR).set(address.toModelNode());
+        node.get(OP).set(ADD);
+        node.get("enabled").set(true);
+        list.add(node);
+    }
+    */
 }

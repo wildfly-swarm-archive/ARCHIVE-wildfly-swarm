@@ -10,6 +10,7 @@
     <module name="org.wildfly.swarm.configuration"/>
 
     <module name="org.hawkular.nest"/>
+    <module name="org.hawkular.bus"/>
     <module name="org.hawkular.commons.cassandra-driver"/>
     <module name="javax.json.api"/>
   </dependencies>
