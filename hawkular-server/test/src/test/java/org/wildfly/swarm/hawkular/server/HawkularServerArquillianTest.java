@@ -24,6 +24,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.swarm.ContainerFactory;
+import org.wildfly.swarm.arquillian.StartupTimeout;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.container.JARArchive;
 
@@ -31,6 +32,7 @@ import org.wildfly.swarm.container.JARArchive;
  * @author Bob McWhirter
  */
 @RunWith(Arquillian.class)
+@StartupTimeout(60)
 public class HawkularServerArquillianTest implements ContainerFactory {
 
     @Deployment(testable = false)
