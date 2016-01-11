@@ -41,22 +41,21 @@ public class HawkularServerConfiguration extends AbstractServerConfiguration<Haw
 
     public HawkularServerConfiguration() {
         super(HawkularServerFraction.class);
-    }
 
-    @Override
-    public HawkularServerFraction defaultFraction() {
-        return new HawkularServerFraction();
-    }
+        deployment("org.hawkular.commons:hawkular-commons-embedded-cassandra-ear:ear:*")
+                .as("hawkular-commons-embedded-cassandra-ear.ear");
 
-    @Override
-    public List<Archive> getImplicitDeployments(HawkularServerFraction fraction) throws Exception {
-        List<Archive> list = new ArrayList<>();
-        list.add(Swarm.artifact("org.hawkular.commons:hawkular-commons-embedded-cassandra-ear:ear:*", "hawkular-commons-embedded-cassandra-ear.ear"));
-        list.add(Swarm.artifact("org.keycloak.secretstore:secret-store:war:*", "hawkular-accounts-secret-store.war"));
-        list.add(Swarm.artifact("org.hawkular.accounts:hawkular-accounts-events-backend:war:*", "hawkular-accounts-events-backend.war"));
-        list.add(Swarm.artifact("org.hawkular.accounts:hawkular-accounts:war:*", "hawkular-accounts.war"));
-        list.add(Swarm.artifact("org.hawkular:hawkular-console:war:*", "hawkular-console.war"));
-        return list;
+        deployment("org.keycloak.secretstore:secret-store:war:*")
+                .as("hawkular-accounts-secret-store.war");
+
+        deployment("org.hawkular.accounts:hawkular-accounts-events-backend:war:*")
+                .as("hawkular-accounts-events-backend.war");
+
+        deployment("org.hawkular.accounts:hawkular-accounts:war:*")
+                .as("hawkular-accounts.war");
+
+        deployment("org.hawkular:hawkular-console:war:*")
+                .as("hawkular-console.war");
     }
 
     @Override
