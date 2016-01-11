@@ -24,13 +24,11 @@ import org.jboss.msc.service.ServiceActivator;
 import org.jboss.shrinkwrap.api.Archive;
 import org.wildfly.swarm.container.JARArchive;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
-import org.wildfly.swarm.container.runtime.Configuration;
 import org.wildfly.swarm.netflix.ribbon.RibbonFraction;
 
 /**
  * @author Bob McWhirter
  */
-@Configuration
 public class RibbonConfiguration extends AbstractServerConfiguration<RibbonFraction> {
 
     public RibbonConfiguration() {

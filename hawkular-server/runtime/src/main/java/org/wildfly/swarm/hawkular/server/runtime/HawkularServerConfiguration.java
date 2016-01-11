@@ -25,7 +25,6 @@ import org.jboss.dmr.ValueExpression;
 import org.jboss.shrinkwrap.api.Archive;
 import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
-import org.wildfly.swarm.container.runtime.Configuration;
 import org.wildfly.swarm.hawkular.server.HawkularServerFraction;
 
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.ADD;
@@ -38,7 +37,6 @@ import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.VAL
 /**
  * @author Bob McWhirter
  */
-@Configuration
 public class HawkularServerConfiguration extends AbstractServerConfiguration<HawkularServerFraction> {
 
     public HawkularServerConfiguration() {

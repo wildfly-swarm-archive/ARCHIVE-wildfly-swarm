@@ -27,7 +27,6 @@ import org.jboss.as.controller.PathElement;
 import org.jboss.dmr.ModelNode;
 import org.jboss.dmr.ValueExpression;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
-import org.wildfly.swarm.container.runtime.Configuration;
 import org.wildfly.swarm.hawkular.Avail;
 import org.wildfly.swarm.hawkular.AvailSet;
 import org.wildfly.swarm.hawkular.Config;
@@ -47,7 +46,6 @@ import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.SUB
  * @author Bob McWhirter
  * @author Lance Ball
  */
-@Configuration
 public class HawkularConfiguration extends AbstractServerConfiguration<HawkularFraction> {
 
     PathAddress address = PathAddress.pathAddress(PathElement.pathElement(SUBSYSTEM, "hawkular-monitor"));
