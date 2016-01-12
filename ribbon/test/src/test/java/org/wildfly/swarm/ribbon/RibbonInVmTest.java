@@ -36,11 +36,11 @@ public class RibbonInVmTest {
     @Ignore
     public void testCanFindKubePing() throws Exception {
         // TODO: We can't easily test KubePing without a server to hit
-        System.setProperty("wildfly.swarm.environment", "openshift");
+        System.setProperty("swarm.environment", "openshift");
         Container container = new Container();
         container.start();
         // TODO: something useful here to verify we're actually using KubePing
         container.stop();
-        System.setProperty("wildfly.swarm.environment", "");
+        System.setProperty("swarm.environment", "");
     }
 }
