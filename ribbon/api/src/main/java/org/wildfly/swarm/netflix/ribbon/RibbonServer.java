@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wildfly.swarm.ribbon.webapp;
+package org.wildfly.swarm.netflix.ribbon;
 
-import org.wildfly.swarm.container.Fraction;
-import org.wildfly.swarm.netflix.ribbon.IdentityExternalAddressMapper;
+public class RibbonServer {
 
-/**
- * @author Lance Ball
- */
-public class RibbonWebAppFraction implements Fraction {
+    private final String host;
+    private final int port;
 
-    private Class externalAddressMapper = IdentityExternalAddressMapper.class;
-
-    public RibbonWebAppFraction() {
+    public RibbonServer(String host, int port) {
+        this.host = host;
+        this.port = port;
     }
 
-    public Class externalAddressMapper() {
-        return externalAddressMapper;
+    public String getHost() {
+        return this.host;
     }
 
-    public void externalAddressMapper(Class externalAddressMapper) {
-        this.externalAddressMapper = externalAddressMapper;
+    public int getPort() {
+        return this.port;
     }
 
+    public String toString() {
+        return host + ":" + port;
+    }
 }

@@ -24,5 +24,5 @@ import java.util.Map;
 public interface RibbonTopology {
     void addListener(RibbonTopologyListener listener);
     void removeListener(RibbonTopologyListener listener);
-    Map<String,List<String>> asMap();
+    Map<String,List<RibbonServer>> asMap();
 }
