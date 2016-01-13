@@ -63,6 +63,7 @@ public class KeycloakServerFraction implements Fraction {
                     .localCache("realms")
                     .localCache("users")
                     .localCache("sessions")
+                    .localCache("offlineSessions")
                     .localCache("loginFailures"));
         }
 
