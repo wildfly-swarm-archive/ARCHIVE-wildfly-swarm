@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Red Hat, Inc, and individual contributors.
+ * Copyright 2015-2016 Red Hat, Inc, and individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.wildfly.swarm.netflix.ribbon.runtime;
 
 import com.netflix.loadbalancer.Server;
+import org.wildfly.swarm.netflix.ribbon.RibbonServer;
 import org.wildfly.swarm.netflix.ribbon.RibbonTopology;
 import org.wildfly.swarm.netflix.ribbon.RibbonTopologyListener;
 
@@ -90,17 +91,17 @@ public class ClusterRegistry implements RibbonTopology {
     }
 
     @Override
-    public synchronized Map<String,List<String>> asMap() {
-        Map<String,List<String>> map = new HashMap<>();
+    public synchronized Map<String,List<RibbonServer>> asMap() {
+        Map<String,List<RibbonServer>> map = new HashMap<>();
 
         this.registrations.forEach( (reg)->{
-            List<String> list = map.get(reg.appName);
+            List<RibbonServer> list = map.get(reg.appName);
             if ( list == null ) {
-                list = new ArrayList<String>();
+                list = new ArrayList<RibbonServer>();
                 map.put( reg.appName, list );
             }
 
-            list.add( reg.server.toString() );
+            list.add( new RibbonServer(reg.server.getHost(), reg.server.getPort() ) );
         });
 
         return map;

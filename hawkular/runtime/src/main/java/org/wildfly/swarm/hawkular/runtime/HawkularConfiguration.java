@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Red Hat, Inc, and individual contributors.
+ * Copyright 2015-2016 Red Hat, Inc, and individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,11 +27,11 @@ import org.jboss.as.controller.PathElement;
 import org.jboss.dmr.ModelNode;
 import org.jboss.dmr.ValueExpression;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
-import org.wildfly.swarm.container.runtime.Configuration;
 import org.wildfly.swarm.hawkular.Avail;
 import org.wildfly.swarm.hawkular.AvailSet;
 import org.wildfly.swarm.hawkular.Config;
 import org.wildfly.swarm.hawkular.HawkularFraction;
+import org.wildfly.swarm.hawkular.HawkularProperties;
 import org.wildfly.swarm.hawkular.Metric;
 import org.wildfly.swarm.hawkular.MetricSet;
 import org.wildfly.swarm.hawkular.ResourceType;
@@ -47,7 +47,6 @@ import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.SUB
  * @author Bob McWhirter
  * @author Lance Ball
  */
-@Configuration
 public class HawkularConfiguration extends AbstractServerConfiguration<HawkularFraction> {
 
     PathAddress address = PathAddress.pathAddress(PathElement.pathElement(SUBSYSTEM, "hawkular-monitor"));
@@ -62,10 +61,10 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
 
     @Override
     public HawkularFraction defaultFraction() {
-        String host = System.getProperty("swarm.hawkular.host", "localhost");
-        String portStr = System.getProperty("swarm.hawkular.port", "8080");
-        String username = System.getProperty("swarm.hawkular.username");
-        String password = System.getProperty("swarm.hawkular.password");
+        String host = System.getProperty(HawkularProperties.HOST, "localhost");
+        String portStr = System.getProperty(HawkularProperties.PORT, "8080");
+        String username = System.getProperty(HawkularProperties.USERNAME);
+        String password = System.getProperty(HawkularProperties.PASSWORD);
 
         int port = Integer.parseInt(portStr);
 

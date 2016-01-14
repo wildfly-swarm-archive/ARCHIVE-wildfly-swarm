@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Red Hat, Inc, and individual contributors.
+ * Copyright 2015-2016 Red Hat, Inc, and individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.wildfly.swarm.ribbon;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.wildfly.swarm.SwarmProperties;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.netflix.ribbon.RibbonFraction;
 
@@ -36,11 +37,11 @@ public class RibbonInVmTest {
     @Ignore
     public void testCanFindKubePing() throws Exception {
         // TODO: We can't easily test KubePing without a server to hit
-        System.setProperty("wildfly.swarm.environment", "openshift");
+        System.setProperty(SwarmProperties.ENVIRONMENT, "openshift");
         Container container = new Container();
         container.start();
         // TODO: something useful here to verify we're actually using KubePing
         container.stop();
-        System.setProperty("wildfly.swarm.environment", "");
+        System.setProperty(SwarmProperties.ENVIRONMENT, "");
     }
 }

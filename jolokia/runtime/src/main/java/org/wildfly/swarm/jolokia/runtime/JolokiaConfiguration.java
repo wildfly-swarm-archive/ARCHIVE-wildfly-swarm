@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Red Hat, Inc, and individual contributors.
+ * Copyright 2015-2016 Red Hat, Inc, and individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,41 +15,27 @@
  */
 package org.wildfly.swarm.jolokia.runtime;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
-import org.wildfly.swarm.container.runtime.Configuration;
 import org.wildfly.swarm.jolokia.JolokiaFraction;
 import org.wildfly.swarm.undertow.WARArchive;
 
 /**
  * @author Bob McWhirter
  */
-@Configuration
 public class JolokiaConfiguration extends AbstractServerConfiguration<JolokiaFraction> {
 
     public JolokiaConfiguration() {
         super(JolokiaFraction.class);
+
+        deployment("org.jolokia:jolokia-war:war:*")
+                .as("jolokia.war")
+                .configure((fraction, archive) -> {
+                    archive.as(WARArchive.class).setContextRoot(fraction.context());
+                });
     }
 
     @Override
     public JolokiaFraction defaultFraction() {
         return new JolokiaFraction();
-    }
-
-    @Override
-    public List<Archive> getImplicitDeployments(JolokiaFraction fraction) throws Exception {
-        List<Archive> list = new ArrayList<>();
-        JavaArchive war = null;
-
-        war = Swarm.artifact("org.jolokia:jolokia-war:war:*");
-        war.as(WARArchive.class).setContextRoot(fraction.context());
-        list.add(war);
-
-        return list;
     }
 }

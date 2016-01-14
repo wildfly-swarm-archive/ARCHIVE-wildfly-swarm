@@ -1,3 +1,18 @@
+/**
+ * Copyright 2015-2016 Red Hat, Inc, and individual contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.wildfly.swarm.swagger.runtime;
 
 import io.swagger.jaxrs.config.BeanConfig;
@@ -5,11 +20,9 @@ import org.jboss.msc.service.ServiceActivator;
 import org.jboss.msc.service.ServiceActivatorContext;
 import org.jboss.msc.service.ServiceRegistryException;
 import org.wildfly.swarm.swagger.SwaggerArchive;
+import org.wildfly.swarm.swagger.SwaggerConfig;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 /**
  * @author Lance Ball
@@ -17,35 +30,31 @@ import java.io.InputStreamReader;
 public class SwaggerActivator implements ServiceActivator {
     @Override
     public void activate(ServiceActivatorContext serviceActivatorContext) throws ServiceRegistryException {
-        System.err.println(">>>>> IN ACTIVATOR");
 
         InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(SwaggerArchive.SWAGGER_CONFIGURATION_PATH);
 
         if (in == null) {
+            // No config available. Print a warning and return
+            System.err.println("WARN: No swagger configuration found. Swagger not activated.");
             return;
         }
-        String apiVersion = System.getProperty("wildfly.swarm.swagger.api.version", "1.0.0");
+        SwaggerConfig config = new SwaggerConfig(in);
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+        BeanConfig beanConfig = new BeanConfig();
+        beanConfig.setHost((String) config.get(SwaggerConfig.Key.HOST));
+        beanConfig.setLicense((String) config.get(SwaggerConfig.Key.LICENSE));
+        beanConfig.setLicenseUrl((String) config.get(SwaggerConfig.Key.LICENSE_URL));
+        beanConfig.setTermsOfServiceUrl((String) config.get(SwaggerConfig.Key.TERMS_OF_SERVICE_URL));
+        beanConfig.setResourcePackage((String) config.get(SwaggerConfig.Key.PACKAGES));
+        beanConfig.setVersion((String) config.get(SwaggerConfig.Key.VERSION));
+        beanConfig.setBasePath((String) config.get(SwaggerConfig.Key.ROOT));
+        beanConfig.setContact((String) config.get(SwaggerConfig.Key.CONTACT));
+        beanConfig.setDescription((String) config.get(SwaggerConfig.Key.DESCRIPTION));
+        beanConfig.setTitle((String) config.get(SwaggerConfig.Key.TITLE));
+        beanConfig.setPrettyPrint((String) config.get(SwaggerConfig.Key.PRETTY_PRINT));
+        beanConfig.setSchemes((String[]) config.get(SwaggerConfig.Key.SCHEMES));
 
-            BeanConfig beanConfig = new BeanConfig();
+        beanConfig.setScan(true);
 
-            // TODO: Make all of these configurable via SWAGGER_CONFIGURATION_PATH
-            beanConfig.setVersion(apiVersion);
-            beanConfig.setSchemes(new String[]{"http"});
-            beanConfig.setHost("localhost:8080");
-            beanConfig.setBasePath("/swagger");
-            beanConfig.setScan(true);
-
-            String packageName;
-            while ((packageName = reader.readLine()) != null) {
-                packageName = packageName.trim();
-                if (!packageName.isEmpty()) {
-                    beanConfig.setResourcePackage(packageName);
-                }
-            }
-        } catch (IOException e) {
-            throw new ServiceRegistryException(e);
-        }
     }
 }

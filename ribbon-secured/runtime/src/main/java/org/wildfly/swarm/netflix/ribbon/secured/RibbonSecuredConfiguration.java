@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Red Hat, Inc, and individual contributors.
+ * Copyright 2015-2016 Red Hat, Inc, and individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,10 @@ import org.jboss.dmr.ModelNode;
 import org.jboss.shrinkwrap.api.Archive;
 import org.wildfly.swarm.container.JARArchive;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
-import org.wildfly.swarm.container.runtime.Configuration;
 
 /**
  * @author Bob McWhirter
  */
-@Configuration
 public class RibbonSecuredConfiguration extends AbstractServerConfiguration<RibbonSecuredFraction> {
 
     public RibbonSecuredConfiguration() {
