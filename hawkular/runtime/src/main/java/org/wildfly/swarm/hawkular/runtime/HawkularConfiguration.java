@@ -31,6 +31,7 @@ import org.wildfly.swarm.hawkular.Avail;
 import org.wildfly.swarm.hawkular.AvailSet;
 import org.wildfly.swarm.hawkular.Config;
 import org.wildfly.swarm.hawkular.HawkularFraction;
+import org.wildfly.swarm.hawkular.HawkularProperties;
 import org.wildfly.swarm.hawkular.Metric;
 import org.wildfly.swarm.hawkular.MetricSet;
 import org.wildfly.swarm.hawkular.ResourceType;
@@ -60,10 +61,10 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
 
     @Override
     public HawkularFraction defaultFraction() {
-        String host = System.getProperty("swarm.hawkular.host", "localhost");
-        String portStr = System.getProperty("swarm.hawkular.port", "8080");
-        String username = System.getProperty("swarm.hawkular.username");
-        String password = System.getProperty("swarm.hawkular.password");
+        String host = System.getProperty(HawkularProperties.HOST, "localhost");
+        String portStr = System.getProperty(HawkularProperties.PORT, "8080");
+        String username = System.getProperty(HawkularProperties.USERNAME);
+        String password = System.getProperty(HawkularProperties.PASSWORD);
 
         int port = Integer.parseInt(portStr);
 

@@ -22,8 +22,7 @@ import org.jboss.as.controller.PathAddress;
 import org.jboss.as.controller.PathElement;
 import org.jboss.dmr.ModelNode;
 import org.jboss.dmr.ValueExpression;
-import org.jboss.shrinkwrap.api.Archive;
-import org.wildfly.swarm.Swarm;
+import org.wildfly.swarm.SwarmProperties;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
 import org.wildfly.swarm.hawkular.server.HawkularServerFraction;
 
@@ -83,13 +82,13 @@ public class HawkularServerConfiguration extends AbstractServerConfiguration<Haw
         list.add(node);
 
         list.add(property("hawkular.metrics.waitForService",
-                "${hawkular.metrics.waitForService:True}"));
+                          SwarmProperties.propertyVar("hawkular.metrics.waitForService", "True")));
 
         list.add(property("hawkular.backend",
-                "${hawkular.backend:embedded_cassandra}"));
+                          SwarmProperties.propertyVar("hawkular.backend", "embedded_cassandra")));
 
         list.add(property("keycloak.server.url",
-                "${keycloak.server.url:http://localhost:8080/auth}"));
+                          SwarmProperties.propertyVar("keycloak.server.url", "http://localhost:8080/auth")));
     }
 
     protected ModelNode property(String name, String value) {
