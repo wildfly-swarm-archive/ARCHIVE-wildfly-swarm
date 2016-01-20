@@ -133,7 +133,7 @@ public class Build {
         }
 
         for (String dep : this.swarmDependencies) {
-            tool.dependency("compile", "org.wildfly.swarm", dep, this.version, "jar", null, null);
+            tool.dependency("compile", "org.wildfly.swarm", dep, this.version, "jar", null, null, true);
         }
 
         final String jarName = this.name != null ? this.name : baseName;
