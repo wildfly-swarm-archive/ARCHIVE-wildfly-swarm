@@ -91,6 +91,11 @@
       <artifactId>weld-runtime</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.wildfly.swarm</groupId>
+      <artifactId>remoting-runtime</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>

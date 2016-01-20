@@ -51,6 +51,7 @@
     <version.guava>14.0.1</version.guava>
 
     <version.keycloak>1.8.0.CR1</version.keycloak>
+    <version.com.orbitz.consul>0.9.16</version.com.orbitz.consul>
     <version.h2>1.4.187</version.h2>
 
     <version.hawkular>1.0.0.Alpha8</version.hawkular>
@@ -800,6 +801,26 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>ribbon-jgroups-modules</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>ribbon-jgroups-runtime</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>ribbon-consul-modules</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>ribbon-consul-runtime</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.netflix.ribbon</groupId>
         <artifactId>ribbon-transport</artifactId>
         <version>${version.com.netflix.ribbon}</version>
@@ -1177,6 +1198,8 @@
     <module>naming</module>
     <module>remoting</module>
     <module>ribbon</module>
+    <module>ribbon-jgroups</module>
+    <module>ribbon-consul</module>
     <module>ribbon-secured</module>
     <module>ribbon-webapp</module>
     <module>security</module>
