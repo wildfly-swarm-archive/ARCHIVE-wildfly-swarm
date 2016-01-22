@@ -1,0 +1,3 @@
+implementingClassName=org.wildfly.swarm.netflix.ribbon.RibbonJGroupsArchiveImpl
+extension=.war
+archiveFormat=ZIP

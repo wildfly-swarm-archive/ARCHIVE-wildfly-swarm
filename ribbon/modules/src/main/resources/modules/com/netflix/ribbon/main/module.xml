@@ -6,6 +6,7 @@
     <artifact name="com.netflix.ribbon:ribbon-loadbalancer:${version.com.netflix.ribbon}"/>
     <artifact name="com.netflix.netflix-commons:netflix-commons-util:${version.com.netflix.commons}"/>
     <artifact name="com.netflix.netflix-commons:netflix-statistics:${version.com.netflix.commons}"/>
+    <artifact name="commons-lang:commons-lang:2.6"/>
   </resources>
 
   <dependencies>

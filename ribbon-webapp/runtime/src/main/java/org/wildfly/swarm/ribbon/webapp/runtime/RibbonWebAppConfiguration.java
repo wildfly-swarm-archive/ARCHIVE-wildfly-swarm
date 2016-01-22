@@ -20,7 +20,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ClassLoaderAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
-import org.wildfly.swarm.netflix.ribbon.RibbonArchive;
+import org.wildfly.swarm.netflix.ribbon.RibbonJGroupsArchive;
 import org.wildfly.swarm.ribbon.webapp.RibbonProperties;
 import org.wildfly.swarm.ribbon.webapp.RibbonWebAppFraction;
 import org.wildfly.swarm.undertow.WARArchive;
@@ -55,10 +55,11 @@ public class RibbonWebAppConfiguration extends AbstractServerConfiguration<Ribbo
         war.addAsWebInfResource(new StringAsset(getWebXml(fraction)), "web.xml");
         war.addClass( RibbonToTheCurbSSEServlet.class );
         war.addModule("swarm.application");
+        war.addModule("org.wildfly.swarm.netflix.ribbon.jgroups");
         war.addModule("org.wildfly.swarm.netflix.ribbon");
         war.addAsWebResource(new ClassLoaderAsset("ribbon.js", this.getClass().getClassLoader()), "ribbon.js");
         war.setContextRoot(context);
-        war.as(RibbonArchive.class);
+        war.as(RibbonJGroupsArchive.class);
         list.add(war);
         return list;
     }
