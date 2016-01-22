@@ -33,23 +33,8 @@ public class RibbonConfiguration extends AbstractServerConfiguration<RibbonFract
 
     public RibbonConfiguration() {
         super(RibbonFraction.class);
-    }
-
-    @Override
-    public RibbonFraction defaultFraction() {
-        return new RibbonFraction();
-    }
-
-    @Override
-    public List<ModelNode> getList(RibbonFraction fraction) {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<ServiceActivator> getServiceActivators(RibbonFraction fraction) {
-        List<ServiceActivator> activators = new ArrayList<>();
-        activators.add( new ClusterManagerActivator() );
-        return activators;
+        System.setProperty("ribbon.NIWSServerListClassName", "org.wildfly.swarm.netflix.ribbon.runtime.TopologyServerList");
+        System.setProperty("ribbon.NFLoadBalancerRuleClassName", "com.netflix.loadbalancer.RoundRobinRule");
     }
 
     @Override

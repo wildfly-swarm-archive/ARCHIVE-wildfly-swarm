@@ -15,18 +15,14 @@
  */
 package org.wildfly.swarm.netflix.ribbon;
 
-import org.jboss.shrinkwrap.api.Assignable;
+import org.wildfly.swarm.topology.TopologyArchive;
 
 /**
  * @author Bob McWhirter
  */
-public interface RibbonArchive extends Assignable {
-
-    String RIBBON_APP_CONF_PATH = "META-INF/netflix-ribbon-application.conf";
+public interface RibbonArchive extends TopologyArchive {
 
     RibbonArchive advertise();
     RibbonArchive advertise(String...serviceNames);
 
-    @Deprecated
-    RibbonArchive setApplicationName(String serviceName);
 }

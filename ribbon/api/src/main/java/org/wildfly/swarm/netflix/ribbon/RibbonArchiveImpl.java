@@ -15,24 +15,14 @@
  */
 package org.wildfly.swarm.netflix.ribbon;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.impl.base.ArchiveBase;
-import org.jboss.shrinkwrap.impl.base.AssignableBase;
-import org.wildfly.swarm.container.JARArchive;
-import org.wildfly.swarm.msc.ServiceActivatorArchive;
+import org.wildfly.swarm.topology.TopologyArchive;
+import org.wildfly.swarm.topology.TopologyArchiveImpl;
 
 /**
  * @author Bob McWhirter
  */
-public class RibbonArchiveImpl extends AssignableBase<ArchiveBase<?>> implements RibbonArchive {
-
-    public static final String SERVICE_ACTIVATOR_CLASS_NAME = "org.wildfly.swarm.netflix.ribbon.runtime.ApplicationAdvertiserActivator";
-
-    private List<String> serviceNames = new ArrayList<>();
+public class RibbonArchiveImpl extends TopologyArchiveImpl implements RibbonArchive {
 
     /**
      * Constructs a new instance using the underlying specified archive, which is required
@@ -43,55 +33,13 @@ public class RibbonArchiveImpl extends AssignableBase<ArchiveBase<?>> implements
         super(archive);
     }
 
-    protected List<String> getServiceNames() {
-        if (!this.serviceNames.isEmpty()) {
-            return this.serviceNames;
-        }
-        String archiveName = this.getArchive().getName();
-        int lastDotLoc = archiveName.lastIndexOf('.');
-        if (lastDotLoc > 0) {
-            return Collections.singletonList(archiveName.substring(0, lastDotLoc));
-        }
-        return Collections.singletonList(archiveName);
-    }
-
-    @Override
-    public RibbonArchive setApplicationName(String serviceName) {
-        return advertise(serviceName);
-    }
-
     @Override
     public RibbonArchive advertise() {
-        doAdvertise();
-        return this;
+        return (RibbonArchive) super.advertise();
     }
 
     @Override
     public RibbonArchive advertise(String... serviceNames) {
-        for (String serviceName : serviceNames) {
-            this.serviceNames.add(serviceName);
-        }
-
-        return advertise();
+        return (RibbonArchive) super.advertise(serviceNames);
     }
-
-    protected RibbonArchive doAdvertise() {
-        if (!as(ServiceActivatorArchive.class).containsServiceActivator(SERVICE_ACTIVATOR_CLASS_NAME )) {
-            as(ServiceActivatorArchive.class).addServiceActivator(SERVICE_ACTIVATOR_CLASS_NAME);
-            as(JARArchive.class).addModule("org.wildfly.swarm.netflix.ribbon", "runtime");
-        }
-
-        StringBuffer buf = new StringBuffer();
-
-        List<String> names = getServiceNames();
-        for (String name : names) {
-            buf.append(name).append("\n");
-        }
-
-
-        as(JARArchive.class).add(new StringAsset(buf.toString()), RIBBON_APP_CONF_PATH);
-        return this;
-    }
-
-
 }

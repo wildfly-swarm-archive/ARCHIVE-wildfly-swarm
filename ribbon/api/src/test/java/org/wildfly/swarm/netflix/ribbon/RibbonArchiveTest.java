@@ -35,7 +35,7 @@ public class RibbonArchiveTest {
         archive.as(RibbonArchive.class)
                 .advertise();
 
-        Asset asset = archive.get(RibbonArchive.RIBBON_APP_CONF_PATH).getAsset();
+        Asset asset = archive.get(RibbonArchive.REGISTRATION_CONF).getAsset();
 
         assertThat(asset).isNotNull();
         assertThat(asset).isInstanceOf(StringAsset.class);
@@ -50,7 +50,7 @@ public class RibbonArchiveTest {
         archive.as(RibbonArchive.class)
                 .advertise("myotherapp");
 
-        Asset asset = archive.get(RibbonArchive.RIBBON_APP_CONF_PATH).getAsset();
+        Asset asset = archive.get(RibbonArchive.REGISTRATION_CONF).getAsset();
 
         assertThat(asset).isNotNull();
         assertThat(asset).isInstanceOf(StringAsset.class);
@@ -66,7 +66,7 @@ public class RibbonArchiveTest {
                 .advertise("service-a")
                 .advertise("service-b", "service-c");
 
-        Asset asset = archive.get(RibbonArchive.RIBBON_APP_CONF_PATH).getAsset();
+        Asset asset = archive.get(RibbonArchive.REGISTRATION_CONF).getAsset();
 
         assertThat(asset).isNotNull();
         assertThat(asset).isInstanceOf(StringAsset.class);
@@ -81,7 +81,6 @@ public class RibbonArchiveTest {
     }
 
     @Test
-
     public void testNotAdvertise() {
         JARArchive archive = ShrinkWrap.create(JARArchive.class, "myapp.war");
         archive.as(RibbonArchive.class);
