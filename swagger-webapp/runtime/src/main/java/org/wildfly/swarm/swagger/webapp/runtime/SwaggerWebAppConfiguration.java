@@ -16,6 +16,7 @@
 package org.wildfly.swarm.swagger.webapp.runtime;
 
 import org.jboss.shrinkwrap.api.Archive;
+import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
 import org.wildfly.swarm.swagger.webapp.SwaggerProperties;
 import org.wildfly.swarm.swagger.webapp.SwaggerWebAppFraction;
@@ -32,7 +33,7 @@ public class SwaggerWebAppConfiguration extends AbstractServerConfiguration<Swag
     public SwaggerWebAppConfiguration() {
         super(SwaggerWebAppFraction.class);
 
-        deployment("org.wildfly.swarm:swagger-webapp-ui:war:1.0.0.Alpha7-SNAPSHOT")
+        deployment("org.wildfly.swarm:swagger-webapp-ui:war:" + Container.VERSION)
                 .as("swagger-webapp-ui.war")
                 .configure((fraction, archive) -> {
                     archive.as(WARArchive.class).setContextRoot(getContext());
