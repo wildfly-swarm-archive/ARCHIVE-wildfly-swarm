@@ -15,7 +15,6 @@
  */
 package org.wildfly.swarm.swagger.webapp.runtime;
 
-import org.jboss.shrinkwrap.api.Archive;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
 import org.wildfly.swarm.swagger.webapp.SwaggerProperties;
@@ -40,14 +39,14 @@ public class SwaggerWebAppConfiguration extends AbstractServerConfiguration<Swag
                 });
     }
 
-    @Override
-    public SwaggerWebAppFraction defaultFraction() {
-        return new SwaggerWebAppFraction();
-    }
-
     private static String getContext() {
         String context = System.getProperty(SwaggerProperties.CONTEXT_PATH);
         if (context == null || context == "") context = DEFAULT_CONTEXT;
         return context;
+    }
+
+    @Override
+    public SwaggerWebAppFraction defaultFraction() {
+        return new SwaggerWebAppFraction();
     }
 }

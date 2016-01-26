@@ -24,14 +24,18 @@ import java.util.List;
 public class ResourceType {
 
     private final String name;
-    private String resourceNameTemplate;
-    private String path;
 
     private final List<AvailSet> availSets = new ArrayList<>();
+
     private final List<MetricSet> metricSets = new ArrayList<>();
+
     private final List<Config> configs = new ArrayList<>();
 
     private final List<ResourceType> parents = new ArrayList<>();
+
+    private String resourceNameTemplate;
+
+    private String path;
 
     public ResourceType(String name) {
         this.name = name;

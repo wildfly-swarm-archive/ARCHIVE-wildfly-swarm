@@ -15,6 +15,14 @@
  */
 package org.wildfly.swarm.swarmtool;
 
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.repository.MavenChecksumPolicy;
@@ -27,19 +35,25 @@ import org.wildfly.swarm.fractionlist.FractionList;
 import org.wildfly.swarm.tools.BuildTool;
 import org.wildfly.swarm.tools.PackageAnalyzer;
 
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 public class Build {
     final static Set<String> REQUIRED_FRACTIONS = new HashSet<String>() {{
         add("bootstrap");
         add("container");
     }};
+
+    private final Set<String> swarmDependencies = new HashSet<>();
+
+    private File source;
+
+    private File outputDir;
+
+    private String name;
+
+    private String version;
+
+    private Properties properties;
+
+    private boolean autoDetectFractions = true;
 
     public Build() {
         swarmDependencies.addAll(REQUIRED_FRACTIONS);
@@ -96,9 +110,9 @@ public class Build {
             FractionDescriptor desc = fractionList.getFractionDescriptor("org.wildfly.swarm", fractionName);
             if (desc != null) {
                 fractions.addAll(desc.getDependencies()
-                                         .stream()
-                                         .map( d -> d.getArtifactId())
-                                         .collect(Collectors.toSet()));
+                        .stream()
+                        .map(d -> d.getArtifactId())
+                        .collect(Collectors.toSet()));
             }
         }
 
@@ -111,8 +125,8 @@ public class Build {
         final String type = parts[1] == null ? "jar" : parts[1];
         final MavenRemoteRepository jbossPublic =
                 MavenRemoteRepositories.createRemoteRepository("jboss-public-repository-group",
-                                                               "http://repository.jboss.org/nexus/content/groups/public/",
-                                                               "default");
+                        "http://repository.jboss.org/nexus/content/groups/public/",
+                        "default");
         jbossPublic.setChecksumPolicy(MavenChecksumPolicy.CHECKSUM_POLICY_IGNORE);
         jbossPublic.setUpdatePolicy(MavenUpdatePolicy.UPDATE_POLICY_NEVER);
 
@@ -139,23 +153,15 @@ public class Build {
         final String jarName = this.name != null ? this.name : baseName;
         final String outDir = this.outputDir.getCanonicalPath();
         System.err.println(String.format("Building %s/%s-swarm.jar with fractions: %s",
-                                         outDir,
-                                         jarName,
-                                         String.join(", ",
-                                                     allRequiredFractions()
-                                                             .stream()
-                                                             .sorted()
-                                                             .collect(Collectors.toList()))));
+                outDir,
+                jarName,
+                String.join(", ",
+                        allRequiredFractions()
+                                .stream()
+                                .sorted()
+                                .collect(Collectors.toList()))));
 
         return tool.build(jarName, Paths.get(outDir));
     }
-
-    private final Set<String> swarmDependencies = new HashSet<>();
-    private File source;
-    private File outputDir;
-    private String name;
-    private String version;
-    private Properties properties;
-    private boolean autoDetectFractions = true;
 
 }

@@ -16,10 +16,6 @@
 package org.wildfly.swarm.swarmtool;
 
 
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +26,10 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Properties;
+
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -46,8 +46,8 @@ public class MainTest {
             System.setErr(new PrintStream(err));
             System.setOut(new PrintStream(out));
             final String[] fullArgs = Arrays.copyOf(args, args.length + 1);
-            fullArgs[fullArgs.length - 1] =  "--output-dir=target/test-output";
-            
+            fullArgs[fullArgs.length - 1] = "--output-dir=target/test-output";
+
             result.jarFile(Main.generateSwarmJar(fullArgs));
 
         } catch (Main.ExitException e) {
@@ -65,9 +65,9 @@ public class MainTest {
 
     String getResourcePath(String name) throws URISyntaxException {
         return Paths.get(getClass().getClassLoader()
-                                     .getResource(name)
-                                     .toURI())
-                    .toString();
+                .getResource(name)
+                .toURI())
+                .toString();
     }
 
     Properties swarmProperties(Result result) throws IOException {
@@ -85,8 +85,8 @@ public class MainTest {
     @Test
     public void setProperties() throws Exception {
         final Result result = runTool(getResourcePath("simple-servlet.war"),
-                                      "-Dfoo=bar", "-Dham=biscuit",
-                                      "--property-file=" + getResourcePath("test.properties"));
+                "-Dfoo=bar", "-Dham=biscuit",
+                "--property-file=" + getResourcePath("test.properties"));
 
         assertThat(result.exitStatus).isEqualTo(0);
 
@@ -99,8 +99,11 @@ public class MainTest {
 
     class Result {
         public int exitStatus = 0;
+
         public String exitMessage = null;
+
         public File jarFile = null;
+
         public WebArchive archive = null;
 
         public void jarFile(File f) {

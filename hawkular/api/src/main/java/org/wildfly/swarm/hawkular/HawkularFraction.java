@@ -38,6 +38,20 @@ public class HawkularFraction implements Fraction {
 
     }
 
+    public static HawkularFraction createDefaultHawkularFraction() {
+        return new HawkularFraction()
+                .resourceTypeSet( ResourceTypeSets.MAIN )
+                .resourceTypeSet( ResourceTypeSets.DEPLOYMENT );
+    }
+
+    public static HawkularFraction createDefaultHawkularFraction(String host, int port, String username, String password) {
+        return createDefaultHawkularFraction()
+                .host(host)
+                .port(port)
+                .username(username)
+                .password(password);
+    }
+
     public HawkularFraction name(String name) {
         this.name = name;
         return this;
@@ -90,19 +104,5 @@ public class HawkularFraction implements Fraction {
 
     public List<ResourceTypeSet> resourceTypeSets() {
         return this.resourceTypeSets;
-    }
-
-    public static HawkularFraction createDefaultHawkularFraction() {
-        return new HawkularFraction()
-                .resourceTypeSet( ResourceTypeSets.MAIN )
-                .resourceTypeSet( ResourceTypeSets.DEPLOYMENT );
-    }
-
-    public static HawkularFraction createDefaultHawkularFraction(String host, int port, String username, String password) {
-        return createDefaultHawkularFraction()
-                .host(host)
-                .port(port)
-                .username(username)
-                .password(password);
     }
 }

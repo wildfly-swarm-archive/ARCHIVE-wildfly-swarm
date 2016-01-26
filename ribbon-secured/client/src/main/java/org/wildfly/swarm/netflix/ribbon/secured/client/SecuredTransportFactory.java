@@ -48,6 +48,10 @@ public class SecuredTransportFactory extends RibbonTransportFactory {
         super(ClientConfigFactory.DEFAULT);
     }
 
+    private static RetryHandler getDefaultHttpRetryHandlerWithConfig(IClientConfig config) {
+        return new NettyHttpLoadBalancerErrorHandler(config);
+    }
+
     @Override
     public HttpClient<ByteBuf, ByteBuf> newHttpClient(IClientConfig config) {
         List<ExecutionListener<HttpClientRequest<ByteBuf>, HttpClientResponse<ByteBuf>>> listeners = new ArrayList<>();
@@ -61,10 +65,6 @@ public class SecuredTransportFactory extends RibbonTransportFactory {
                 .build();
 
         return client;
-    }
-
-    private static RetryHandler getDefaultHttpRetryHandlerWithConfig(IClientConfig config) {
-        return new NettyHttpLoadBalancerErrorHandler(config);
     }
 
     private ExecutionListener<HttpClientRequest<ByteBuf>, HttpClientResponse<ByteBuf>> createBearerHeaderAdder() {

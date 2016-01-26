@@ -59,6 +59,26 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
         super(HawkularFraction.class);
     }
 
+    private static String toString(TimeUnit unit) {
+        switch (unit) {
+            case NANOSECONDS:
+                return "nanoseconds";
+            case MICROSECONDS:
+                return "microseconds";
+            case MILLISECONDS:
+                return "milliseconds";
+            case SECONDS:
+                return "seconds";
+            case MINUTES:
+                return "minutes";
+            case HOURS:
+                return "hours";
+            case DAYS:
+                return "days";
+        }
+        return null;
+    }
+
     @Override
     public HawkularFraction defaultFraction() {
         String host = System.getProperty(HawkularProperties.HOST, "localhost");
@@ -136,7 +156,6 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
 
         return list;
     }
-
 
     private void addMetricSets(ResourceTypeSet resourceTypeSet, List<ModelNode> list) {
         for (ResourceType resourceType : resourceTypeSet.resourceTypes()) {
@@ -217,26 +236,6 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
         node.get("attribute").set(avail.attribute());
         node.get("upRegex").set(avail.upRegex());
         list.add(node);
-    }
-
-    private static String toString(TimeUnit unit) {
-        switch (unit) {
-            case NANOSECONDS:
-                return "nanoseconds";
-            case MICROSECONDS:
-                return "microseconds";
-            case MILLISECONDS:
-                return "milliseconds";
-            case SECONDS:
-                return "seconds";
-            case MINUTES:
-                return "minutes";
-            case HOURS:
-                return "hours";
-            case DAYS:
-                return "days";
-        }
-        return null;
     }
 
     protected void addResourceTypeSets(HawkularFraction fraction, List<ModelNode> list) {
