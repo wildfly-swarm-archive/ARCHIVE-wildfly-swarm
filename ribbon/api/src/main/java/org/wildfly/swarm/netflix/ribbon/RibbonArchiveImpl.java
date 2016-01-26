@@ -16,7 +16,6 @@
 package org.wildfly.swarm.netflix.ribbon;
 
 import org.jboss.shrinkwrap.impl.base.ArchiveBase;
-import org.wildfly.swarm.topology.TopologyArchive;
 import org.wildfly.swarm.topology.TopologyArchiveImpl;
 
 /**

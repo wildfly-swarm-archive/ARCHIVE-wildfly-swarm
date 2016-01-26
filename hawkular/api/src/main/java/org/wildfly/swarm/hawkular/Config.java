@@ -21,7 +21,9 @@ package org.wildfly.swarm.hawkular;
 public class Config {
 
     private String name;
+
     private String path;
+
     private String attribute;
 
     public Config(String name) {

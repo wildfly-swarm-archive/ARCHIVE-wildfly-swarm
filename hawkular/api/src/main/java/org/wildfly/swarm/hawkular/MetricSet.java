@@ -24,7 +24,9 @@ import java.util.List;
 public class MetricSet {
 
     private final String name;
+
     private boolean enabled = true;
+
     private List<Metric> metrics = new ArrayList<>();
 
     public MetricSet(String name) {
@@ -45,7 +47,7 @@ public class MetricSet {
     }
 
     public MetricSet metric(Metric metric) {
-        this.metrics.add( metric );
+        this.metrics.add(metric);
         return this;
     }
 

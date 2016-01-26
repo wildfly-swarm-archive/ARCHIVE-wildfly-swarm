@@ -41,7 +41,7 @@ public class RibbonArchiveTest {
         assertThat(asset).isInstanceOf(StringAsset.class);
         assertThat(((StringAsset) asset).getSource().trim()).isEqualTo("myapp");
 
-        assertThat( archive.as(ServiceActivatorArchive.class).containsServiceActivator( RibbonArchiveImpl.SERVICE_ACTIVATOR_CLASS_NAME )).isTrue();
+        assertThat(archive.as(ServiceActivatorArchive.class).containsServiceActivator(RibbonArchiveImpl.SERVICE_ACTIVATOR_CLASS_NAME)).isTrue();
     }
 
     @Test
@@ -56,7 +56,7 @@ public class RibbonArchiveTest {
         assertThat(asset).isInstanceOf(StringAsset.class);
         assertThat(((StringAsset) asset).getSource().trim()).isEqualTo("myotherapp");
 
-        assertThat( archive.as(ServiceActivatorArchive.class).containsServiceActivator( RibbonArchiveImpl.SERVICE_ACTIVATOR_CLASS_NAME )).isTrue();
+        assertThat(archive.as(ServiceActivatorArchive.class).containsServiceActivator(RibbonArchiveImpl.SERVICE_ACTIVATOR_CLASS_NAME)).isTrue();
     }
 
     @Test
@@ -73,11 +73,11 @@ public class RibbonArchiveTest {
 
         String[] services = ((StringAsset) asset).getSource().split("\n");
 
-        assertThat( services ).contains( "service-a" );
-        assertThat( services ).contains( "service-b" );
-        assertThat( services ).contains( "service-c" );
+        assertThat(services).contains("service-a");
+        assertThat(services).contains("service-b");
+        assertThat(services).contains("service-c");
 
-        assertThat( archive.as(ServiceActivatorArchive.class).containsServiceActivator( RibbonArchiveImpl.SERVICE_ACTIVATOR_CLASS_NAME )).isTrue();
+        assertThat(archive.as(ServiceActivatorArchive.class).containsServiceActivator(RibbonArchiveImpl.SERVICE_ACTIVATOR_CLASS_NAME)).isTrue();
     }
 
     @Test
@@ -85,7 +85,7 @@ public class RibbonArchiveTest {
         JARArchive archive = ShrinkWrap.create(JARArchive.class, "myapp.war");
         archive.as(RibbonArchive.class);
 
-        assertThat( archive.as(ServiceActivatorArchive.class).containsServiceActivator( RibbonArchiveImpl.SERVICE_ACTIVATOR_CLASS_NAME )).isFalse();
+        assertThat(archive.as(ServiceActivatorArchive.class).containsServiceActivator(RibbonArchiveImpl.SERVICE_ACTIVATOR_CLASS_NAME)).isFalse();
     }
 
 }

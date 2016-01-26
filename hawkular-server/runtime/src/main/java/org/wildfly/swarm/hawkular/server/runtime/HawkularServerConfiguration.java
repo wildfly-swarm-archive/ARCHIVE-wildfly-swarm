@@ -82,13 +82,13 @@ public class HawkularServerConfiguration extends AbstractServerConfiguration<Haw
         list.add(node);
 
         list.add(property("hawkular.metrics.waitForService",
-                          SwarmProperties.propertyVar("hawkular.metrics.waitForService", "True")));
+                SwarmProperties.propertyVar("hawkular.metrics.waitForService", "True")));
 
         list.add(property("hawkular.backend",
-                          SwarmProperties.propertyVar("hawkular.backend", "embedded_cassandra")));
+                SwarmProperties.propertyVar("hawkular.backend", "embedded_cassandra")));
 
         list.add(property("keycloak.server.url",
-                          SwarmProperties.propertyVar("keycloak.server.url", "http://localhost:8080/auth")));
+                SwarmProperties.propertyVar("keycloak.server.url", "http://localhost:8080/auth")));
     }
 
     protected ModelNode property(String name, String value) {

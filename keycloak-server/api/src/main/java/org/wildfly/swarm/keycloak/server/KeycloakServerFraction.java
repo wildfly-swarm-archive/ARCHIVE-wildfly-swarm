@@ -18,18 +18,12 @@ package org.wildfly.swarm.keycloak.server;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.wildfly.swarm.config.datasources.DataSource;
 import org.wildfly.swarm.config.infinispan.CacheContainer;
-import org.wildfly.swarm.config.infinispan.cache_container.LocalCache;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.container.Fraction;
 import org.wildfly.swarm.datasources.DatasourcesFraction;
-import org.wildfly.swarm.ee.EEFraction;
 import org.wildfly.swarm.infinispan.InfinispanFraction;
 
 /**
@@ -46,9 +40,9 @@ public class KeycloakServerFraction implements Fraction {
         if (System.getProperty("jboss.server.config.dir") == null) {
             try {
                 Path dir = Files.createTempDirectory("swarm-keycloak-config");
-                System.setProperty("jboss.server.config.dir", dir.toString() );
-                Files.copy( getClass().getClassLoader().getResourceAsStream( "keycloak-server.json"),
-                        dir.resolve( "keycloak-server.json" ),
+                System.setProperty("jboss.server.config.dir", dir.toString());
+                Files.copy(getClass().getClassLoader().getResourceAsStream("keycloak-server.json"),
+                        dir.resolve("keycloak-server.json"),
                         StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 e.printStackTrace();

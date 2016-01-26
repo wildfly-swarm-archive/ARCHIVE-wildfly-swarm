@@ -15,12 +15,6 @@
  */
 package org.wildfly.swarm.netflix.ribbon.runtime;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.jboss.dmr.ModelNode;
-import org.jboss.msc.service.ServiceActivator;
 import org.jboss.shrinkwrap.api.Archive;
 import org.wildfly.swarm.container.JARArchive;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
@@ -41,8 +35,8 @@ public class RibbonConfiguration extends AbstractServerConfiguration<RibbonFract
     public void prepareArchive(Archive<?> archive) {
         archive.as(JARArchive.class).addModule("org.wildfly.swarm.netflix.ribbon");
         archive.as(JARArchive.class).addModule("org.wildfly.swarm.netflix.ribbon", "runtime");
-        archive.as(JARArchive.class).addModule("com.netflix.ribbon" );
-        archive.as(JARArchive.class).addModule("io.reactivex.rxjava" );
-        archive.as(JARArchive.class).addModule("io.netty" );
+        archive.as(JARArchive.class).addModule("com.netflix.ribbon");
+        archive.as(JARArchive.class).addModule("io.reactivex.rxjava");
+        archive.as(JARArchive.class).addModule("io.netty");
     }
 }

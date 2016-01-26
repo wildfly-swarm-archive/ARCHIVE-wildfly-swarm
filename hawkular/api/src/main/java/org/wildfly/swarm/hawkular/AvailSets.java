@@ -24,6 +24,6 @@ public class AvailSets {
     public static AvailSet SERVER_AVAILABILITY = new AvailSet("Server Availability")
             .avail(Avails.APP_SERVER);
 
-    public static AvailSet DEPLOYMENT_STATUS = new AvailSet("Deployment Status" )
+    public static AvailSet DEPLOYMENT_STATUS = new AvailSet("Deployment Status")
             .avail(Avails.DEPLOYMENT_STATUS);
 }

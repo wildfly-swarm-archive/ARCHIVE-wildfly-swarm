@@ -42,10 +42,11 @@ public class TopologyWebAppArquillianTest implements ContainerFactory {
 
     @Override
     public Container newContainer(String... args) throws Exception {
-        return new Container().fraction( new TopologyWebAppFraction() );
+        return new Container().fraction(new TopologyWebAppFraction());
     }
 
-    @Test @RunAsClient
+    @Test
+    @RunAsClient
     public void testNothing() {
 
     }

@@ -17,7 +17,6 @@ package org.wildfly.swarm.keycloak.server;
 
 import org.junit.Test;
 import org.wildfly.swarm.container.Container;
-import org.wildfly.swarm.keycloak.server.KeycloakServerFraction;
 
 /**
  * @author Bob McWhirter
@@ -27,7 +26,7 @@ public class KeycloakServerInVmTest {
     @Test
     public void testSimple() throws Exception {
         Container container = new Container();
-        container.fraction( new KeycloakServerFraction() );
+        container.fraction(new KeycloakServerFraction());
         container.start().stop();
     }
 }

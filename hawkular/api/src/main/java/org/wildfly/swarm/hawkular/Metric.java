@@ -18,13 +18,14 @@ package org.wildfly.swarm.hawkular;
 /**
  * @author Bob McWhirter
  */
-public class Metric extends Sampler<Metric>{
+public class Metric extends Sampler<Metric> {
 
     private String units;
+
     private String type;
 
     public Metric(String name) {
-        super( Metric.class, name );
+        super(Metric.class, name);
     }
 
     public Metric units(String units) {
@@ -44,7 +45,6 @@ public class Metric extends Sampler<Metric>{
     public String type() {
         return this.type;
     }
-
 
 
 }

@@ -42,7 +42,7 @@ public class ResourceType {
     }
 
     public ResourceType parent(ResourceType parent) {
-        this.parents.add( parent );
+        this.parents.add(parent);
         return this;
     }
 
@@ -73,7 +73,7 @@ public class ResourceType {
     }
 
     public ResourceType availSet(AvailSet availSet) {
-        this.availSets.add( availSet );
+        this.availSets.add(availSet);
         return this;
     }
 
@@ -82,7 +82,7 @@ public class ResourceType {
     }
 
     public ResourceType metricSet(MetricSet metricSet) {
-        this.metricSets.add( metricSet );
+        this.metricSets.add(metricSet);
         return this;
     }
 
@@ -91,7 +91,7 @@ public class ResourceType {
     }
 
     public ResourceType config(Config config) {
-        this.configs.add( config );
+        this.configs.add(config);
         return this;
     }
 

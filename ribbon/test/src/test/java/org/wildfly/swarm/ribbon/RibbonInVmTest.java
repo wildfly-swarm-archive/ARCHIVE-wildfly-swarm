@@ -29,7 +29,7 @@ public class RibbonInVmTest {
     @Test
     public void testSimple() throws Exception {
         Container container = new Container();
-        container.fraction( new RibbonFraction() );
+        container.fraction(new RibbonFraction());
         container.start().stop();
     }
 

@@ -15,7 +15,11 @@
  */
 package org.wildfly.swarm.hawkular;
 
-import static org.wildfly.swarm.hawkular.Metrics.*;
+import static org.wildfly.swarm.hawkular.Metrics.AggregatedWeb;
+import static org.wildfly.swarm.hawkular.Metrics.Memory;
+import static org.wildfly.swarm.hawkular.Metrics.Servlet;
+import static org.wildfly.swarm.hawkular.Metrics.Threading;
+import static org.wildfly.swarm.hawkular.Metrics.Undertow;
 
 /**
  * @author Bob McWhirter
@@ -48,7 +52,7 @@ public class MetricSets {
             .metric(Undertow.REJECTED_SESSIONS)
             .metric(Undertow.MAX_ACTIVE_SESSIONS);
 
-    public static MetricSet SERVLET_METRICS = new MetricSet("Servlet Metrics" )
+    public static MetricSet SERVLET_METRICS = new MetricSet("Servlet Metrics")
             .metric(Servlet.MAX_REQUEST_TIME)
             .metric(Servlet.MIN_REQUEST_TIME)
             .metric(Servlet.REQUEST_COUNT)

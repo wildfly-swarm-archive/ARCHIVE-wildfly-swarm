@@ -28,16 +28,16 @@ import java.util.Map;
  */
 public class FractionList {
 
-    private Map<String,FractionDescriptor> descriptors = new HashMap<>();
+    private Map<String, FractionDescriptor> descriptors = new HashMap<>();
 
     public FractionList() {
-        try (BufferedReader reader = new BufferedReader( new InputStreamReader(getClass().getClassLoader().getResourceAsStream("fraction-list.txt") ))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("fraction-list.txt")))) {
 
             String line = null;
 
-            while ( ( line = reader.readLine()) != null ) {
+            while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                if ( line.isEmpty() ) {
+                if (line.isEmpty()) {
                     continue;
                 }
 
@@ -45,14 +45,14 @@ public class FractionList {
 
                 String lhs = sides[0].trim();
 
-                FractionDescriptor desc = this.descriptors.get( lhs );
-                if ( desc == null ) {
+                FractionDescriptor desc = this.descriptors.get(lhs);
+                if (desc == null) {
                     String[] gavParts = lhs.split(":");
-                    desc = new FractionDescriptor( gavParts[0], gavParts[1] );
-                    this.descriptors.put( lhs, desc );
+                    desc = new FractionDescriptor(gavParts[0], gavParts[1]);
+                    this.descriptors.put(lhs, desc);
                 }
 
-                if ( sides.length > 1 ) {
+                if (sides.length > 1) {
                     String rhs = sides[1].trim();
                     String[] deps = rhs.split(",");
 

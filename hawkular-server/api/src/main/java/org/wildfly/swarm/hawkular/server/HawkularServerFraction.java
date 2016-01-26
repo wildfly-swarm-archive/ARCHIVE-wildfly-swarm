@@ -34,9 +34,9 @@ public class HawkularServerFraction implements Fraction {
 
         security.securityDomain("keycloak", (domain) -> {
             domain.classicAuthentication((auth) -> {
-                auth.loginModule( "default", (login)->{
-                    login.code( "org.keycloak.adapters.jboss.KeycloakLoginModule");
-                    login.flag(Flag.REQUIRED );
+                auth.loginModule("default", (login) -> {
+                    login.code("org.keycloak.adapters.jboss.KeycloakLoginModule");
+                    login.flag(Flag.REQUIRED);
                 });
             });
         });

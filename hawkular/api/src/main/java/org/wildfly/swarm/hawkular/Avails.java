@@ -16,7 +16,8 @@
 package org.wildfly.swarm.hawkular;
 
 
-import static java.util.concurrent.TimeUnit.*;
+import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * @author Bob McWhirter
@@ -29,7 +30,7 @@ public class Avails {
             .attribtue("server-state")
             .upRegex("run.*");
 
-    public static Avail DEPLOYMENT_STATUS = new Avail( "Deployment Status" )
+    public static Avail DEPLOYMENT_STATUS = new Avail("Deployment Status")
             .every(1, MINUTES)
             .path("/")
             .attribtue("status")

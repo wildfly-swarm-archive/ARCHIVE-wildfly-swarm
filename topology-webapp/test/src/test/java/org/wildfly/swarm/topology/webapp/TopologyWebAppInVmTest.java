@@ -26,7 +26,7 @@ public class TopologyWebAppInVmTest {
     @Test
     public void testSimple() throws Exception {
         Container container = new Container();
-        container.fraction( new TopologyWebAppFraction() );
+        container.fraction(new TopologyWebAppFraction());
         container.start().stop();
     }
 }

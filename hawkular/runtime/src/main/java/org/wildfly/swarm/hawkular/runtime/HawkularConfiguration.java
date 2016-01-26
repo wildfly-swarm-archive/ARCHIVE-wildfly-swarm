@@ -272,7 +272,7 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
         node.get("metricSets").set(String.join(",", metricSetNames));
         list.add(node);
         List<String> parentNames = resourceType.parents().stream().map(e -> e.name()).collect(Collectors.toList());
-        if ( ! parentNames.isEmpty() ) {
+        if (!parentNames.isEmpty()) {
             node.get("parents").set(String.join(",", parentNames));
         }
 
@@ -280,13 +280,13 @@ public class HawkularConfiguration extends AbstractServerConfiguration<HawkularF
             node = new ModelNode();
             node.get(OP_ADDR).set(setAddr.append("resource-type-dmr", resourceType.name()).append("resource-config-dmr", config.name()).toModelNode());
             node.get(OP).set(ADD);
-            if ( config.path() != null ) {
-                node.get( "path" ).set( config.path() );
+            if (config.path() != null) {
+                node.get("path").set(config.path());
             }
-            if ( config.attribute() != null ) {
-                node.get( "attribute" ).set( config.attribute() );
+            if (config.attribute() != null) {
+                node.get("attribute").set(config.attribute());
             }
-            list.add( node );
+            list.add(node);
         }
 
     }

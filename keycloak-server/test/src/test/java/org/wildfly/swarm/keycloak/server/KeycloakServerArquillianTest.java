@@ -42,10 +42,11 @@ public class KeycloakServerArquillianTest implements ContainerFactory {
 
     @Override
     public Container newContainer(String... args) throws Exception {
-        return new Container().fraction( new KeycloakServerFraction() );
+        return new Container().fraction(new KeycloakServerFraction());
     }
 
-    @Test @RunAsClient
+    @Test
+    @RunAsClient
     public void testNothing() {
 
     }

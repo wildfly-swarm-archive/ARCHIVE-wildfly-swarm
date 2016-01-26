@@ -51,7 +51,7 @@ public class KeycloakServerConfiguration extends AbstractServerConfiguration<Key
         PathAddress address = PathAddress.pathAddress(PathElement.pathElement(SUBSYSTEM, "keycloak-server"));
 
         ModelNode node = new ModelNode();
-        node.get(OP_ADDR).set(EXTENSION, "org.keycloak.keycloak-wildfly-server-subsystem" );
+        node.get(OP_ADDR).set(EXTENSION, "org.keycloak.keycloak-wildfly-server-subsystem");
         node.get(OP).set(ADD);
         list.add(node);
 

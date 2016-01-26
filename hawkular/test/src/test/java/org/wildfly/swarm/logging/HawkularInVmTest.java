@@ -27,7 +27,7 @@ public class HawkularInVmTest {
     @Test
     public void testSimple() throws Exception {
         Container container = new Container();
-        container.fraction(HawkularFraction.createDefaultHawkularFraction() );
+        container.fraction(HawkularFraction.createDefaultHawkularFraction());
         container.start().stop();
     }
 }

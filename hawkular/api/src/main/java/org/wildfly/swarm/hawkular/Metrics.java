@@ -15,7 +15,8 @@
  */
 package org.wildfly.swarm.hawkular;
 
-import static java.util.concurrent.TimeUnit.*;
+import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * @author Bob McWhirter
@@ -119,25 +120,25 @@ public interface Metrics {
     }
 
     public interface Servlet {
-        public static Metric MAX_REQUEST_TIME = new Metric("Max Request Time").every(5,MINUTES)
+        public static Metric MAX_REQUEST_TIME = new Metric("Max Request Time").every(5, MINUTES)
                 .units("milliseconds")
-                .path( "/" )
-                .attribtue( "max-request-time" );
+                .path("/")
+                .attribtue("max-request-time");
 
-        public static Metric MIN_REQUEST_TIME = new Metric("Max Request Time").every(5,MINUTES)
+        public static Metric MIN_REQUEST_TIME = new Metric("Max Request Time").every(5, MINUTES)
                 .units("milliseconds")
-                .path( "/" )
-                .attribtue( "min-request-time" );
+                .path("/")
+                .attribtue("min-request-time");
 
-        public static Metric TOTAL_REQUEST_TIME = new Metric( "Total Request Time" ).every(5, MINUTES)
-                .type( "counter" )
-                .path( "/" )
-                .attribtue( "total-request-time");
+        public static Metric TOTAL_REQUEST_TIME = new Metric("Total Request Time").every(5, MINUTES)
+                .type("counter")
+                .path("/")
+                .attribtue("total-request-time");
 
-        public static Metric REQUEST_COUNT = new Metric( "Request Count" ).every( 5, MINUTES )
-                .type( "counter" )
-                .path( "/" )
-                .attribtue( "request-count" );
+        public static Metric REQUEST_COUNT = new Metric("Request Count").every(5, MINUTES)
+                .type("counter")
+                .path("/")
+                .attribtue("request-count");
     }
 
 }

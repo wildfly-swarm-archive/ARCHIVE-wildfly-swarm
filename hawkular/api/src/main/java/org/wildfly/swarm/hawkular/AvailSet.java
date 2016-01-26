@@ -24,7 +24,9 @@ import java.util.List;
 public class AvailSet {
 
     private final String name;
+
     private boolean enabled = true;
+
     private List<Avail> avails = new ArrayList<>();
 
     public AvailSet(String name) {
@@ -45,7 +47,7 @@ public class AvailSet {
     }
 
     public AvailSet avail(Avail avail) {
-        this.avails.add( avail );
+        this.avails.add(avail);
         return this;
     }
 

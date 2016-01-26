@@ -44,10 +44,11 @@ public class HawkularServerArquillianTest implements ContainerFactory {
 
     @Override
     public Container newContainer(String... args) throws Exception {
-        return new Container().fraction( new HawkularServerFraction() );
+        return new Container().fraction(new HawkularServerFraction());
     }
 
-    @Test @RunAsClient
+    @Test
+    @RunAsClient
     public void testNothing() {
 
     }

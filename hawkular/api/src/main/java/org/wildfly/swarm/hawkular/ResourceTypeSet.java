@@ -24,7 +24,9 @@ import java.util.List;
 public class ResourceTypeSet {
 
     private final String name;
+
     private boolean enabled = true;
+
     private List<ResourceType> resourceTypes = new ArrayList<>();
 
     public ResourceTypeSet(String name) {
@@ -45,7 +47,7 @@ public class ResourceTypeSet {
     }
 
     public ResourceTypeSet resourceType(ResourceType resourceType) {
-        this.resourceTypes.add( resourceType );
+        this.resourceTypes.add(resourceType);
         return this;
     }
 

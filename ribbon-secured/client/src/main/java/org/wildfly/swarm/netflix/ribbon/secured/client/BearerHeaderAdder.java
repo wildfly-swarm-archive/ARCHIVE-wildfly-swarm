@@ -35,10 +35,10 @@ public class BearerHeaderAdder implements ExecutionListener<HttpClientRequest<By
     @Override
     public void onStartWithServer(ExecutionContext<HttpClientRequest<ByteBuf>> context, ExecutionInfo info) throws AbortExecutionException {
         KeycloakSecurityContext securityContext = KeycloakSecurityContextAssociation.get();
-        if ( securityContext != null ) {
+        if (securityContext != null) {
             HttpClientRequest<ByteBuf> request = context.getRequest();
             request.withHeader("Authorization", "Bearer " + securityContext.getTokenString());
-            context.put( KeycloakSecurityContextAssociation.class.getName(), securityContext );
+            context.put(KeycloakSecurityContextAssociation.class.getName(), securityContext);
         } else {
             KeycloakSecurityContextAssociation.disassociate();
         }
@@ -47,8 +47,8 @@ public class BearerHeaderAdder implements ExecutionListener<HttpClientRequest<By
     @Override
     public void onExceptionWithServer(ExecutionContext<HttpClientRequest<ByteBuf>> context, Throwable exception, ExecutionInfo info) {
         KeycloakSecurityContext securityContext = (KeycloakSecurityContext) context.get(KeycloakSecurityContextAssociation.class.getName());
-        if ( securityContext != null ) {
-            KeycloakSecurityContextAssociation.associate( securityContext );
+        if (securityContext != null) {
+            KeycloakSecurityContextAssociation.associate(securityContext);
         } else {
             KeycloakSecurityContextAssociation.disassociate();
         }
@@ -57,8 +57,8 @@ public class BearerHeaderAdder implements ExecutionListener<HttpClientRequest<By
     @Override
     public void onExecutionSuccess(ExecutionContext<HttpClientRequest<ByteBuf>> context, HttpClientResponse<ByteBuf> response, ExecutionInfo info) {
         KeycloakSecurityContext securityContext = (KeycloakSecurityContext) context.get(KeycloakSecurityContextAssociation.class.getName());
-        if ( securityContext != null ) {
-            KeycloakSecurityContextAssociation.associate( securityContext );
+        if (securityContext != null) {
+            KeycloakSecurityContextAssociation.associate(securityContext);
         } else {
             KeycloakSecurityContextAssociation.disassociate();
         }
@@ -67,8 +67,8 @@ public class BearerHeaderAdder implements ExecutionListener<HttpClientRequest<By
     @Override
     public void onExecutionFailed(ExecutionContext<HttpClientRequest<ByteBuf>> context, Throwable finalException, ExecutionInfo info) {
         KeycloakSecurityContext securityContext = (KeycloakSecurityContext) context.get(KeycloakSecurityContextAssociation.class.getName());
-        if ( securityContext != null ) {
-            KeycloakSecurityContextAssociation.associate( securityContext );
+        if (securityContext != null) {
+            KeycloakSecurityContextAssociation.associate(securityContext);
         } else {
             KeycloakSecurityContextAssociation.disassociate();
         }

@@ -15,14 +15,14 @@
  */
 package org.wildfly.swarm.netflix.ribbon.runtime;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.netflix.client.config.IClientConfig;
 import com.netflix.loadbalancer.AbstractServerList;
 import com.netflix.loadbalancer.Server;
 import org.wildfly.swarm.topology.runtime.Registration;
 import org.wildfly.swarm.topology.runtime.TopologyManager;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Bob McWhirter
@@ -38,19 +38,19 @@ public class TopologyServerList extends AbstractServerList<Server> {
 
     @Override
     public List<Server> getInitialListOfServers() {
-        return TopologyManager.INSTANCE.registrationsForService( this.appName )
-                .stream().flatMap( e-> e.endPoints(Registration.EndPoint.Visibility.PUBLIC)
+        return TopologyManager.INSTANCE.registrationsForService(this.appName)
+                .stream().flatMap(e -> e.endPoints(Registration.EndPoint.Visibility.PUBLIC)
                         .stream()
-                        .map( ep-> new Server( ep.getAddress(), ep.getPort() )))
-        .collect(Collectors.toList() );
+                        .map(ep -> new Server(ep.getAddress(), ep.getPort())))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Server> getUpdatedListOfServers() {
-        return TopologyManager.INSTANCE.registrationsForService( this.appName )
-                .stream().flatMap( e-> e.endPoints(Registration.EndPoint.Visibility.PUBLIC)
+        return TopologyManager.INSTANCE.registrationsForService(this.appName)
+                .stream().flatMap(e -> e.endPoints(Registration.EndPoint.Visibility.PUBLIC)
                         .stream()
-                        .map( ep-> new Server( ep.getAddress(), ep.getPort() )))
-                .collect(Collectors.toList() );
+                        .map(ep -> new Server(ep.getAddress(), ep.getPort())))
+                .collect(Collectors.toList());
     }
 }

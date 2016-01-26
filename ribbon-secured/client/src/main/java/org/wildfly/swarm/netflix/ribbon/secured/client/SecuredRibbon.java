@@ -20,6 +20,6 @@ package org.wildfly.swarm.netflix.ribbon.secured.client;
  */
 public class SecuredRibbon {
     public static <T> T from(Class<T> classType) {
-        return SecuredRibbonResourceFactory.INSTANCE.from( classType );
+        return SecuredRibbonResourceFactory.INSTANCE.from(classType);
     }
 }

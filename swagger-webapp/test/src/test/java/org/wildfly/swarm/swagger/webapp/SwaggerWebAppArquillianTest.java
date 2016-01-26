@@ -42,10 +42,11 @@ public class SwaggerWebAppArquillianTest implements ContainerFactory {
 
     @Override
     public Container newContainer(String... args) throws Exception {
-        return new Container().fraction( new SwaggerWebAppFraction() );
+        return new Container().fraction(new SwaggerWebAppFraction());
     }
 
-    @Test @RunAsClient
+    @Test
+    @RunAsClient
     public void testNothing() {
 
     }

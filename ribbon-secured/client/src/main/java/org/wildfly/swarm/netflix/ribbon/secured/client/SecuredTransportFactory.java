@@ -15,6 +15,11 @@
  */
 package org.wildfly.swarm.netflix.ribbon.secured.client;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 import com.netflix.client.RetryHandler;
 import com.netflix.client.config.ClientConfigFactory;
 import com.netflix.client.config.IClientConfig;
@@ -27,11 +32,6 @@ import io.netty.buffer.ByteBuf;
 import io.reactivex.netty.protocol.http.client.HttpClient;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import io.reactivex.netty.protocol.http.client.HttpClientResponse;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * @author Bob McWhirter

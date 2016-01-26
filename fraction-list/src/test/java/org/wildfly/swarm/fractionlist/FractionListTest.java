@@ -38,12 +38,12 @@ public class FractionListTest {
 
         assertThat(list.getFractionDescriptor("org.wildfly.swarm", "logstash")).isEqualTo(logstash);
 
-        assertThat( logstash.getGroupId() ).isEqualTo("org.wildfly.swarm" );
-        assertThat( logstash.getArtifactId() ).isEqualTo("logstash" );
-        assertThat( logstash.getDependencies() ).hasSize(2);
+        assertThat(logstash.getGroupId()).isEqualTo("org.wildfly.swarm");
+        assertThat(logstash.getArtifactId()).isEqualTo("logstash");
+        assertThat(logstash.getDependencies()).hasSize(2);
 
-        assertThat( logstash.getDependencies().stream().filter( e->e.getArtifactId().equals ("container" ) ).collect(Collectors.toList())).isNotEmpty();
-        assertThat( logstash.getDependencies().stream().filter( e->e.getArtifactId().equals ("logging" ) ).collect(Collectors.toList())).isNotEmpty();
+        assertThat(logstash.getDependencies().stream().filter(e -> e.getArtifactId().equals("container")).collect(Collectors.toList())).isNotEmpty();
+        assertThat(logstash.getDependencies().stream().filter(e -> e.getArtifactId().equals("logging")).collect(Collectors.toList())).isNotEmpty();
     }
 
 }

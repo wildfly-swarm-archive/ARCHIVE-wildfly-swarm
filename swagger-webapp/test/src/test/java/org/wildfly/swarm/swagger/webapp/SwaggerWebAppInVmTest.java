@@ -15,7 +15,6 @@
  */
 package org.wildfly.swarm.swagger.webapp;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.wildfly.swarm.container.Container;
 
@@ -27,7 +26,7 @@ public class SwaggerWebAppInVmTest {
     @Test
     public void testSimple() throws Exception {
         Container container = new Container();
-        container.fraction( new SwaggerWebAppFraction() );
+        container.fraction(new SwaggerWebAppFraction());
         container.start().stop();
     }
 }

@@ -43,10 +43,11 @@ public class RibbonArquillianTest implements ContainerFactory {
 
     @Override
     public Container newContainer(String... args) throws Exception {
-        return new Container().fraction( new RibbonFraction() );
+        return new Container().fraction(new RibbonFraction());
     }
 
-    @Test @RunAsClient
+    @Test
+    @RunAsClient
     public void testNothing() {
 
     }

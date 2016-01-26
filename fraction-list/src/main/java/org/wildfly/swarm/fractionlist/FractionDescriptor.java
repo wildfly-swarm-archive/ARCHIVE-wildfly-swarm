@@ -25,6 +25,7 @@ import java.util.Set;
 public class FractionDescriptor {
 
     private final String groupId;
+
     private final String artifactId;
 
     private Set<FractionDescriptor> dependencies = new HashSet<>();
@@ -35,7 +36,7 @@ public class FractionDescriptor {
     }
 
     void addDependency(FractionDescriptor dep) {
-        this.dependencies.add( dep );
+        this.dependencies.add(dep);
     }
 
     public String getGroupId() {

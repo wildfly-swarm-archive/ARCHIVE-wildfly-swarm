@@ -28,8 +28,11 @@ public class HawkularFraction implements Fraction {
     private String name = "wildfly-swarm";
 
     private String username;
+
     private String password;
+
     private String host = "localhost";
+
     private int port = 8080;
 
     private List<ResourceTypeSet> resourceTypeSets = new ArrayList<>();
@@ -40,8 +43,8 @@ public class HawkularFraction implements Fraction {
 
     public static HawkularFraction createDefaultHawkularFraction() {
         return new HawkularFraction()
-                .resourceTypeSet( ResourceTypeSets.MAIN )
-                .resourceTypeSet( ResourceTypeSets.DEPLOYMENT );
+                .resourceTypeSet(ResourceTypeSets.MAIN)
+                .resourceTypeSet(ResourceTypeSets.DEPLOYMENT);
     }
 
     public static HawkularFraction createDefaultHawkularFraction(String host, int port, String username, String password) {
@@ -98,7 +101,7 @@ public class HawkularFraction implements Fraction {
     }
 
     public HawkularFraction resourceTypeSet(ResourceTypeSet resourceTypeSet) {
-        this.resourceTypeSets.add( resourceTypeSet );
+        this.resourceTypeSets.add(resourceTypeSet);
         return this;
     }
 
