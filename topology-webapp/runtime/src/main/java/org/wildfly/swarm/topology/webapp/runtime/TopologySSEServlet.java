@@ -82,9 +82,13 @@ public class TopologySSEServlet extends HttpServlet {
         TopologyListener topologyListener = topo -> {
             String json = topologyToJson(req.getServerPort());
             synchronized (writeLock) {
-                writer.write("event: topologyChange\n");
-                writer.write("data: " + json);
-                writer.flush();
+                try {
+                    writer.write("event: topologyChange\n");
+                    writer.write("data: " + json);
+                    writer.flush();
+                } catch (NullPointerException e) {
+                    // ignore
+                }
             }
         };
 
