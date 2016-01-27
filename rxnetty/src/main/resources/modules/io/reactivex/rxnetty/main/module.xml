@@ -10,6 +10,7 @@
     <module name="io.netty"/>
     <module name="com.netflix.servo"/>
     <module name="org.slf4j"/>
+    <module name="javax.api"/>
   </dependencies>
 
 </module>

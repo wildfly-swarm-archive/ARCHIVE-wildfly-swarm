@@ -19,6 +19,7 @@
     <module name="com.google.guava" slot="netflix"/>
     <module name="javax.api"/>
     <module name="org.wildfly.swarm.netflix.ribbon" slot="runtime"/>
+    <module name="org.apache.commons.lang"/>
   </dependencies>
 
 </module>
