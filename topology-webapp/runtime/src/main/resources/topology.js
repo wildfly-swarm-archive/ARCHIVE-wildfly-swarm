@@ -158,8 +158,9 @@ var topology = (function() {
 
     function onTopologyChange(f) {
       sse.addEventListener('topologyChange', function(message) {
-        f(message.data);
+        f(JSON.parse(message.data));
       });
+      f(topology);
     }
 
     var _topology = {
