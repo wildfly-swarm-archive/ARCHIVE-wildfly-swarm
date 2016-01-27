@@ -21,6 +21,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import javax.naming.NamingException;
 import javax.servlet.AsyncContext;
@@ -48,6 +52,8 @@ public class TopologySSEServlet extends HttpServlet {
 
     private ExternalAddressMapper externalAddressMapper;
 
+    private ScheduledExecutorService keepAliveExecutor;
+
     @Override
     public void init(ServletConfig config) throws ServletException {
 
@@ -66,6 +72,8 @@ public class TopologySSEServlet extends HttpServlet {
             e.printStackTrace();
             throw new ServletException(e);
         }
+
+        this.keepAliveExecutor = Executors.newScheduledThreadPool(2);
     }
 
     @Override
@@ -82,52 +90,44 @@ public class TopologySSEServlet extends HttpServlet {
         TopologyListener topologyListener = topo -> {
             String json = topologyToJson(req.getServerPort());
             synchronized (writeLock) {
-                try {
-                    writer.write("event: topologyChange\n");
-                    writer.write("data: " + json);
-                    writer.flush();
-                } catch (NullPointerException e) {
-                    // ignore
-                }
+                writer.write("event: topologyChange\n");
+                writer.write("data: " + json);
+                writer.flush();
             }
         };
 
-        Thread keepAlive = new Thread(() -> {
-            while (true) {
-                try {
-                    Thread.sleep(15_000);
-                    synchronized (writeLock) {
-                        try {
-                            writer.write(":\n\n");
-                            writer.flush();
-                        } catch (NullPointerException e) {
-                            // ignore?
-                        }
+        ScheduledFuture keepAlive = this.keepAliveExecutor.scheduleAtFixedRate(() -> {
+                    try {
+                        writer.write(":\n\n");
+                        writer.flush();
+                    } catch (Throwable t) {
+                        TopologySSEServlet.this.topology.removeListener(topologyListener);
+                        throw t;
                     }
-                } catch (InterruptedException e) {
-                    break;
-                }
-            }
-        });
+                },
+                10,
+                15,
+                TimeUnit.SECONDS);
+
 
         asyncContext.setTimeout(0);
         asyncContext.addListener(new AsyncListener() {
             @Override
             public void onComplete(AsyncEvent asyncEvent) throws IOException {
                 TopologySSEServlet.this.topology.removeListener(topologyListener);
-                keepAlive.interrupt();
+                keepAlive.cancel(true);
             }
 
             @Override
             public void onTimeout(AsyncEvent asyncEvent) throws IOException {
                 TopologySSEServlet.this.topology.removeListener(topologyListener);
-                keepAlive.interrupt();
+                keepAlive.cancel(true);
             }
 
             @Override
             public void onError(AsyncEvent asyncEvent) throws IOException {
                 TopologySSEServlet.this.topology.removeListener(topologyListener);
-                keepAlive.interrupt();
+                keepAlive.cancel(true);
             }
 
             @Override
@@ -141,8 +141,6 @@ public class TopologySSEServlet extends HttpServlet {
         writer.write("event: topologyChange\n");
         writer.write("data: " + json);
         writer.flush();
-
-        keepAlive.start();
 
     }
 
