@@ -162,18 +162,29 @@ public class TopologySSEServlet extends HttpServlet {
             while (listIter.hasNext()) {
                 Topology.Entry server = listIter.next();
                 server = this.externalAddressMapper.toExternal(server, externalPort);
-                json.append("    ").append('"').append(server).append('"');
-                if (listIter.hasNext()) {
-                    json.append(", ");
-                }
-                json.append("");
-            }
+                json.append("{");
+                json.append("\"endpoint\": \"").append(server.getAddress() + ":" + server.getPort()).append("\",");
+                json.append("\"tags\":[");
 
-            json.append("  ]");
+                List<String> tags = server.getTags();
+                Iterator<String> tagIter = tags.iterator();
+                while ( tagIter.hasNext() ) {
+                    String tag = tagIter.next();
+                    json.append("\"").append(tag).append("\"");
+                    if ( tagIter.hasNext() ) {
+                        json.append(",");
+                    }
+                }
+                json.append("]");
+                json.append("}");
+                if (listIter.hasNext()) {
+                    json.append(",");
+                }
+            }
+            json.append("]");
             if (keyIter.hasNext()) {
                 json.append(",");
             }
-            json.append("");
         }
 
         json.append("}\n\n");

@@ -30,7 +30,7 @@ var topology = (function() {
       path = path || '/';
 
       // TODO: Try other URLs if there is more than one server
-      settings.url = '//' + allServers[0] + path;
+      settings.url = '//' + allServers[0].endpoint + path;
 
       // Set relevant headers
       if (settings.method === 'POST') {
