@@ -16,12 +16,14 @@
 package org.wildfly.swarm.swagger.webapp.runtime;
 
 import org.jboss.shrinkwrap.api.*;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
 import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
 import org.wildfly.swarm.swagger.webapp.SwaggerWebAppFraction;
 import org.wildfly.swarm.undertow.WARArchive;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +51,7 @@ public class SwaggerWebAppConfiguration extends AbstractServerConfiguration<Swag
             if (userContent != null) {
                 war.merge(userContent);
             }
+            //war.as(ZipExporter.class).exportTo(new File("swagger-webapp-ui.war"), true);
             list.add(war);
         } catch (Exception e) {
             e.printStackTrace();

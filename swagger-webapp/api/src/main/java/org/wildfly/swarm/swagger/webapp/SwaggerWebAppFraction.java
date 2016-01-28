@@ -22,6 +22,7 @@ import org.jboss.shrinkwrap.api.importer.ExplodedImporter;
 import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.container.Fraction;
 import org.wildfly.swarm.container.JARArchive;
+import org.wildfly.swarm.undertow.UndertowProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +37,7 @@ public class SwaggerWebAppFraction implements Fraction {
     private String context = DEFAULT_CONTEXT;
 
     public SwaggerWebAppFraction() {
+        context = System.getProperty(UndertowProperties.CONTEXT_PATH, DEFAULT_CONTEXT);
     }
 
     public String getContext() {
@@ -58,9 +60,8 @@ public class SwaggerWebAppFraction implements Fraction {
      * @return this
      */
     public SwaggerWebAppFraction addWebContent(String content) {
-        if (content == null || content.equals("")) {
-            // log an error?
-        }
+        if (content == null) return this;
+        if (content.equals("")) return this;
         File maybeFile = new File(content);
         if (!maybeFile.exists()) {
             // the content string is a GAV
