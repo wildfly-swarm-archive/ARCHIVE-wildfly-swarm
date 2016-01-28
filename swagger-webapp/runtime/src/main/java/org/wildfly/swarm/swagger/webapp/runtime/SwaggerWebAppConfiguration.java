@@ -15,34 +15,45 @@
  */
 package org.wildfly.swarm.swagger.webapp.runtime;
 
+import org.jboss.shrinkwrap.api.*;
+import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.container.runtime.AbstractServerConfiguration;
-import org.wildfly.swarm.swagger.webapp.SwaggerProperties;
 import org.wildfly.swarm.swagger.webapp.SwaggerWebAppFraction;
 import org.wildfly.swarm.undertow.WARArchive;
 
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Lance Ball
  */
 public class SwaggerWebAppConfiguration extends AbstractServerConfiguration<SwaggerWebAppFraction> {
 
-    private static final String DEFAULT_CONTEXT = "/swagger-ui";
-
     public SwaggerWebAppConfiguration() {
         super(SwaggerWebAppFraction.class);
-
-        deployment("org.wildfly.swarm:swagger-webapp-ui:war:" + Container.VERSION)
-                .as("swagger-webapp-ui.war")
-                .configure((fraction, archive) -> {
-                    archive.as(WARArchive.class).setContextRoot(getContext());
-                });
     }
 
-    private static String getContext() {
-        String context = System.getProperty(SwaggerProperties.CONTEXT_PATH);
-        if (context == null || context == "") context = DEFAULT_CONTEXT;
-        return context;
+    @Override
+    public List<Archive> getImplicitDeployments(SwaggerWebAppFraction fraction) throws Exception {
+        List<Archive> list = new ArrayList<>();
+        try {
+            // Get the swagger-ui bits as an Archive
+            WARArchive war = Swarm.artifact("org.wildfly.swarm:swagger-webapp-ui:war:" + Container.VERSION,
+                    "swagger-webapp-ui.war")
+                    .as(WARArchive.class)
+                    .setContextRoot(fraction.getContext());
+
+            // If any user content has been provided, merge that with the swagger-ui bits
+            Archive<?> userContent = fraction.getWebContent();
+            if (userContent != null) {
+                war.merge(userContent);
+            }
+            list.add(war);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     @Override
