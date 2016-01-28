@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.netflix.client.config.IClientConfig;
+import com.netflix.client.config.IClientConfigKey;
 import com.netflix.loadbalancer.AbstractServerList;
 import com.netflix.loadbalancer.Server;
-import org.wildfly.swarm.topology.runtime.Registration;
 import org.wildfly.swarm.topology.runtime.TopologyManager;
 
 /**
@@ -31,26 +31,29 @@ public class TopologyServerList extends AbstractServerList<Server> {
 
     private String appName;
 
+    private Boolean isSecure;
+
     @Override
     public void initWithNiwsConfig(IClientConfig config) {
         this.appName = config.getClientName();
+        this.isSecure = config.get(IClientConfigKey.Keys.IsSecure, false);
     }
 
     @Override
     public List<Server> getInitialListOfServers() {
-        return TopologyManager.INSTANCE.registrationsForService(this.appName)
-                .stream().flatMap(e -> e.endPoints(Registration.EndPoint.Visibility.PUBLIC)
-                        .stream()
-                        .map(ep -> new Server(ep.getAddress(), ep.getPort())))
+        String tag = ( this.isSecure ? "https" : "http" );
+        return TopologyManager.INSTANCE.registrationsForService(this.appName, tag)
+                .stream()
+                .map( reg-> new Server( reg.getAddress(), reg.getPort() ))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Server> getUpdatedListOfServers() {
-        return TopologyManager.INSTANCE.registrationsForService(this.appName)
-                .stream().flatMap(e -> e.endPoints(Registration.EndPoint.Visibility.PUBLIC)
-                        .stream()
-                        .map(ep -> new Server(ep.getAddress(), ep.getPort())))
+        String tag = ( this.isSecure ? "https" : "http" );
+        return TopologyManager.INSTANCE.registrationsForService(this.appName, tag)
+                .stream()
+                .map( reg-> new Server( reg.getAddress(), reg.getPort() ))
                 .collect(Collectors.toList());
     }
 }
