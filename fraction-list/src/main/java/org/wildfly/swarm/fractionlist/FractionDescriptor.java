@@ -50,4 +50,9 @@ public class FractionDescriptor {
     public Set<FractionDescriptor> getDependencies() {
         return Collections.unmodifiableSet(this.dependencies);
     }
+    
+    @Override
+    public String toString() { 
+        return this.groupId + ":" + this.artifactId;
+    }
 }
