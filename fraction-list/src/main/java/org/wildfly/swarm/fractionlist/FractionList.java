@@ -28,7 +28,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Bob McWhirter
  */
 public class FractionList {
-
+    
+    public static final String DEFAULT_GROUP_ID = "org.wildfly.swarm";
     private final Map<String, FractionDescriptor> descriptors = new HashMap<>();
 
     private static final AtomicReference<FractionList> INSTANCE = new AtomicReference<>();
