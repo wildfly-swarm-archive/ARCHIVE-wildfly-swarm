@@ -30,7 +30,7 @@ public class FractionListTest {
 
     @Test
     public void testList() throws IOException {
-        FractionList list = new FractionList();
+        FractionList list = FractionList.get();
 
         Collection<FractionDescriptor> descriptors = list.getFractionDescriptors();
 
@@ -44,6 +44,17 @@ public class FractionListTest {
 
         assertThat(logstash.getDependencies().stream().filter(e -> e.getArtifactId().equals("container")).collect(Collectors.toList())).isNotEmpty();
         assertThat(logstash.getDependencies().stream().filter(e -> e.getArtifactId().equals("logging")).collect(Collectors.toList())).isNotEmpty();
+    }
+
+    @Test
+    public void testMultipleGets() throws IOException {
+        FractionList l1 = FractionList.get();
+        FractionList l2 = FractionList.get();
+        FractionList l3 = FractionList.get();
+
+        assertThat(l1).isNotNull();
+        assertThat(l1).isSameAs(l2);
+        assertThat(l2).isSameAs(l3);
     }
 
 }

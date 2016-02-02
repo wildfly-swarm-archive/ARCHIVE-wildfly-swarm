@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Bob McWhirter
@@ -30,7 +31,19 @@ public class FractionList {
 
     private Map<String, FractionDescriptor> descriptors = new HashMap<>();
 
-    public FractionList() {
+    private static AtomicReference<FractionList> INSTANCE = new AtomicReference<>();
+
+    public static FractionList get() {
+        return INSTANCE.updateAndGet( (old)->{
+            if ( old != null ) {
+                return old;
+            }
+
+            return new FractionList();
+        });
+    }
+
+    private FractionList() {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("fraction-list.txt")))) {
 
             String line = null;

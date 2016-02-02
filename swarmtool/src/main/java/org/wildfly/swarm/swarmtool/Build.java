@@ -102,7 +102,7 @@ public class Build {
     }
 
     private Set<String> allRequiredFractions() {
-        final FractionList fractionList = new FractionList();
+        final FractionList fractionList = FractionList.get();
         final Set<String> fractions = new HashSet<>();
 
         for (String fractionName : this.swarmDependencies) {
