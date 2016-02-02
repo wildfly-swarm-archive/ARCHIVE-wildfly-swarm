@@ -29,16 +29,15 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class FractionList {
 
-    private Map<String, FractionDescriptor> descriptors = new HashMap<>();
+    private final Map<String, FractionDescriptor> descriptors = new HashMap<>();
 
-    private static AtomicReference<FractionList> INSTANCE = new AtomicReference<>();
+    private static final AtomicReference<FractionList> INSTANCE = new AtomicReference<>();
 
     public static FractionList get() {
         return INSTANCE.updateAndGet( (old)->{
             if ( old != null ) {
                 return old;
             }
-
             return new FractionList();
         });
     }
