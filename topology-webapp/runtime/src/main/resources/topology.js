@@ -6,17 +6,17 @@ var topology = (function() {
     keycloak: false,
     keycloakUpdateInterval: 30,
     context: '/topology'
-  }, topology = {};
+  }, topology = {}, scheduler;
 
   function factory( options ) {
     options = merge(defaults, options);
 
     function ajax( serviceName, path, settings ) {
-      var allServers = topology[serviceName],
+      var nextServer = scheduler.next(serviceName),
           deferredResult = deferred(),
           keycloak = options.keycloak;
 
-      if (!allServers || allServers.length < 1 ) {
+      if (!nextServer) {
         return deferredResult.reject('No servers available').promise;
       }
 
@@ -28,9 +28,7 @@ var topology = (function() {
       }, settings);
 
       path = path || '/';
-
-      // TODO: Try other URLs if there is more than one server
-      settings.url = '//' + allServers[0].endpoint + path;
+      settings.url = '//' + nextServer.endpoint + path;
 
       // Set relevant headers
       if (settings.method === 'POST') {
@@ -146,10 +144,50 @@ var topology = (function() {
       });
     }
 
+    function schedule(initialState) {
+      var o = {
+        next: next
+      }, topology = parseInitialState(initialState);
+
+      function next(serviceName) {
+        var service = topology[serviceName];
+        if (!service || service.length < 1) return null;
+        return service.next();
+      }
+
+      function parseInitialState(initialState) {
+        var o = {};
+        for(var key in initialState) {
+          if (initialState[key] && initialState.hasOwnProperty(key)) {
+            o[key] = {
+              instances: initialState[key],
+              currentIndex: 0,
+              length: initialState[key].length
+            };
+            o[key].next = increment(o[key]);
+          }
+        }
+
+        function increment(o) {
+          return function() {
+            var index = o.currentIndex,
+                _next = o.instances[index];
+            o.currentIndex = ++index % o.length;
+            return _next;
+          };
+        }
+        return o;
+      }
+
+      return o;
+    }
+
+
     var sse = new EventSource( options.context + "/system/stream" );
     sse.addEventListener('topologyChange', function(message) {
       console.log('topology.js: topology changed: ', message.data);
       topology = JSON.parse(message.data);
+      scheduler = schedule(topology);
     });
 
     sse.onerror = function(e) {
