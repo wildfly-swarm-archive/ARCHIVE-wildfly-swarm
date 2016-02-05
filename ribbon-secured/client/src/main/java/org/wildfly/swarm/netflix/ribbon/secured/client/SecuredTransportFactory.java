@@ -29,7 +29,10 @@ import com.netflix.ribbon.transport.netty.RibbonTransport;
 import com.netflix.ribbon.transport.netty.http.LoadBalancingHttpClient;
 import com.netflix.ribbon.transport.netty.http.NettyHttpLoadBalancerErrorHandler;
 import io.netty.buffer.ByteBuf;
+import io.reactivex.netty.pipeline.PipelineConfiguratorComposite;
+import io.reactivex.netty.protocol.http.HttpObjectAggregationConfigurator;
 import io.reactivex.netty.protocol.http.client.HttpClient;
+import io.reactivex.netty.protocol.http.client.HttpClientPipelineConfigurator;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import io.reactivex.netty.protocol.http.client.HttpClientResponse;
 
@@ -39,28 +42,33 @@ import io.reactivex.netty.protocol.http.client.HttpClientResponse;
 public class SecuredTransportFactory extends RibbonTransportFactory {
 
     public static final ScheduledExecutorService poolCleanerScheduler;
+    private final int maxChunkSize;
 
     static {
         poolCleanerScheduler = Executors.newScheduledThreadPool(1);
     }
 
-    protected SecuredTransportFactory() {
+    protected SecuredTransportFactory(final int maxChunkSize) {
         super(ClientConfigFactory.DEFAULT);
+        this.maxChunkSize = maxChunkSize;
     }
 
-    private static RetryHandler getDefaultHttpRetryHandlerWithConfig(IClientConfig config) {
+    private static RetryHandler getDefaultHttpRetryHandlerWithConfig(final IClientConfig config) {
         return new NettyHttpLoadBalancerErrorHandler(config);
     }
 
     @Override
-    public HttpClient<ByteBuf, ByteBuf> newHttpClient(IClientConfig config) {
-        List<ExecutionListener<HttpClientRequest<ByteBuf>, HttpClientResponse<ByteBuf>>> listeners = new ArrayList<>();
+    public HttpClient<ByteBuf, ByteBuf> newHttpClient(final IClientConfig config) {
+        final List<ExecutionListener<HttpClientRequest<ByteBuf>, HttpClientResponse<ByteBuf>>> listeners = new ArrayList<>();
         listeners.add(createBearerHeaderAdder());
-        LoadBalancingHttpClient<ByteBuf, ByteBuf> client = LoadBalancingHttpClient.<ByteBuf, ByteBuf>builder()
+        final PipelineConfiguratorComposite<HttpClientResponse<ByteBuf>, HttpClientRequest<ByteBuf>> pipelineConfigurator = new PipelineConfiguratorComposite<HttpClientResponse<ByteBuf>, 
+                HttpClientRequest<ByteBuf>>(new HttpClientPipelineConfigurator<ByteBuf, ByteBuf>(),
+                new HttpObjectAggregationConfigurator(maxChunkSize));
+        final LoadBalancingHttpClient<ByteBuf, ByteBuf> client = LoadBalancingHttpClient.<ByteBuf, ByteBuf>builder()
                 .withClientConfig(config)
                 .withExecutorListeners(listeners)
                 .withRetryHandler(getDefaultHttpRetryHandlerWithConfig(config))
-                .withPipelineConfigurator(RibbonTransport.DEFAULT_HTTP_PIPELINE_CONFIGURATOR)
+                .withPipelineConfigurator(pipelineConfigurator)
                 .withPoolCleanerScheduler(RibbonTransport.poolCleanerScheduler)
                 .build();
 
