@@ -18,6 +18,7 @@ package org.wildfly.swarm.jaxrs;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.wildfly.swarm.config.JAXRS;
 import org.wildfly.swarm.container.Fraction;
+import org.wildfly.swarm.jaxrs.internal.JAXRSArchiveImpl;
 
 /**
  * @author Bob McWhirter

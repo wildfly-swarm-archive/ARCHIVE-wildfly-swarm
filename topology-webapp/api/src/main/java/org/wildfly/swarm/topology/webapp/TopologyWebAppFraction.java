@@ -16,7 +16,7 @@
 package org.wildfly.swarm.topology.webapp;
 
 import org.wildfly.swarm.container.Fraction;
-import org.wildfly.swarm.topology.IdentityExternalAddressMapper;
+import org.wildfly.swarm.topology.internal.IdentityExternalAddressMapper;
 
 /**
  * @author Lance Ball

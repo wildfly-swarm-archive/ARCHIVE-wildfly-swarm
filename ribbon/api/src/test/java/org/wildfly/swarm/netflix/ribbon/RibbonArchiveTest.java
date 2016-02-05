@@ -21,6 +21,7 @@ import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.junit.Test;
 import org.wildfly.swarm.container.JARArchive;
 import org.wildfly.swarm.msc.ServiceActivatorArchive;
+import org.wildfly.swarm.netflix.ribbon.internal.RibbonArchiveImpl;
 
 import static org.fest.assertions.Assertions.assertThat;
 

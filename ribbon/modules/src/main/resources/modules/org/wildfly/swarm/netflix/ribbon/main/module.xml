@@ -5,6 +5,7 @@
     <system export="true">
       <paths>
         <path name="org/wildfly/swarm/netflix/ribbon"/>
+        <path name="org/wildfly/swarm/netflix/ribbon/internal"/>
       </paths>
     </system>
 
