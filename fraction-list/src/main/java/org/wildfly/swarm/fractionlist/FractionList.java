@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class FractionList {
     
     public static final String DEFAULT_GROUP_ID = "org.wildfly.swarm";
-    private final Map<String, FractionDescriptor> descriptors = new HashMap<>();
+    private final Map<String, FractionDescriptor> descriptors = new TreeMap<>();
 
     private static final AtomicReference<FractionList> INSTANCE = new AtomicReference<>();
 
