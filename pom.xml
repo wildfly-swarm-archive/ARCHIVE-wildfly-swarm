@@ -47,7 +47,7 @@
     <version.commons-configuration>1.8</version.commons-configuration>
     <version.rxjava>1.0.9</version.rxjava>
     <version.rxnetty>0.4.9</version.rxnetty>
-    <version.netty>4.0.26.Final</version.netty>
+    <version.netty>4.1.42.Final</version.netty>
     <version.guava>14.0.1</version.guava>
 
     <version.com.orbitz.consul>0.9.16</version.com.orbitz.consul>
